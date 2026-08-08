@@ -11,9 +11,6 @@ concurrency:
   group: android-dev-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  MAKEFLAGS: "PARALLEL_JOBS=3 OUTPUT_DIR=build"
-
 jobs:
   android-arm64:
     name: Android Dev (ARM64)
@@ -35,58 +32,28 @@ jobs:
 
       - name: Show repository configuration
         run: |
-          echo "=== Repository ==="
-          git remote -v
-
-          echo
-          echo "=== Branch / commit ==="
-          git status --short --branch
-          git rev-parse HEAD
-
-          echo
           echo "=== .gitmodules ==="
           cat .gitmodules
 
-      - name: Check Android toolchain
-        run: |
-          echo "USER=$(whoami)"
-          echo "HOME=$HOME"
-          echo "PATH=$PATH"
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_NDK_HOME=$ANDROID_NDK_HOME"
-
-          echo
-          echo "=== Compiler ==="
-          which aarch64-linux-android21-clang
-          which aarch64-linux-android21-clang++
-
-          aarch64-linux-android21-clang --version
-          aarch64-linux-android21-clang++ --version
-
       - name: Fetch submodules
-        run: |
-          make fetchthirdparty
+        run: make fetchthirdparty
 
       - name: Verify custom koreader-base
         run: |
           echo "=== Base remote ==="
           git -C base remote -v
 
-          echo
           echo "=== Base commit ==="
           git -C base rev-parse HEAD
 
-          echo
           echo "=== CREngine commit ==="
           git -C base/thirdparty/kpvcrlib/crengine rev-parse HEAD
 
       - name: Build Android ARM64
-        run: |
-          make TARGET=android ANDROID_ARCH=arm64
+        run: make TARGET=android ANDROID_ARCH=arm64
 
       - name: Package Android ARM64
-        run: |
-          make TARGET=android ANDROID_ARCH=arm64 update
+        run: make TARGET=android ANDROID_ARCH=arm64 update
 
       - name: Locate generated APK
         id: locate_apk
@@ -136,7 +103,6 @@ jobs:
             exit 1
           fi
 
-          echo "Using apksigner: $APKSIGNER"
           echo "Signing: $APK"
 
           "${APKSIGNER}" sign \
@@ -163,10 +129,7 @@ jobs:
       - name: Prepare downloadable APK
         run: |
           APK="${{ steps.locate_apk.outputs.apk }}"
-
           cp "$APK" koreader-tategumi-rubymod-arm64-dev.apk
-
-          ls -lh koreader-tategumi-rubymod-arm64-dev.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
