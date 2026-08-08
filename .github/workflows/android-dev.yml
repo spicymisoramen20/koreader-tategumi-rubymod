@@ -7,13 +7,9 @@ defaults:
   run:
     shell: bash
 
-concurrency:
-  group: android-dev-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   android-arm64:
-    name: Android Dev (ARM64)
+    name: Android (ARM64 Dev)
     runs-on: ubuntu-latest
 
     container:
@@ -23,64 +19,38 @@ jobs:
       BASH_ENV: /home/ko/.bashrc
       TARGET: android
       ANDROID_ARCH: arm64
+      RELEASE_TAG: dev
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Show repository configuration
-        run: |
-          echo "=== .gitmodules ==="
-          cat .gitmodules
 
       - name: Fetch submodules
         run: make fetchthirdparty
 
-      - name: Verify custom koreader-base
+      - name: Verify custom base
         run: |
-          echo "=== Base remote ==="
+          echo "=== base remote ==="
           git -C base remote -v
 
-          echo "=== Base commit ==="
+          echo "=== base commit ==="
           git -C base rev-parse HEAD
 
-          echo "=== CREngine commit ==="
+          echo "=== crengine commit ==="
           git -C base/thirdparty/kpvcrlib/crengine rev-parse HEAD
 
-      - name: Build Android ARM64
+      - name: Build
         run: make TARGET=android ANDROID_ARCH=arm64
 
-      - name: Package Android ARM64
+      - name: Package
         run: make TARGET=android ANDROID_ARCH=arm64 update
 
-      - name: Locate generated APK
-        id: locate_apk
-        run: |
-          echo "=== APK files ==="
-          find . -type f -name "*.apk" -print
-
-          APK=$(find . \
-            -type f \
-            -name 'koreader-android-arm64-*.apk' \
-            -print \
-            -quit)
-
-          if [ -z "$APK" ]; then
-            echo "ERROR: Android ARM64 APK was not found."
-            exit 1
-          fi
-
-          echo "Found APK: $APK"
-          echo "apk=$APK" >> "$GITHUB_OUTPUT"
-
-      - name: Create development signing key
+      - name: Create dev keystore
         run: |
           keytool \
             -genkeypair \
-            -v \
-            -keystore /tmp/koreader-dev.keystore \
+            -keystore /tmp/dev.keystore \
             -storepass android \
             -keypass android \
             -alias koreader-dev \
@@ -91,50 +61,30 @@ jobs:
 
       - name: Sign APK
         run: |
-          APK="${{ steps.locate_apk.outputs.apk }}"
-
-          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" \
-            -type f \
-            -name apksigner \
-            -print | sort -V | tail -1)
-
-          if [ -z "$APKSIGNER" ]; then
-            echo "ERROR: apksigner was not found."
-            exit 1
-          fi
-
-          echo "Signing: $APK"
+          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" -name apksigner | sort -V | tail -1)
 
           "${APKSIGNER}" sign \
-            --ks /tmp/koreader-dev.keystore \
+            --ks /tmp/dev.keystore \
             --ks-pass pass:android \
             --key-pass pass:android \
             --ks-key-alias koreader-dev \
-            "$APK"
+            koreader-android-arm64-*.apk
 
-      - name: Verify signed APK
+      - name: Verify APK
         run: |
-          APK="${{ steps.locate_apk.outputs.apk }}"
-
-          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" \
-            -type f \
-            -name apksigner \
-            -print | sort -V | tail -1)
+          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" -name apksigner | sort -V | tail -1)
 
           "${APKSIGNER}" verify \
             --verbose \
             --print-certs \
-            "$APK"
+            koreader-android-arm64-*.apk
 
-      - name: Prepare downloadable APK
+      - name: Rename for download
         run: |
-          APK="${{ steps.locate_apk.outputs.apk }}"
-          cp "$APK" koreader-tategumi-rubymod-arm64-dev.apk
+          cp koreader-android-arm64-*.apk koreader-android-arm64-dev.apk
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: koreader-tategumi-rubymod-arm64-dev
-          path: koreader-tategumi-rubymod-arm64-dev.apk
+          name: android-arm64-dev
+          path: koreader-android-arm64-dev.apk
           if-no-files-found: error
-          retention-days: 14
