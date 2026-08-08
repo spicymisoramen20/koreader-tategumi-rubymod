@@ -1,0 +1,112 @@
+name: Android Dev Build
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: android-dev-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android-arm64:
+    name: Android Dev (ARM64)
+    runs-on: ubuntu-latest
+
+    container:
+      image: koreader/koandroid:latest
+
+    env:
+      BASH_ENV: /home/ko/.bashrc
+      TARGET: android
+      ANDROID_ARCH: arm64
+      MAKEFLAGS: "PARALLEL_JOBS=3 OUTPUT_DIR=build"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show base configuration
+        run: |
+          echo "=== .gitmodules ==="
+          cat .gitmodules
+          echo "==================="
+
+      - name: Fetch submodules
+        run: make fetchthirdparty
+
+      - name: Show checked out base
+        run: |
+          echo "=== Base repository ==="
+          git -C base remote -v || true
+
+          echo "=== Base commit ==="
+          git -C base rev-parse HEAD || true
+
+          echo "=== Base status ==="
+          git -C base status --short --branch || true
+
+      - name: Build Android ARM64
+        run: |
+          make TARGET=android ANDROID_ARCH=arm64
+
+      - name: Package Android ARM64
+        run: |
+          make TARGET=android ANDROID_ARCH=arm64 update
+
+      - name: Create temporary development signing key
+        run: |
+          keytool \
+            -genkeypair \
+            -v \
+            -keystore /tmp/dev.keystore \
+            -storepass android \
+            -alias koreader-dev \
+            -keypass android \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=KOReader Dev,O=Development,C=US"
+
+      - name: Sign development APK
+        run: |
+          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" \
+            -name apksigner | sort -V | tail -1)
+
+          APK=$(find . -maxdepth 1 \
+            -name 'koreader-android-arm64-*.apk' \
+            -print -quit)
+
+          if [ -z "$APK" ]; then
+            echo "ERROR: Android ARM64 APK not found"
+            find . -maxdepth 2 -type f | sort
+            exit 1
+          fi
+
+          echo "Signing: $APK"
+
+          "${APKSIGNER}" sign \
+            --ks /tmp/dev.keystore \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --ks-key-alias koreader-dev \
+            "$APK"
+
+          cp "$APK" koreader-tategumi-rubymod-arm64-dev.apk
+
+      - name: Verify APK
+        run: |
+          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" \
+            -name apksigner | sort -V | tail -1)
+
+          "${APKSIGNER}" verify \
+            --verbose \
+            koreader-tategumi-rubymod-arm64-dev.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: koreader-tategumi-rubymod-arm64-dev
+          path: koreader-tategumi-rubymod-arm64-dev.apk
+          if-no-files-found: error
