@@ -7,6 +7,10 @@ defaults:
   run:
     shell: bash
 
+concurrency:
+  group: android-dev-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   MAKEFLAGS: "PARALLEL_JOBS=3 OUTPUT_DIR=build"
 
@@ -24,9 +28,24 @@ jobs:
       ANDROID_ARCH: arm64
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Show repository configuration
+        run: |
+          echo "=== Repository ==="
+          git remote -v
+
+          echo
+          echo "=== Branch / commit ==="
+          git status --short --branch
+          git rev-parse HEAD
+
+          echo
+          echo "=== .gitmodules ==="
+          cat .gitmodules
 
       - name: Check Android toolchain
         run: |
@@ -35,30 +54,124 @@ jobs:
           echo "PATH=$PATH"
           echo "ANDROID_HOME=$ANDROID_HOME"
           echo "ANDROID_NDK_HOME=$ANDROID_NDK_HOME"
-          which aarch64-linux-android21-clang || true
-          which aarch64-linux-android21-clang++ || true
+
+          echo
+          echo "=== Compiler ==="
+          which aarch64-linux-android21-clang
+          which aarch64-linux-android21-clang++
+
+          aarch64-linux-android21-clang --version
+          aarch64-linux-android21-clang++ --version
 
       - name: Fetch submodules
-        run: make fetchthirdparty
-
-      - name: Show checked out base
         run: |
+          make fetchthirdparty
+
+      - name: Verify custom koreader-base
+        run: |
+          echo "=== Base remote ==="
           git -C base remote -v
+
+          echo
+          echo "=== Base commit ==="
           git -C base rev-parse HEAD
 
-      - name: Build
-        run: make TARGET=android ANDROID_ARCH=arm64
+          echo
+          echo "=== CREngine commit ==="
+          git -C base/thirdparty/kpvcrlib/crengine rev-parse HEAD
 
-      - name: Package
-        run: make TARGET=android ANDROID_ARCH=arm64 update
-
-      - name: Find APK
+      - name: Build Android ARM64
         run: |
-          find . -maxdepth 2 -type f -name "*.apk" -print
+          make TARGET=android ANDROID_ARCH=arm64
 
-      - name: Upload unsigned APK
+      - name: Package Android ARM64
+        run: |
+          make TARGET=android ANDROID_ARCH=arm64 update
+
+      - name: Locate generated APK
+        id: locate_apk
+        run: |
+          echo "=== APK files ==="
+          find . -type f -name "*.apk" -print
+
+          APK=$(find . \
+            -type f \
+            -name 'koreader-android-arm64-*.apk' \
+            -print \
+            -quit)
+
+          if [ -z "$APK" ]; then
+            echo "ERROR: Android ARM64 APK was not found."
+            exit 1
+          fi
+
+          echo "Found APK: $APK"
+          echo "apk=$APK" >> "$GITHUB_OUTPUT"
+
+      - name: Create development signing key
+        run: |
+          keytool \
+            -genkeypair \
+            -v \
+            -keystore /tmp/koreader-dev.keystore \
+            -storepass android \
+            -keypass android \
+            -alias koreader-dev \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=KOReader Dev,O=Development,C=US"
+
+      - name: Sign APK
+        run: |
+          APK="${{ steps.locate_apk.outputs.apk }}"
+
+          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" \
+            -type f \
+            -name apksigner \
+            -print | sort -V | tail -1)
+
+          if [ -z "$APKSIGNER" ]; then
+            echo "ERROR: apksigner was not found."
+            exit 1
+          fi
+
+          echo "Using apksigner: $APKSIGNER"
+          echo "Signing: $APK"
+
+          "${APKSIGNER}" sign \
+            --ks /tmp/koreader-dev.keystore \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --ks-key-alias koreader-dev \
+            "$APK"
+
+      - name: Verify signed APK
+        run: |
+          APK="${{ steps.locate_apk.outputs.apk }}"
+
+          APKSIGNER=$(find "${ANDROID_HOME}/build-tools" \
+            -type f \
+            -name apksigner \
+            -print | sort -V | tail -1)
+
+          "${APKSIGNER}" verify \
+            --verbose \
+            --print-certs \
+            "$APK"
+
+      - name: Prepare downloadable APK
+        run: |
+          APK="${{ steps.locate_apk.outputs.apk }}"
+
+          cp "$APK" koreader-tategumi-rubymod-arm64-dev.apk
+
+          ls -lh koreader-tategumi-rubymod-arm64-dev.apk
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: koreader-android-arm64-dev
-          path: koreader-android-arm64-*.apk
+          name: koreader-tategumi-rubymod-arm64-dev
+          path: koreader-tategumi-rubymod-arm64-dev.apk
           if-no-files-found: error
+          retention-days: 14
