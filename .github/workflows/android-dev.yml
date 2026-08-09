@@ -15,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
   version:
     name: Generate build version
     runs-on: ubuntu-latest
@@ -26,12 +27,12 @@ jobs:
       - name: Generate unique build version
         id: version
         run: |
-          VERSION="v$(date -u +%Y.%m.%d)-dev-${{ github.run_number }}"
+          VERSION="v$(date -u +%Y.%m.%d)-rubymod-${{ github.run_number }}"
           echo "build_version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Build version: $VERSION"
 
   android-arm64:
-    name: Android ARM64 Dev
+    name: Android ARM64 RubyMod
     needs: version
 
     runs-on: ubuntu-latest
@@ -46,6 +47,7 @@ jobs:
       RELEASE_TAG: ${{ needs.version.outputs.build_version }}
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -59,18 +61,53 @@ jobs:
         run: |
           make fetchthirdparty
 
-      - name: Verify custom base
+      # Temporary development override.
+      #
+      # The top-level tategumi repository still pins an older base gitlink.
+      # For now we explicitly move base to the current master of
+      # koreader-base-rubymod so that the Android FFI repair is tested.
+      #
+      # Once the build boots correctly, update the actual submodule pointer
+      # and remove this step.
+      - name: Use latest RubyMod base
         run: |
-          echo "=== koreader-base remote ==="
+          echo "========================================"
+          echo "Base before override"
+          echo "========================================"
+
           git -C base remote -v
-
-          echo
-          echo "=== koreader-base commit ==="
           git -C base rev-parse HEAD
+          git -C base log -1 --oneline
 
           echo
-          echo "=== CREngine commit ==="
-          git -C base/thirdparty/kpvcrlib/crengine rev-parse HEAD
+          echo "Fetching RubyMod base master..."
+
+          git -C base fetch origin master
+          git -C base checkout origin/master
+
+          echo
+          echo "========================================"
+          echo "BASE ACTUALLY BEING BUILT"
+          echo "========================================"
+
+          git -C base remote -v
+          git -C base rev-parse HEAD
+          git -C base log -1 --oneline
+
+          echo
+          echo "Checking Android ARM64 POSIX definitions..."
+
+          grep -n "typedef uint64_t dev_t" \
+            base/ffi-cdecl/posix_h_android_arm64.lua
+
+          grep -n "typedef uint32_t gid_t" \
+            base/ffi-cdecl/posix_h_android_arm64.lua
+
+          grep -n "typedef unsigned long ino_t" \
+            base/ffi-cdecl/posix_h_android_arm64.lua
+
+          grep -n "typedef uint32_t nlink_t" \
+            base/ffi-cdecl/posix_h_android_arm64.lua
 
       - name: Build
         run: |
@@ -83,8 +120,15 @@ jobs:
       - name: Find generated APK
         id: apk
         run: |
-          echo "=== Generated APKs ==="
-          find . -maxdepth 2 -type f -name "koreader-android-arm64-*.apk" -print
+          echo "========================================"
+          echo "Generated APKs"
+          echo "========================================"
+
+          find . \
+            -maxdepth 2 \
+            -type f \
+            -name "koreader-android-arm64-*.apk" \
+            -print
 
           APK=$(find . \
             -maxdepth 2 \
@@ -98,7 +142,10 @@ jobs:
             exit 1
           fi
 
-          echo "Using APK: $APK"
+          echo
+          echo "Using APK:"
+          echo "$APK"
+
           echo "path=$APK" >> "$GITHUB_OUTPUT"
 
       - name: Create development signing key
@@ -113,7 +160,7 @@ jobs:
             -keyalg RSA \
             -keysize 2048 \
             -validity 10000 \
-            -dname "CN=KOReader Dev,O=Development,C=US"
+            -dname "CN=KOReader RubyMod Dev,O=Development,C=US"
 
       - name: Find apksigner
         id: signer
@@ -124,11 +171,13 @@ jobs:
             -print | sort -V | tail -1)
 
           if [ -z "$APKSIGNER" ]; then
-            echo "ERROR: apksigner not found."
+            echo "ERROR: apksigner was not found."
             exit 1
           fi
 
-          echo "Using apksigner: $APKSIGNER"
+          echo "Using apksigner:"
+          echo "$APKSIGNER"
+
           echo "path=$APKSIGNER" >> "$GITHUB_OUTPUT"
 
       - name: Sign APK
@@ -152,15 +201,6 @@ jobs:
             --verbose \
             --print-certs \
             "$APK"
-
-      - name: Show final APK
-        run: |
-          APK="${{ steps.apk.outputs.path }}"
-
-          echo "========================================"
-          echo "Final APK"
-          echo "========================================"
-          ls -lh "$APK"
 
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
