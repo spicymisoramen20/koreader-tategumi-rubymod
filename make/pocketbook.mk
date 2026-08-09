@@ -16,6 +16,7 @@ update-prepare: all
 	mkdir -p $(INSTALL_DIR)/system/bin
 	$(SYMLINK) $(POCKETBOOK_DIR)/koreader.app $(INSTALL_DIR)/applications/
 	$(SYMLINK) $(POCKETBOOK_DIR)/system_koreader.app $(INSTALL_DIR)/system/bin/koreader.app
+	$(SYMLINK) $(COMMON_DIR)/spinning_zsync $(INSTALL_DIR)/koreader/
 	$(SYMLINK) $(INSTALL_DIR)/koreader $(INSTALL_DIR)/applications/
 
 update-zip: update-prepare

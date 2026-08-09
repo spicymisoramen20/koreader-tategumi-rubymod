@@ -368,11 +368,12 @@ function Exporter:addToMainMenu(menu_items)
                 callback = function(touchmenu_instance)
                     UIManager:show(ButtonSelector:new{
                         current_value = util.tableGetValue(settings, "filter", "color"),
-                        values = ReaderHighlight:getHighlightColorList(),
+                        values = ReaderHighlight.highlight_colors,
+                        bg_colors = ReaderHighlight:getHighlightColorList(),
                         multi_choice = true,
-                        callback = function(selected_color_names)
-                            if selected_color_names then
-                                util.tableSetValue(settings, selected_color_names, "filter", "color")
+                        callback = function(value)
+                            if value then
+                                util.tableSetValue(settings, value, "filter", "color")
                             else
                                 util.tableRemoveValue(settings, "filter", "color")
                             end

@@ -506,7 +506,7 @@ end
 function ReaderView:drawTempHighlight(bb, x, y)
     local color = self.highlight.saved_drawer ~= "invert"
         and G_reader_settings:isTrue("highlight_selection_use_highlight_color")
-        and self.ui.highlight:getHighlightColor(self.highlight.saved_color) or nil
+        and Blitbuffer.colorFromName(self.highlight.saved_color) or nil
     for page, boxes in pairs(self.highlight.temp) do
         for i = 1, #boxes do
             local rect = self:pageToScreenTransform(page, boxes[i])
@@ -553,7 +553,7 @@ function ReaderView:drawPageSavedHighlight(bb, x, y)
                 local boxes = self.document:getPageBoxesFromPositions(page, item.pos0, item.pos1)
                 if boxes then
                     local drawer = item.drawer
-                    local color = self.ui.highlight:getHighlightColor(item.color)
+                    local color = item.color and Blitbuffer.colorFromName(item.color)
                     if not colorful and color and not Blitbuffer.isColor8(color) then
                         colorful = true
                     end
@@ -626,7 +626,7 @@ function ReaderView:drawXPointerSavedHighlight(bb, x, y)
                     local boxes = self.document:getScreenBoxesFromPositions(item.pos0, item.pos1, true) -- get_segments=true
                     if boxes then
                         local drawer = item.drawer
-                        local color = self.ui.highlight:getHighlightColor(item.color)
+                        local color = item.color and Blitbuffer.colorFromName(item.color)
                         if not colorful and color and not Blitbuffer.isColor8(color) then
                             colorful = true
                         end
@@ -666,11 +666,10 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
             y = y + math.ceil((rect.h - h) / 2)
         end
     end
-    local is_gray = not color or Blitbuffer.isColor8(color)
     if drawer == "lighten" then
         local lighten_factor = self.highlight.temp and next(self.highlight.temp)
             and (G_reader_settings:readSetting("highlight_selection_lighten_factor") or 0.2) or self.highlight.lighten_factor
-        if is_gray then
+        if not color then
             bb:darkenRect(x, y, w, h, lighten_factor)
         else
             if bb:getInverse() == 1 then
@@ -685,7 +684,7 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
             end
         end
     elseif drawer == "underscore" then
-        if is_gray then
+        if not color then
             color = Blitbuffer.COLOR_GRAY_4
         end
         local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
@@ -705,7 +704,7 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
             end
         end
     elseif drawer == "strikeout" then
-        if is_gray then
+        if not color then
             color = Blitbuffer.COLOR_BLACK
         end
         local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
@@ -732,6 +731,7 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
         bb:invertRect(x, y, w, h)
     end
     if self.highlight.note_mark ~= nil and draw_note_mark ~= nil then
+        color = color or Blitbuffer.COLOR_BLACK
         if self.highlight.note_mark == "underline" then
             -- With most annotation styles, we'd risk making this invisible if we used the same color,
             -- so, always draw this in black.
@@ -763,8 +763,8 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
                 note_mark_pos_x = self.note_mark_pos_x2
             end
             if self.highlight.note_mark == "sideline" then
-                if is_gray then
-                    bb:paintRect(note_mark_pos_x, y, self.note_mark_line_w, rect.h, Blitbuffer.COLOR_BLACK)
+                if Blitbuffer.isColor8(color) then
+                    bb:paintRect(note_mark_pos_x, y, self.note_mark_line_w, rect.h, color)
                 else
                     bb:paintRectRGB32(note_mark_pos_x, y, self.note_mark_line_w, rect.h, Screen.night_mode and color:invert() or color)
                 end
@@ -1403,17 +1403,7 @@ function ReaderView:setupTouchZones()
     (self.ui.rolling or self.ui.paging):setupTouchZones()
 end
 
-function ReaderView:refreshPageTurnInput()
-    local navigator = self.ui.rolling or self.ui.paging
-    navigator:setupTouchZones()
-    navigator:registerKeyEvents()
-end
-
 function ReaderView:onToggleReadingOrder(toggle)
-    -- Unlike inverse_reading_order itself (which is serialized for every
-    -- document), this marker records an actual per-document user decision.
-    -- Automatic metadata detection must never overwrite that decision.
-    self.ui.doc_settings:makeTrue("page_direction_user_override")
     if toggle == nil then
         toggle = not self.inverse_reading_order
     end
@@ -1422,7 +1412,7 @@ function ReaderView:onToggleReadingOrder(toggle)
         -- User made an explicit choice: it is no longer a vertical-rl forced value,
         -- so persist it from now on (see ReaderView:onSaveSettings).
         self.inverse_reading_order_forced = false
-        self:refreshPageTurnInput()
+        self:setupTouchZones()
         local is_rtl = self.inverse_reading_order ~= BD.mirroredUILayout() -- mirrored reading
         Notification:notify(is_rtl and _("RTL page turning.") or _("LTR page turning."))
         -- Keep progress bar direction in sync with reading order.

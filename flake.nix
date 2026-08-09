@@ -25,52 +25,6 @@
           "lua_cliargs"
         ];
 
-        koreaderBuild = pkgs.writeShellScriptBin "koreader-build" ''
-          exec make -C base "$@"
-        '';
-        koreaderRun = pkgs.writeShellScriptBin "koreader-run" ''
-          make
-
-          install_dir="$(
-            make -s --no-print-directory \
-              PHONY+=__print_install_dir \
-              --eval='__print_install_dir:;@printf "%s\\n" "$(INSTALL_DIR)"' \
-              __print_install_dir
-          )"
-          cd "$install_dir/koreader"
-
-          while true; do
-            status=0
-            ./luajit reader.lua "$@" || status=$?
-            [ "$status" -eq 85 ] || exit "$status"
-            set --
-          done
-        '';
-        koreaderTestBase = pkgs.writeShellScriptBin "koreader-test-base" ''
-          exec base/test-runner/runtests "$@"
-        '';
-        koreaderTestFront = pkgs.writeShellScriptBin "koreader-test-front" ''
-          exec make testfront "$@"
-        '';
-        koreaderTestVertical = pkgs.writeShellScriptBin "koreader-test-vertical" ''
-          exec test/test-vertical.sh "$@"
-        '';
-        koreaderScreenshotCompare = pkgs.writeShellScriptBin "koreader-screenshot-compare" ''
-          exec test/test-vertical.sh compare "$@"
-        '';
-        koreaderCreateEpub = pkgs.writeShellScriptBin "koreader-create-epub" ''
-          exec python3 base/tests/fixtures/vertical_text/create-epub.py \
-            base/tests/fixtures/vertical_text/simple_ja_noruby.epub "$@"
-        '';
-
-        linuxRuntimeLibraries = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-          pkgs.libGL
-          pkgs.libusb1
-        ];
-        linuxLibraryPathHook = pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
-          export LD_LIBRARY_PATH="${pkgs.sdl3}/lib:${pkgs.libGL}/lib:${pkgs.libusb1}/lib:$LD_LIBRARY_PATH"
-        '';
-
       in
       {
         devShells.default = pkgs.mkShell {
@@ -78,8 +32,7 @@
             gcc gnumake cmake ninja meson pkg-config autoconf automake libtool nasm
             git gnupatch wget unzip p7zip gettext
             python3 perl
-            sdl3
-          ] ++ linuxRuntimeLibraries ++ [
+            sdl3 libGL libusb1
             imagemagick
             luajit luarocks
             luajitPackages.busted
@@ -93,8 +46,6 @@
             luajitPackages.luacheck
             shellcheck shfmt
             zip
-            koreaderBuild koreaderRun koreaderTestBase koreaderTestFront
-            koreaderTestVertical koreaderScreenshotCompare koreaderCreateEpub
             # CI lint tools (crengine/.github/workflows/build.yml runs clang-tidy + cppcheck)
             clang-tools cppcheck
             # System libs needed for crengine lint to resolve includes via pkg-config
@@ -111,11 +62,19 @@
           ];
 
           shellHook = ''
-            ${linuxLibraryPathHook}
+            export LD_LIBRARY_PATH="${pkgs.sdl3}/lib:${pkgs.libGL}/lib:${pkgs.libusb1}/lib:$LD_LIBRARY_PATH"
+
+            alias koreader-build='make -C base'
+            alias koreader-run='make -C base run'
+            alias koreader-test-base='base/test-runner/runtests'
+            alias koreader-test-front='make testfront'
+            alias koreader-test-vertical='test/test-vertical.sh'
+            alias koreader-screenshot-compare='test/test-vertical.sh compare'
+            alias koreader-create-epub='python3 base/tests/fixtures/vertical_text/create-epub.py base/tests/fixtures/vertical_text/simple_ja_noruby.epub'
 
             echo "KOReader dev shell ready."
             echo "  koreader-build          — build emulator (make -C base)"
-            echo "  koreader-run            — run emulator (make run)"
+            echo "  koreader-run            — run emulator (make -C base run)"
             echo "  koreader-test-base      — run base/ unit tests"
             echo "  koreader-test-front     — run frontend unit tests"
             echo "  koreader-test-vertical  — run vertical text screenshot tests"
@@ -130,8 +89,7 @@
           packages = with pkgs; [
             gcc gnumake cmake ninja meson pkg-config autoconf automake libtool nasm
             git gnupatch wget unzip gettext python3 perl
-            sdl3 imagemagick
-          ] ++ linuxRuntimeLibraries ++ [
+            sdl3 libGL libusb1 imagemagick
             luajit luarocks ccache zip shellcheck shfmt
           ];
 
@@ -142,7 +100,7 @@
               ) luarocksPackages;
             in
             ''
-              ${linuxLibraryPathHook}
+              export LD_LIBRARY_PATH="${pkgs.sdl3}/lib:${pkgs.libGL}/lib:${pkgs.libusb1}/lib:$LD_LIBRARY_PATH"
 
               BUILDDIR="$(ls -d base/build/*-debug 2>/dev/null | head -1)"
               if [ -z "$BUILDDIR" ]; then

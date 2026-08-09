@@ -919,18 +919,35 @@ function util.removeFile(file)
     end
 end
 
--- Gets total, used and available bytes for the mountpoint that holds a given path.
--- @string path of a file or a directory
+-- Gets total, used and available bytes for the mountpoint that holds a given directory.
+-- @string path of the directory
 -- @treturn table with total, used and available bytes
-function util.diskUsage(path)
+function util.diskUsage(dir)
+    -- safe way of testing df & awk
+    local function doCommand(d)
+        local handle = io.popen("df -kP " .. util.shell_escape({d}) .. " 2>/dev/null | awk '$3 ~ /[0-9]+/ { print $2,$3,$4 }' 2>/dev/null || echo ::ERROR::")
+        if not handle then return end
+        local output = handle:read("*all")
+        handle:close()
+        if not output:find "::ERROR::" then
+            return output
+        end
+    end
     local err = { total = nil, used = nil, available = nil }
-    local total, free, available = ffiUtil.df(path)
-    if not total then return err end
-    return {
-        total = total,
-        used = total - free,
-        available = available,
-    }
+    if not dir or lfs.attributes(dir, "mode") ~= "directory" then return err end
+    local usage = doCommand(dir)
+    if not usage then return err end
+    local stage, result = {}, {}
+    for size in usage:gmatch("%w+") do
+        table.insert(stage, size)
+    end
+    for k, v in pairs({"total", "used", "available"}) do
+        if stage[k] ~= nil then
+            -- sizes are in kb, return bytes here
+            result[v] = stage[k] * 1024
+        end
+    end
+    return result
 end
 
 

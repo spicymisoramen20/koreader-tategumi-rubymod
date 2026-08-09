@@ -61,7 +61,7 @@ jobs:
         # Shared across all build/publish jobs so the embedded git-rev and the
         # OTA zsync Filename header agree. Otherwise OTAManager parses two
         # different version strings and offers an update on every check.
-        run: echo "nightly_version=v$(date -u +%Y.%m.%d)-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        run: echo "nightly_version=v$(date -u +%Y.%m.%d)" >> "$GITHUB_OUTPUT"
 
   kindle:
     name: Kindle
@@ -94,7 +94,6 @@ jobs:
           path: |
             koreader-kindle-latest-nightly.zip
             koreader-kindle-latest-nightly.targz
-            koreader-*.tar.xz
 
   kindlehf:
     name: Kindle (HF)
@@ -127,7 +126,6 @@ jobs:
           path: |
             koreader-kindlehf-latest-nightly.zip
             koreader-kindlehf-latest-nightly.targz
-            koreader-*.tar.xz
 
   kindlepw2:
     name: Kindle (PW2/non-HF)
@@ -160,7 +158,6 @@ jobs:
           path: |
             koreader-kindlepw2-latest-nightly.zip
             koreader-kindlepw2-latest-nightly.targz
-            koreader-*.tar.xz
 
   kobo:
     name: Kobo
@@ -193,7 +190,6 @@ jobs:
           path: |
             koreader-kobo-latest-nightly.zip
             koreader-kobo-latest-nightly.targz
-            koreader-*.tar.xz
 
   pocketbook:
     name: PocketBook
@@ -226,7 +222,6 @@ jobs:
           path: |
             koreader-pocketbook-latest-nightly.zip
             koreader-pocketbook-latest-nightly.targz
-            koreader-*.tar.xz
 
   cervantes:
     name: Cervantes
@@ -259,7 +254,6 @@ jobs:
           path: |
             koreader-cervantes-latest-nightly.zip
             koreader-cervantes-latest-nightly.targz
-            koreader-*.tar.xz
 
   remarkable:
     name: reMarkable (armhf)
@@ -292,7 +286,6 @@ jobs:
           path: |
             koreader-remarkable-latest-nightly.zip
             koreader-remarkable-latest-nightly.targz
-            koreader-*.tar.xz
 
   remarkable-aarch64:
     name: reMarkable (aarch64)
@@ -325,7 +318,6 @@ jobs:
           path: |
             koreader-remarkable-aarch64-latest-nightly.zip
             koreader-remarkable-aarch64-latest-nightly.targz
-            koreader-*.tar.xz
 
   android-arm:
     name: Android (ARM)
@@ -422,9 +414,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch kotasync source
-        run: git submodule update --init --recursive base
-
       - name: Set nightly version (YYYY.MM.DD)
         # Use the version computed in check-changes so we agree with what the
         # build jobs embedded via RELEASE_TAG (otherwise OTA Filename and the
@@ -480,35 +469,6 @@ jobs:
           # Versioned zsync copies
           for f in artifacts/**/*-latest-nightly.zsync; do
             cp "$f" "${f/latest-nightly/$VER}"
-          done
-
-      - name: Build kotasync manifest tool
-        run: |
-          # kotasync shares KOReader's third-party build setup, which requires
-          # Meson even though the resulting AppRun is only used for manifests.
-          sudo apt-get update -qq && sudo apt-get install -y meson
-          make -C base/kotasync appdir
-          KOTASYNC=$(find "$PWD/base/kotasync/build" -path '*/AppDir/AppRun' -type f -print -quit)
-          test -n "$KOTASYNC"
-          echo "KOTASYNC=$KOTASYNC" >> "$GITHUB_ENV"
-
-      - name: Generate kotasync files
-        run: |
-          set -euo pipefail
-          VER=$NIGHTLY_VERSION
-          shopt -s globstar
-          # Package filenames carry a build-date suffix in addition to the
-          # RELEASE_TAG (e.g., v2026.08.05-77_2026-08-06.tar.xz).
-          # Preserve it in aliases while making the manifest endpoints stable.
-          kobo_package=$(compgen -G "artifacts/kobo/koreader-kobo-$VER*.tar.xz" | head -n1)
-          kindle_package=$(compgen -G "artifacts/kindle/koreader-kindle-$VER*.tar.xz" | head -n1)
-          test -n "$kobo_package" && test -n "$kindle_package"
-          cp "$kobo_package" "${kobo_package/koreader-kobo-/koreader-kobov5-}"
-          cp "$kindle_package" "${kindle_package/koreader-kindle-/koreader-kindle-legacy-}"
-          for package in artifacts/**/*.tar.xz; do
-            name=$(basename "$package")
-            latest_name="${name%%-$VER*}-latest-nightly.kotasync"
-            "$KOTASYNC" make "$package" "$(dirname "$package")/$latest_name"
           done
 
       - name: List artifacts

@@ -794,7 +794,7 @@ function ReaderSearch:onShowFindAllResults(not_cached)
         title_bar_left_icon = "appbar.menu",
         onLeftButtonTap = function() self:showAllResultsMenuDialog() end,
         onMenuChoice = function(_menu_self, item)
-            self:gotoResultsItem(item.idx, true) -- save current location
+            self:gotoResultsItem(item.idx)
         end,
         onMenuHold = function(_menu_self, item)
             local text = T(_("Page: %1"), item.mandatory) .. "\n"
@@ -908,13 +908,11 @@ function ReaderSearch:showAllResultsMenuDialog()
     UIManager:show(button_dialog)
 end
 
-function ReaderSearch:gotoResultsItem(index, save_current_location)
+function ReaderSearch:gotoResultsItem(index)
     local item = self.result_menu.item_table[index]
     if self.ui.rolling then
-        if save_current_location then
-            self.ui.link:addCurrentLocationToStack()
-        end
-        self.ui.rolling:onGotoXPointer(item.start)
+        self.ui.link:addCurrentLocationToStack()
+        self.ui.rolling:onGotoXPointer(item.start, item.start) -- show target line marker
         self.ui.document:getTextFromXPointers(item.start, item["end"], true) -- highlight
     else
         if not self.skim_mode then
@@ -926,7 +924,7 @@ function ReaderSearch:gotoResultsItem(index, save_current_location)
         for i, box in ipairs(item.boxes) do
             boxes[i] = self.ui.document:nativeToPageRectTransform(page, box)
         end
-        self.ui.link:onGotoLink({ page = page - 1 }, not save_current_location)
+        self.ui.link:onGotoLink({ page = page - 1 })
         self.view.highlight.temp[page] = boxes
     end
 
@@ -946,7 +944,6 @@ function ReaderSearch:gotoResultsItem(index, save_current_location)
                     callback = function()
                         dialog:onClose()
                         self:onGoToStartPage()
-                        self.ui.link:popFromLocationStack()
                     end,
                 },
                 {

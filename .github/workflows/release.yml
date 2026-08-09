@@ -54,7 +54,6 @@ jobs:
           path: |
             koreader-kindle-latest-stable.zip
             koreader-kindle-latest-stable.targz
-            koreader-*.tar.xz
 
   kindlehf:
     name: Kindle (HF)
@@ -85,7 +84,6 @@ jobs:
           path: |
             koreader-kindlehf-latest-stable.zip
             koreader-kindlehf-latest-stable.targz
-            koreader-*.tar.xz
 
   kindlepw2:
     name: Kindle (PW2/non-HF)
@@ -116,7 +114,6 @@ jobs:
           path: |
             koreader-kindlepw2-latest-stable.zip
             koreader-kindlepw2-latest-stable.targz
-            koreader-*.tar.xz
 
   kobo:
     name: Kobo
@@ -147,7 +144,6 @@ jobs:
           path: |
             koreader-kobo-latest-stable.zip
             koreader-kobo-latest-stable.targz
-            koreader-*.tar.xz
 
   pocketbook:
     name: PocketBook
@@ -178,7 +174,6 @@ jobs:
           path: |
             koreader-pocketbook-latest-stable.zip
             koreader-pocketbook-latest-stable.targz
-            koreader-*.tar.xz
 
   cervantes:
     name: Cervantes
@@ -209,7 +204,6 @@ jobs:
           path: |
             koreader-cervantes-latest-stable.zip
             koreader-cervantes-latest-stable.targz
-            koreader-*.tar.xz
 
   remarkable:
     name: reMarkable (armhf)
@@ -240,7 +234,6 @@ jobs:
           path: |
             koreader-remarkable-latest-stable.zip
             koreader-remarkable-latest-stable.targz
-            koreader-*.tar.xz
 
   remarkable-aarch64:
     name: reMarkable (aarch64)
@@ -271,7 +264,6 @@ jobs:
           path: |
             koreader-remarkable-aarch64-latest-stable.zip
             koreader-remarkable-aarch64-latest-stable.targz
-            koreader-*.tar.xz
 
   android-arm:
     name: Android (ARM)
@@ -362,9 +354,6 @@ jobs:
           ref: ${{ env.RELEASE_TAG }}
           fetch-depth: 0
 
-      - name: Fetch kotasync source
-        run: git submodule update --init --recursive base
-
       - name: Determine tag
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -428,24 +417,6 @@ jobs:
           # Versioned zsync copies
           for f in artifacts/**/*-latest-stable.zsync; do
             cp "$f" "${f/latest-stable/$TAG}"
-          done
-
-      - name: Build kotasync manifest tool
-        run: |
-          make -C base/kotasync appdir
-          echo "KOTASYNC=$(find "$PWD/base/build" -path '*/AppDir/AppRun' -type f -print -quit)" >> "$GITHUB_ENV"
-
-      - name: Generate kotasync files
-        run: |
-          set -euo pipefail
-          TAG=$RELEASE_TAG
-          shopt -s globstar
-          cp "artifacts/kobo/koreader-kobo-$TAG.tar.xz" "artifacts/kobo/koreader-kobov5-$TAG.tar.xz"
-          cp "artifacts/kindle/koreader-kindle-$TAG.tar.xz" "artifacts/kindle/koreader-kindle-legacy-$TAG.tar.xz"
-          for package in artifacts/**/*.tar.xz; do
-            name=$(basename "$package")
-            latest_name="${name/$TAG/latest-stable}"
-            "$KOTASYNC" make "$package" "$(dirname "$package")/${latest_name%.tar.xz}.kotasync"
           done
 
       - name: List artifacts

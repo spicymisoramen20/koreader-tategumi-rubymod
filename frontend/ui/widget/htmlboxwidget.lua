@@ -13,7 +13,6 @@ local UIManager = require("ui/uimanager")
 local logger = require("logger")
 local time = require("ui/time")
 local util  = require("util")
-local _ = require("gettext")
 
 -- -1: right to left, 0: mixed, +1: left to right
 local function getLineTextDirection(line)
@@ -261,13 +260,7 @@ function HtmlBoxWidget:setContent(body, css, default_font_size, is_xhtml, no_css
 
         ok, self.document = pcall(Mupdf.openDocumentFromText, html, "html", html_resource_directory)
         if not ok then
-            logger.warn("HTML plain-text fallback loading also failed:", self.document)
-            -- This shouldn't fail
-            html = string.format("<html><body>%s</body></html>", _("Failed to render this content."))
-            ok, self.document = pcall(Mupdf.openDocumentFromText, html, "html", html_resource_directory)
-            if not ok then
-                error(self.document)
-            end
+            error(self.document)
         end
     end
 

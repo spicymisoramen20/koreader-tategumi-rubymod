@@ -1,12 +1,11 @@
 describe("Readerpaging module", function()
     local sample_pdf = "spec/front/unit/data/sample.pdf"
-    local readerui, BD, Event, DocumentRegistry, ReaderUI, Screen
+    local readerui, Event, DocumentRegistry, ReaderUI, Screen
     local paging
 
     setup(function()
         require("commonrequire")
         disable_plugins()
-        BD = require("ui/bidi")
         Event = require("ui/event")
         DocumentRegistry = require("document/documentregistry")
         ReaderUI = require("apps/reader/readerui")
@@ -37,32 +36,6 @@ describe("Readerpaging module", function()
             paging:onGotoViewRel(1)
             assert.is.truthy(called)
             readerui.onEndOfBook = nil
-        end)
-
-        it("should bind spatial arrow keys to the RTL page direction", function()
-            paging.view.inverse_reading_order = true
-            paging:registerKeyEvents()
-
-            local next_keys = paging.key_events.GotoNextPage[1][1]
-            local prev_keys = paging.key_events.GotoPrevPage[1][1]
-            local expected_next = BD.mirroredUILayout() and "Right" or "Left"
-            local expected_prev = BD.mirroredUILayout() and "Left" or "Right"
-
-            assert.is_truthy(require("util").arrayContains(next_keys, expected_next))
-            assert.is_truthy(require("util").arrayContains(prev_keys, expected_prev))
-        end)
-
-        it("should retain the spatial LTR arrow-key direction", function()
-            paging.view.inverse_reading_order = false
-            paging:registerKeyEvents()
-
-            local next_keys = paging.key_events.GotoNextPage[1][1]
-            local prev_keys = paging.key_events.GotoPrevPage[1][1]
-            local expected_next = BD.mirroredUILayout() and "Left" or "Right"
-            local expected_prev = BD.mirroredUILayout() and "Right" or "Left"
-
-            assert.is_truthy(require("util").arrayContains(next_keys, expected_next))
-            assert.is_truthy(require("util").arrayContains(prev_keys, expected_prev))
         end)
     end)
 

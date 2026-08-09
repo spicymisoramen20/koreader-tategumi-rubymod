@@ -4,8 +4,7 @@ Page progression direction detector for automatic RTL/LTR reading order.
 Supports:
 - EPUB: reads `page-progression-direction` from OPF spine directly via the
   ZIP archive (bypasses crengine cache entirely — reliable on first open)
-- CBZ/CBR/CBT: reads the standard `<Manga>YesAndRightToLeft</Manga>` value
-  from ComicInfo.xml, with `<ReadingDirection>` accepted for compatibility
+- CBZ/CBR/CBT: reads `<ReadingDirection>` from ComicInfo.xml inside the archive
 
 Both formats are handled via ffi/archiver (libarchive), so no C++ changes
 are required and the detection is cache-independent.
@@ -26,67 +25,26 @@ end
 
 -- ── ComicInfo.xml (CBZ/CBR) ──────────────────────────────────────────────
 
-local function elementValue(xml, name)
-    -- ComicInfo normally has unprefixed elements under a root carrying xmlns
-    -- declarations. Also accept explicitly prefixed elements and attributes,
-    -- while avoiding similarly named elements such as <MangaFoo>.
-    local boundary = "%f[%s>/]"
-    local value = xml:match("<%s*" .. name .. boundary .. "[^>]*>(.-)</%s*" .. name .. "%s*>")
-    if not value then
-        value = xml:match("<%s*[%w_.-]+:" .. name .. boundary
-            .. "[^>]*>(.-)</%s*[%w_.-]+:" .. name .. "%s*>")
-    end
-    return value
-end
-
-local function canonicalValue(value)
-    if not value then return nil end
-    -- Enum values are ASCII. Ignoring separators makes the compatibility
-    -- field tolerant of the forms found in existing comic libraries.
-    return value:lower():gsub("[%s_-]", "")
-end
-
-function M.parseComicInfo(xml)
+local function parseComicInfo(xml)
     if not xml then return nil end
-    xml = xml:gsub("^\239\187\191", "", 1)
-             :gsub("<!%-%-.-%-%->", "")
-
-    -- ComicInfo 1.x/2.x defines this as the RTL-reading manga value. It is
-    -- authoritative when present; the non-RTL Manga enum values do not by
-    -- themselves specify a page direction.
-    local manga = canonicalValue(elementValue(xml, "Manga"))
-    if manga == "yesandrighttoleft" then
-        return "rtl"
-    end
-
-    -- ReadingDirection is not part of the core ComicInfo schema, but is used
-    -- by some producers and by older versions of this fork.
-    local direction = canonicalValue(elementValue(xml, "ReadingDirection"))
-    if direction == "rtl" or direction == "righttoleft" then
-        return "rtl"
-    elseif direction == "ltr" or direction == "lefttoright" then
-        return "ltr"
-    end
-    return nil
+    local dir = xml:match("<ReadingDirection>%s*(%a+)%s*</ReadingDirection>")
+    return dir and (dir:upper() == "RTL" and "rtl" or "ltr") or nil
 end
 
 local function directionFromComicInfo(filepath)
     local reader = openArchiveReader(filepath)
     if not reader then return nil end
     local direction
-    local comicinfo_path
     for entry in reader:iterate() do
         if entry.mode == "file" then
             local lp = entry.path:lower()
             if lp == "comicinfo.xml" or lp:match("/comicinfo%.xml$") then
-                comicinfo_path = entry.path
-                direction = M.parseComicInfo(reader:extractToMemory(entry.path))
+                direction = parseComicInfo(reader:extractToMemory(entry.path))
                 break
             end
         end
     end
     reader:close()
-    logger.dbg("PageDirection: ComicInfo", filepath, comicinfo_path, "→", direction)
     return direction
 end
 

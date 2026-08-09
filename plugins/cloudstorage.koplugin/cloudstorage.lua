@@ -15,7 +15,6 @@ local UIManager = require("ui/uimanager")
 local ffiUtil = require("ffi/util")
 local filemanagerutil = require("apps/filemanager/filemanagerutil")
 local lfs = require("libs/libkoreader-lfs")
-local sort = require("sort")
 local util = require("util")
 local _ = require("gettext")
 local N_ = _.ngettext
@@ -27,13 +26,6 @@ local CloudStorage = BookList:extend{
             text = _("name"),
             sort_func = function(a, b)
                 return ffiUtil.strcoll(a.text, b.text)
-            end,
-        },
-        natural = {
-            text = _("name (natural sorting)"),
-            sort_func = function(a, b)
-                local natsort = sort.natsort_cmp()
-                return natsort(a.text, b.text)
             end,
         },
         type = {
@@ -641,11 +633,9 @@ function CloudStorage:showPlusCloudDialog()
                     text = T(_("Sort by: %1"), self.collates[self.collate].text),
                     callback = function()
                         UIManager:show(ButtonSelector:new{
-                            width_factor = 0.5,
                             current_value = self.collate,
                             values = {
                                 { self.collates["strcoll"].text, "strcoll" },
-                                { self.collates["natural"].text, "natural" },
                                 { self.collates["type"].text, "type" },
                                 { self.collates["size"].text, "size" },
                                 { self.collates["date"].text, "date" },

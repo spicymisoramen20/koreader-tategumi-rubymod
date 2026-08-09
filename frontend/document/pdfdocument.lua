@@ -1,3 +1,4 @@
+local BlitBuffer = require("ffi/blitbuffer")
 local CacheItem = require("cacheitem")
 local CanvasContext = require("document/canvascontext")
 local DocCache = require("document/doccache")
@@ -236,7 +237,7 @@ local function _quadpointsToPboxes(quadpoints, n)
     return pboxes
 end
 
-function PdfDocument:saveHighlight(pageno, item, annot_color)
+function PdfDocument:saveHighlight(pageno, item)
     local can_write = self:_checkIfWritable()
     if can_write ~= true then return can_write end
 
@@ -244,6 +245,7 @@ function PdfDocument:saveHighlight(pageno, item, annot_color)
     local quadpoints, n = _quadpointsFromPboxes(item.pboxes)
     local page = self._document:openPage(pageno)
     local annot_type = C.PDF_ANNOT_HIGHLIGHT
+    local annot_color = item.color and BlitBuffer.colorFromName(item.color)
     if item.drawer == "lighten" then
         annot_type = C.PDF_ANNOT_HIGHLIGHT
     elseif item.drawer == "underscore" then
@@ -270,7 +272,7 @@ function PdfDocument:deleteHighlight(pageno, item)
     local page = self._document:openPage(pageno)
     local annot = page:getMarkupAnnotation(quadpoints, n)
     if annot ~= nil then
-        page:deleteAnnotation(annot)
+        page:deleteMarkupAnnotation(annot)
         self:resetTileCacheValidity()
     end
     page:close()

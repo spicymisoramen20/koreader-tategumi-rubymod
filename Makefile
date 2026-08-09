@@ -56,6 +56,7 @@ CR3GUI_DATADIR_FILES = $(filter-out $(CR3GUI_DATADIR_EXCLUDES),$(wildcard $(CR3G
 define DATADIR_FILES
 $(CR3GUI_DATADIR_FILES)
 $(OUTPUT_DIR_DATAFILES)
+$(THIRDPARTY_DIR)/kpvcrlib/cr3.css
 endef
 
 # files to link from main directory
@@ -160,7 +161,7 @@ endif
 	@echo "[*] Install plugins"
 	$(SYMLINK) plugins $(INSTALL_DIR)/koreader/
 	@echo "[*] Install resources"
-	$(SYMLINK) resources/fonts $(INSTALL_DIR)/koreader/fonts
+	$(SYMLINK) resources/fonts/* $(INSTALL_DIR)/koreader/fonts/
 	install -d $(INSTALL_DIR)/koreader/{screenshots,fonts/host,ota}
 	# Note: the data dir is distinct from the one in base/build/…!
 	@echo "[*] Install data files"

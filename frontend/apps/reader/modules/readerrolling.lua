@@ -121,8 +121,6 @@ function ReaderRolling:registerKeyEvents()
     if BD.mirroredUILayout() ~= inverse then
         next_key, prev_key = prev_key, next_key
     end
-    logger.dbg("ReaderRolling: page-turn arrow keys", "previous", prev_key,
-        "next", next_key, "inverse", inverse)
     if Device:hasDPad() and Device:useDPadAsActionKeys() then
         if G_reader_settings:isTrue("left_right_keys_turn_pages") then
             self.key_events.GotoNextView = { { { "LPgFwd", next_key } }, event = "GotoViewRel", args = 1, }

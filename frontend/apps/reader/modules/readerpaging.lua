@@ -52,13 +52,10 @@ end
 function ReaderPaging:onGesture() end
 
 function ReaderPaging:registerKeyEvents()
-    local inverse = self.view and self.view.inverse_reading_order or false
     local prev_key, next_key = "Left", "Right"
-    if BD.mirroredUILayout() ~= inverse then
+    if BD.mirroredUILayout() then
         next_key, prev_key = prev_key, next_key
     end
-    logger.dbg("ReaderPaging: page-turn arrow keys", "previous", prev_key,
-        "next", next_key, "inverse", inverse)
     if Device:hasDPad() and Device:useDPadAsActionKeys() then
         if G_reader_settings:isTrue("left_right_keys_turn_pages") then
             self.key_events.GotoNextPage = { { { "RPgFwd", "LPgFwd", next_key, " " } }, event = "GotoViewRel", args = 1, }
@@ -93,10 +90,6 @@ ReaderPaging.onPhysicalKeyboardConnected = ReaderPaging.registerKeyEvents
 
 function ReaderPaging:onReaderReady()
     self:setupTouchZones()
-    -- Reading order is loaded after init(), and may also be supplied by
-    -- metadata auto-detection. Rebuild the spatial arrow-key bindings now
-    -- that the final direction is known.
-    self:registerKeyEvents()
      -- Statistics plugin updates the footer later, if enabled
     if not (self.ui.statistics and self.ui.statistics.settings.is_enabled) then
         self.view.footer:onUpdateFooter()

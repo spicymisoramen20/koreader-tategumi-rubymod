@@ -8,37 +8,61 @@ local Remarkable_PowerD = BasePowerD:new{
     fl_min = 0, fl_max = 2047,
 }
 
+function Remarkable_PowerD:_syncLightOnStart()
+    local new_intensity = G_reader_settings:readSetting("frontlight_intensity") or nil
+    local is_frontlight_on = G_reader_settings:readSetting("is_frontlight_on") or nil
+
+    if new_intensity ~= nil then
+        self.hw_intensity = new_intensity
+    end
+
+    if is_frontlight_on ~= nil then
+        self.initial_is_fl_on = is_frontlight_on
+    end
+
+    if self.initial_is_fl_on == false and self.hw_intensity == 0 then
+        self.hw_intensity = 1
+    end
+end
+
+
 function Remarkable_PowerD:init()
+    self.hw_intensity = 20
+    self.initial_is_fl_on = true
+
     if self.device:hasFrontlight() then
         self.fl = SysfsLight:new(self.device.frontlight_settings)
+        self:_syncLightOnStart()
     end
 end
 
 function Remarkable_PowerD:saveSettings()
     if self.device:hasFrontlight() then
-        G_reader_settings:saveSetting("frontlight_intensity", self.fl_intensity)
-        G_reader_settings:saveSetting("is_frontlight_on", self.is_fl_on)
+        local cur_intensity = self.fl_intensity
+        local cur_is_fl_on = self.is_fl_on
+        G_reader_settings:saveSetting("frontlight_intensity", cur_intensity)
+        G_reader_settings:saveSetting("is_frontlight_on", cur_is_fl_on)
     end
 end
 
 function Remarkable_PowerD:frontlightIntensityHW()
     if not self.device:hasFrontlight() then return 0 end
-    local val = self:read_int_file(self.fl.frontlight_white .. "/brightness")
-    if val == 0 then
-        val = G_reader_settings:readSetting("frontlight_intensity") or 20
-    end
-    return val
+    return self.hw_intensity
 end
 
 function Remarkable_PowerD:isFrontlightOnHW()
-    if not self.device:hasFrontlight() then return false end
-    -- 0 is on, 4 is off as documented in https://github.com/torvalds/linux/blob/37e2f878a7a660a216cc7a60459995fefd150f25/include/linux/backlight.h#L185-L203
-    return self:read_int_file(self.fl.frontlight_white .. "/bl_power") == 0
+    if self.initial_is_fl_on ~= nil then
+        local ret = self.initial_is_fl_on
+        self.initial_is_fl_on = nil
+        return ret
+    end
+    return self.hw_intensity > 0
 end
 
 function Remarkable_PowerD:setIntensityHW(intensity)
     if not self.device:hasFrontlight() then return end
     self:setBrightness(intensity)
+    self.hw_intensity = intensity
     self:_decideFrontlightState()
 end
 
@@ -60,17 +84,16 @@ function Remarkable_PowerD:isHallSensorEnabled()
 end
 
 function Remarkable_PowerD:onToggleHallSensor(toggle)
-    local inhibit_value
     if toggle == nil then
         -- Flip it
-        inhibit_value = self:isHallSensorEnabled() and 1 or 0
+        toggle = self:isHallSensorEnabled() and 1 or 0
     else
         -- Honor the requested state
-        inhibit_value = toggle and 0 or 1
+        toggle = toggle and 1 or 0
     end
-    ffiUtil.writeToSysfs(inhibit_value, self.hall_file)
+    ffiUtil.writeToSysfs(toggle, self.hall_file)
 
-    G_reader_settings:saveSetting("remarkable_hall_effect_sensor_enabled", inhibit_value == 0)
+    G_reader_settings:saveSetting("remarkable_hall_effect_sensor_enabled", toggle == 0 and true or false)
 end
 
 function Remarkable_PowerD:beforeSuspend()
@@ -84,11 +107,7 @@ end
 
 function Remarkable_PowerD:afterResume()
     if self.fl then
-        if self.fl_was_on then
-            self:setBrightness(self.fl_intensity)
-        else
-            self:setBrightness(0)
-        end
+        self:setBrightness(self.hw_intensity)
     end
 
     self:invalidateCapacityCache()
@@ -103,7 +122,7 @@ end
 
 function Remarkable_PowerD:_set_light_value(sysfs_directory, value)
     if not sysfs_directory then return end
-    -- 0 is on, 4 is off as documented in https://github.com/torvalds/linux/blob/37e2f878a7a660a216cc7a60459995fefd150f25/include/linux/backlight.h#L185-L203
+    -- for rMPP '0' is on and '4' is off
     if (value > 0) then
         ffiUtil.writeToSysfs(0, sysfs_directory .. "/bl_power")
     else

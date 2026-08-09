@@ -250,8 +250,7 @@ function BookmarkBrowser:show(files, ui)
         and ReaderHighlight:getHighlightColor(self.highlight_color_default) or nil
 
     self.books = self:getBookList(files)
-    self.filter_table = G_reader_settings:readSetting("bookmarks_browser_filter") or {}
-    self.filter_table.enabled_books_nb = #self.books
+    self.filter_table = { enabled_books_nb = #self.books }
     self.bm_list = Menu:new{
         subtitle = "",
         is_borderless = true,
@@ -279,15 +278,6 @@ function BookmarkBrowser:show(files, ui)
         close_callback = function()
             self.source_key = nil
             self.books = nil
-            if self.filter_table.type or self.filter_table.style or self.filter_table.color then
-                G_reader_settings:saveSetting("bookmarks_browser_filter", {
-                    type = self.filter_table.type,
-                    style = self.filter_table.style,
-                    color = self.filter_table.color,
-                })
-            else
-                G_reader_settings:delSetting("bookmarks_browser_filter")
-            end
             self.filter_table = nil
             self.bm_list = nil
             UIManager:scheduleIn(0.5, function()
@@ -703,9 +693,10 @@ function BookmarkBrowser:showBookmarkListMenu()
                     UIManager:close(bm_list_menu)
                     UIManager:show(ButtonSelector:new{
                         current_value = self.filter_table.color,
-                        values = ReaderHighlight:getHighlightColorList(),
-                        callback = function(selected_color_name)
-                            self.filter_table.color = selected_color_name
+                        values = ReaderHighlight.highlight_colors,
+                        bg_colors = ReaderHighlight:getHighlightColorList(),
+                        callback = function(value)
+                            self.filter_table.color = value
                             self:updateBookmarkList()
                         end,
                     })

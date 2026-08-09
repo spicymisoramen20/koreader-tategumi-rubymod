@@ -20,7 +20,40 @@ local ReaderMenu = InputContainer:extend{
 }
 
 function ReaderMenu:init()
-    self.menu_items = self:getDefaultMenuButtons()
+    self.menu_items = {
+        ["KOMenu:menu_buttons"] = {
+            -- top menu
+        },
+        -- items in top menu
+        navi = {
+            icon = "appbar.navigation",
+        },
+        typeset = {
+            icon = "appbar.typeset",
+        },
+        setting = {
+            icon = "appbar.settings",
+        },
+        tools = {
+            icon = "appbar.tools",
+        },
+        search = {
+            icon = "appbar.search",
+        },
+        filemanager = {
+            icon = "appbar.filebrowser",
+            remember = false,
+            callback = function()
+                self:onTapCloseMenu()
+                local file = self.ui.document.file
+                self.ui:onClose()
+                self.ui:showFileManager(file)
+            end,
+        },
+        main = {
+            icon = "appbar.menu",
+        }
+    }
 
     self.registered_widgets = {}
 
@@ -51,40 +84,7 @@ function ReaderMenu:registerKeyEvents()
     end
 end
 
-function ReaderMenu:getDefaultMenuButtons()
-    return {
-        ["KOMenu:menu_buttons"] = {
-            -- top menu
-        },
-        -- items in top menu
-        navi = { icon = "appbar.navigation" },
-        typeset = { icon = "appbar.typeset" },
-        setting = { icon = "appbar.settings" },
-        tools = { icon = "appbar.tools" },
-        search = { icon = "appbar.search" },
-        filemanager = {
-            icon = "appbar.filebrowser",
-            remember = false,
-            callback = function()
-                self:onTapCloseMenu()
-                local file = self.ui.document.file
-                self.ui:onClose()
-                self.ui:showFileManager(file)
-            end,
-        },
-        main = { icon = "appbar.menu" },
-    }
-end
-
-function ReaderMenu:onPhysicalKeyboardConnected()
-    self.key_events = {}
-    self:registerKeyEvents()
-    if self.menu_container then
-        self:onCloseReaderMenu()
-    end
-    self.tab_item_table = nil
-end
-ReaderMenu.onPhysicalKeyboardDisconnected = ReaderMenu.onPhysicalKeyboardConnected
+ReaderMenu.onPhysicalKeyboardConnected = ReaderMenu.registerKeyEvents
 
 function ReaderMenu:getPreviousFile()
     return require("readhistory"):getPreviousFile(self.ui.document.file)
@@ -177,9 +177,6 @@ end
 ReaderMenu.onReaderReady = ReaderMenu.initGesListener
 
 function ReaderMenu:setUpdateItemTable()
-    for k, v in pairs(self:getDefaultMenuButtons()) do
-        self.menu_items[k] = v
-    end
     -- typeset tab
     self.menu_items.document_settings = {
         text = _("Document settings"),
@@ -530,12 +527,13 @@ function ReaderMenu:onMenuSearch()
 end
 
 function ReaderMenu:registerToMainMenu(widget)
-    for _, w in ipairs(self.registered_widgets) do
-        if w == widget then
-            return
-        end
-    end
     table.insert(self.registered_widgets, widget)
+end
+
+function ReaderMenu:onShowCloudStorage()
+    local CloudStorage = require("apps/cloudstorage/cloudstorage")
+    UIManager:show(CloudStorage:new{ ui = self.ui })
+    return true
 end
 
 return ReaderMenu

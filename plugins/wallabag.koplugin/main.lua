@@ -1421,11 +1421,15 @@ function Wallabag:archiveLocalArticle(path)
     if lfs.attributes(path, "mode") == "file" then
         local _, file = util.splitFilePathName(path)
         local new_path = ffiUtil.joinPath(self.archive_directory, file)
-        if FileManager:moveFile(path, new_path) then
+        if path == new_path then -- Already archived
             result = true
+        else
+            if FileManager:moveFile(path, new_path) then
+                result = true
+            end
+            DocSettings.updateLocation(path, new_path, false) -- move sdr
+            --- @todo Why is sdr copied instead of moved?
         end
-        DocSettings.updateLocation(path, new_path, false) -- move sdr
-        --- @todo Why is sdr copied instead of moved?
     end
 
     return result
@@ -1483,10 +1487,6 @@ function Wallabag:getLocalArticles(dir, map)
 
     if map == nil then
         map = {}
-    end
-
-    if dir == self.archive_directory then
-        return map
     end
 
     for entry in lfs.dir(dir) do
