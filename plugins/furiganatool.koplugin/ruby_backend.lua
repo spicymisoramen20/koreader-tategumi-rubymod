@@ -1,8 +1,17 @@
 local UIManager = require("ui/uimanager")
+local InfoMessage = require("ui/widget/infomessage")
 local logger = require("logger")
 
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
+
+
+function RubyBackend:_debugMessage(text)
+    UIManager:show(InfoMessage:new{
+        text = "Furigana debug: " .. tostring(text),
+        timeout = 2,
+    })
+end
 
 function RubyBackend:new(ui)
     local o = {
@@ -42,10 +51,15 @@ function RubyBackend:setToggleMode(enabled)
     self.toggle_mode = enabled and true or false
     self.revealed = {}
 
+    self:_debugMessage(
+        self.toggle_mode and "Toggle enabled" or "Toggle disabled"
+    )
+
     if not self:isSupported() then
         logger.warn(
             "FuriganaTool: CREngine ruby toggle API unavailable"
         )
+        self:_debugMessage("CREngine API unavailable")
         return false
     end
 
@@ -111,6 +125,10 @@ function RubyBackend:getRubyAtScreenPosition(screen_pos)
         y
     )
 
+    self:_debugMessage(
+        "Tap " .. tostring(x) .. "," .. tostring(y)
+    )
+
     local ruby = self.ui.document._document:getRubyFromPosition(
         x,
         y
@@ -122,10 +140,15 @@ function RubyBackend:getRubyAtScreenPosition(screen_pos)
             ruby.id
         )
 
+        self:_debugMessage(
+            "Ruby found: " .. tostring(ruby.id)
+        )
+
         return ruby
     end
 
     logger.info("FuriganaTool: no ruby at tap")
+    self:_debugMessage("No ruby found")
 
     return nil
 end
@@ -162,6 +185,10 @@ function RubyBackend:setRubyVisible(ruby_id, visible)
         "FuriganaTool: ruby visibility",
         ruby_id,
         visible
+    )
+
+    self:_debugMessage(
+        visible and "Visibility ON" or "Visibility OFF"
     )
 
     self:_redraw()
