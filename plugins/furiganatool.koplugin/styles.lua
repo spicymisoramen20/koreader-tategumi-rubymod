@@ -1,26 +1,47 @@
--- CSS fragments owned by this plugin.
---
--- IMPORTANT:
--- "toggle" intentionally reserves ruby layout space.
--- Which hiding method CREngine handles best should be tested on-device.
--- visibility:hidden is the preferred CSS-semantic behavior; if CREngine's
--- ruby implementation does not preserve the annotation box with it, the
--- backend can later hide ruby at paint time instead.
 local Styles = {}
 
-Styles.visible = ""
+-------------------------------------------------------------------------------
+-- Visible
+-------------------------------------------------------------------------------
+
+Styles.visible = [[
+/*
+ * Furigana visible normally.
+ */
+]]
+
+-------------------------------------------------------------------------------
+-- Off
+--
+-- Ruby annotations are completely removed from layout.
+-------------------------------------------------------------------------------
 
 Styles.off = [[
-rt, rp {
+rt {
+    display: none !important;
+}
+
+rp {
     display: none !important;
 }
 ]]
 
+-------------------------------------------------------------------------------
+-- Toggle
+--
+-- IMPORTANT:
+--
+-- Do NOT use:
+--
+--     visibility: hidden
+--
+-- here.
+--
+-- Toggle visibility is handled by CREngine at paint time.
+-- This leaves all original ruby geometry/layout intact.
+-------------------------------------------------------------------------------
+
 Styles.toggle = [[
-/*
- * Toggle mode keeps ruby fully laid out.
- * Per-ruby visibility is now handled at CREngine paint time.
- */
 rp {
     display: none !important;
 }

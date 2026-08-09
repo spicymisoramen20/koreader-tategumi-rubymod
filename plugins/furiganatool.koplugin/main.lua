@@ -117,7 +117,16 @@ function FuriganaToggle:_setupTouchZone()
                 if self.mode ~= "toggle" or not ges or not ges.pos then
                     return false
                 end
-                return self.backend:toggleAtScreenPosition(ges.pos)
+                
+    local handled =
+        self.backend:toggleAtScreenPosition(ges.pos)
+
+    if handled then
+        return true
+    end
+
+    return false
+
             end,
         },
     })

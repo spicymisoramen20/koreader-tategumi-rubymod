@@ -1,53 +1,83 @@
--- CREngine bridge for Furigana Tool.
---
--- Toggle mode now uses CREngine paint-time visibility. Ruby layout remains
--- unchanged; only <rt> painting is suppressed/re-enabled.
-
 local UIManager = require("ui/uimanager")
+local logger = require("logger")
 
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 
 function RubyBackend:new(ui)
-    return setmetatable({
+    local o = {
         ui = ui,
         revealed = {},
         page_token = nil,
         toggle_mode = false,
-    }, self)
+    }
+
+    return setmetatable(o, self)
 end
+
+-------------------------------------------------------------------------------
+-- Engine availability
+-------------------------------------------------------------------------------
 
 function RubyBackend:isSupported()
-    return self.ui
+    local doc = self.ui
         and self.ui.document
         and self.ui.document._document
-        and not self.ui.document.info.has_pages
-        and self.ui.document._document.getRubyFromPosition
-        and self.ui.document._document.setRubyToggleMode
-        and self.ui.document._document.setRubyVisibilityOverride
-        and self.ui.document._document.clearRubyVisibilityOverrides
-end
 
-function RubyBackend:setToggleMode(enabled)
-    if not self:isSupported() then
+    if not doc then
         return false
     end
 
-    self.toggle_mode = enabled and true or false
-    self.ui.document._document:setRubyToggleMode(self.toggle_mode)
+    return doc.getRubyFromPosition ~= nil
+        and doc.setRubyToggleMode ~= nil
+        and doc.setRubyVisibilityOverride ~= nil
+        and doc.clearRubyVisibilityOverrides ~= nil
+end
 
-    if not self.toggle_mode then
-        self.revealed = {}
+-------------------------------------------------------------------------------
+-- Toggle mode
+-------------------------------------------------------------------------------
+
+function RubyBackend:setToggleMode(enabled)
+    self.toggle_mode = enabled and true or false
+    self.revealed = {}
+
+    if not self:isSupported() then
+        logger.warn(
+            "FuriganaTool: CREngine ruby toggle API unavailable"
+        )
+        return false
     end
+
+    logger.info(
+        "FuriganaTool: setToggleMode",
+        self.toggle_mode
+    )
+
+    self.ui.document._document:setRubyToggleMode(
+        self.toggle_mode
+    )
+
+    self.ui.document._document:clearRubyVisibilityOverrides()
+
+    self:_redraw()
 
     return true
 end
+
+-------------------------------------------------------------------------------
+-- Page state
+-------------------------------------------------------------------------------
 
 function RubyBackend:clearPageState()
     self.revealed = {}
 
     if self:isSupported() then
         self.ui.document._document:clearRubyVisibilityOverrides()
+    end
+
+    if self.toggle_mode then
+        self:_redraw()
     end
 end
 
@@ -58,42 +88,96 @@ function RubyBackend:onPageChanged(page_token)
     end
 end
 
+-------------------------------------------------------------------------------
+-- Hit testing
+-------------------------------------------------------------------------------
+
 function RubyBackend:getRubyAtScreenPosition(screen_pos)
-    if not self:isSupported() or not screen_pos then
+    if not self:isSupported() then
+        logger.warn("FuriganaTool: backend unsupported")
         return nil
     end
 
-    -- CREngine's hit testing expects window/screen coordinates here,
-    -- just like getNearestWordFromPosition().
-    return self.ui.document._document:getRubyFromPosition(
-        math.floor(screen_pos.x),
-        math.floor(screen_pos.y)
+    if not screen_pos then
+        return nil
+    end
+
+    local x = math.floor(screen_pos.x)
+    local y = math.floor(screen_pos.y)
+
+    logger.info(
+        "FuriganaTool: tap",
+        x,
+        y
     )
+
+    local ruby = self.ui.document._document:getRubyFromPosition(
+        x,
+        y
+    )
+
+    if ruby and ruby.id then
+        logger.info(
+            "FuriganaTool: ruby hit",
+            ruby.id
+        )
+
+        return ruby
+    end
+
+    logger.info("FuriganaTool: no ruby at tap")
+
+    return nil
 end
+
+-------------------------------------------------------------------------------
+-- Visibility
+-------------------------------------------------------------------------------
 
 function RubyBackend:setRubyVisible(ruby_id, visible)
     if not self:isSupported() then
         return false
     end
 
-    local ok = self.ui.document._document:setRubyVisibilityOverride(
-        ruby_id,
-        visible and true or false
-    )
-
-    if not ok then
+    if not ruby_id then
         return false
     end
 
-    -- No reflow. We only need the current view repainted.
-    if self.ui.view then
-        UIManager:setDirty(self.ui.view, "ui")
+    local ok =
+        self.ui.document._document:setRubyVisibilityOverride(
+            ruby_id,
+            visible and true or false
+        )
+
+    if not ok then
+        logger.warn(
+            "FuriganaTool: visibility override failed",
+            ruby_id
+        )
+
+        return false
     end
+
+    logger.info(
+        "FuriganaTool: ruby visibility",
+        ruby_id,
+        visible
+    )
+
+    self:_redraw()
 
     return true
 end
 
+-------------------------------------------------------------------------------
+-- Actual tap toggle
+-------------------------------------------------------------------------------
+
 function RubyBackend:toggleAtScreenPosition(screen_pos)
+    if not self.toggle_mode then
+        return false
+    end
+
     local ruby = self:getRubyAtScreenPosition(screen_pos)
 
     if not ruby or not ruby.id then
@@ -101,19 +185,41 @@ function RubyBackend:toggleAtScreenPosition(screen_pos)
     end
 
     local id = ruby.id
-    local visible = not self.revealed[id]
+    local new_visible = not self.revealed[id]
 
-    if not self:setRubyVisible(id, visible) then
+    if not self:setRubyVisible(id, new_visible) then
         return false
     end
 
-    if visible then
+    if new_visible then
         self.revealed[id] = true
     else
         self.revealed[id] = nil
     end
 
     return true
+end
+
+-------------------------------------------------------------------------------
+-- Redraw without reflow
+-------------------------------------------------------------------------------
+
+function RubyBackend:_redraw()
+    if not self.ui then
+        return
+    end
+
+    if self.ui.view then
+        UIManager:setDirty(
+            self.ui.view,
+            "ui"
+        )
+    else
+        UIManager:setDirty(
+            nil,
+            "ui"
+        )
+    end
 end
 
 return RubyBackend
