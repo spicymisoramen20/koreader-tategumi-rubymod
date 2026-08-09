@@ -117,16 +117,9 @@ function FuriganaToggle:_setupTouchZone()
                 if self.mode ~= "toggle" or not ges or not ges.pos then
                     return false
                 end
-                
-    local handled =
-        self.backend:toggleAtScreenPosition(ges.pos)
-
-    if handled then
-        return true
-    end
-
-    return false
-
+                -- Consume only when a ruby hit was toggled; otherwise allow
+                -- normal KOReader tap / page-turn behavior.
+                return self.backend:toggleAtScreenPosition(ges.pos)
             end,
         },
     })

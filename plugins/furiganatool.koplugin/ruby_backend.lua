@@ -5,10 +5,9 @@ local logger = require("logger")
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 
-
 function RubyBackend:_debugMessage(text)
     UIManager:show(InfoMessage:new{
-        text = "Furigana debug: " .. tostring(text),
+        text = "FuriganaTool: " .. tostring(text),
         timeout = 2,
     })
 end
@@ -37,10 +36,11 @@ function RubyBackend:isSupported()
         return false
     end
 
-    return doc.getRubyFromPosition ~= nil
-        and doc.setRubyToggleMode ~= nil
-        and doc.setRubyVisibilityOverride ~= nil
-        and doc.clearRubyVisibilityOverrides ~= nil
+    -- Prefer type() so metatable-provided C functions are detected reliably.
+    return type(doc.getRubyFromPosition) == "function"
+        and type(doc.setRubyToggleMode) == "function"
+        and type(doc.setRubyVisibilityOverride) == "function"
+        and type(doc.clearRubyVisibilityOverrides) == "function"
 end
 
 -------------------------------------------------------------------------------
@@ -51,29 +51,21 @@ function RubyBackend:setToggleMode(enabled)
     self.toggle_mode = enabled and true or false
     self.revealed = {}
 
+    local supported = self:isSupported()
+    logger.info("FuriganaTool: toggle=" .. tostring(self.toggle_mode))
+    logger.info("FuriganaTool: api_supported=" .. tostring(supported))
     self:_debugMessage(
-        self.toggle_mode and "Toggle enabled" or "Toggle disabled"
+        "toggle=" .. tostring(self.toggle_mode)
+            .. " api_supported=" .. tostring(supported)
     )
 
-    if not self:isSupported() then
-        logger.warn(
-            "FuriganaTool: CREngine ruby toggle API unavailable"
-        )
-        self:_debugMessage("CREngine API unavailable")
+    if not supported then
+        logger.warn("FuriganaTool: CREngine ruby toggle API unavailable")
         return false
     end
 
-    logger.info(
-        "FuriganaTool: setToggleMode",
-        self.toggle_mode
-    )
-
-    self.ui.document._document:setRubyToggleMode(
-        self.toggle_mode
-    )
-
+    self.ui.document._document:setRubyToggleMode(self.toggle_mode)
     self.ui.document._document:clearRubyVisibilityOverrides()
-
     self:_redraw()
 
     return true
@@ -108,7 +100,8 @@ end
 
 function RubyBackend:getRubyAtScreenPosition(screen_pos)
     if not self:isSupported() then
-        logger.warn("FuriganaTool: backend unsupported")
+        logger.warn("FuriganaTool: api_supported=false")
+        self:_debugMessage("api_supported=false")
         return nil
     end
 
@@ -119,37 +112,19 @@ function RubyBackend:getRubyAtScreenPosition(screen_pos)
     local x = math.floor(screen_pos.x)
     local y = math.floor(screen_pos.y)
 
-    logger.info(
-        "FuriganaTool: tap",
-        x,
-        y
-    )
+    logger.info(string.format("FuriganaTool: tap x=%d y=%d", x, y))
+    self:_debugMessage(string.format("tap x=%d y=%d", x, y))
 
-    self:_debugMessage(
-        "Tap " .. tostring(x) .. "," .. tostring(y)
-    )
-
-    local ruby = self.ui.document._document:getRubyFromPosition(
-        x,
-        y
-    )
+    local ruby = self.ui.document._document:getRubyFromPosition(x, y)
 
     if ruby and ruby.id then
-        logger.info(
-            "FuriganaTool: ruby hit",
-            ruby.id
-        )
-
-        self:_debugMessage(
-            "Ruby found: " .. tostring(ruby.id)
-        )
-
+        logger.info("FuriganaTool: ruby id=" .. tostring(ruby.id))
+        self:_debugMessage("ruby id=" .. tostring(ruby.id))
         return ruby
     end
 
-    logger.info("FuriganaTool: no ruby at tap")
-    self:_debugMessage("No ruby found")
-
+    logger.info("FuriganaTool: no ruby")
+    self:_debugMessage("no ruby")
     return nil
 end
 
@@ -159,6 +134,8 @@ end
 
 function RubyBackend:setRubyVisible(ruby_id, visible)
     if not self:isSupported() then
+        logger.warn("FuriganaTool: api_supported=false")
+        self:_debugMessage("api_supported=false")
         return false
     end
 
@@ -166,33 +143,26 @@ function RubyBackend:setRubyVisible(ruby_id, visible)
         return false
     end
 
-    local ok =
-        self.ui.document._document:setRubyVisibilityOverride(
-            ruby_id,
-            visible and true or false
-        )
+    local ok = self.ui.document._document:setRubyVisibilityOverride(
+        ruby_id,
+        visible and true or false
+    )
 
     if not ok then
-        logger.warn(
-            "FuriganaTool: visibility override failed",
-            ruby_id
-        )
-
+        logger.warn("FuriganaTool: visibility override failed id=" .. tostring(ruby_id))
+        self:_debugMessage("visibility failed id=" .. tostring(ruby_id))
         return false
     end
 
-    logger.info(
-        "FuriganaTool: ruby visibility",
-        ruby_id,
-        visible
-    )
-
-    self:_debugMessage(
-        visible and "Visibility ON" or "Visibility OFF"
-    )
+    if visible then
+        logger.info("FuriganaTool: reveal id=" .. tostring(ruby_id))
+        self:_debugMessage("reveal id=" .. tostring(ruby_id))
+    else
+        logger.info("FuriganaTool: hide id=" .. tostring(ruby_id))
+        self:_debugMessage("hide id=" .. tostring(ruby_id))
+    end
 
     self:_redraw()
-
     return true
 end
 
@@ -205,8 +175,13 @@ function RubyBackend:toggleAtScreenPosition(screen_pos)
         return false
     end
 
-    local ruby = self:getRubyAtScreenPosition(screen_pos)
+    if not self:isSupported() then
+        -- Still surface the tap so we do not silently look like a gesture bug.
+        self:getRubyAtScreenPosition(screen_pos)
+        return false
+    end
 
+    local ruby = self:getRubyAtScreenPosition(screen_pos)
     if not ruby or not ruby.id then
         return false
     end
@@ -237,15 +212,9 @@ function RubyBackend:_redraw()
     end
 
     if self.ui.view then
-        UIManager:setDirty(
-            self.ui.view,
-            "ui"
-        )
+        UIManager:setDirty(self.ui.view, "ui")
     else
-        UIManager:setDirty(
-            nil,
-            "ui"
-        )
+        UIManager:setDirty(nil, "ui")
     end
 end
 

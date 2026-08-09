@@ -41,3 +41,7 @@ i18n
 /.cproject
 /.project
 .gitignore~
+
+# Local furigana rubymod workflow outputs
+/out/*.apk
+/logs/furigana-*.txt
