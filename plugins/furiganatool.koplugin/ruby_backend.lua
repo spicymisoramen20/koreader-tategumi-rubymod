@@ -211,11 +211,27 @@ function RubyBackend:_redraw()
         return
     end
 
-    if self.ui.view then
-        UIManager:setDirty(self.ui.view, "ui")
-    else
-        UIManager:setDirty(nil, "ui")
+    -- Paint-time ruby visibility does not change any CRE layout/pos tag.
+    -- With use_cre_call_cache (default on), drawCurrentView will keep blitting
+    -- the previous page image unless we trash the buffer tag first. That made
+    -- Toggle look like a no-op (and reveals appear to fail) even when the
+    -- native visibility state was updated correctly.
+    local doc = self.ui.document
+    if doc then
+        if type(doc.resetBufferCache) == "function" then
+            doc:resetBufferCache()
+        elseif type(doc._callCacheSet) == "function" then
+            doc._callCacheSet("current_buffer_tag", nil)
+        end
     end
+
+    -- Match ReaderRolling / ReaderPaging: dirty the reader dialog with a
+    -- partial refresh so ReaderView re-paints from CRE.
+    local widget = nil
+    if self.ui.view then
+        widget = self.ui.view.dialog or self.ui.view
+    end
+    UIManager:setDirty(widget, "partial")
 end
 
 return RubyBackend
