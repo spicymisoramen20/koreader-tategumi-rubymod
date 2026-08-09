@@ -1,6 +1,7 @@
 .DS_*
 ._*
 *.AppImage
+*.app
 *.deb
 *.dmg
 *.directory
@@ -37,7 +38,6 @@ koreader-*
 
 i18n
 
-/*.app
 /.cproject
 /.project
 .gitignore~
