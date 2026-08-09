@@ -1,9 +1,9 @@
--- CREngine bridge for Furigana Toggle.
+-- CREngine bridge for Furigana Tool.
 --
--- The Lua plugin is deliberately isolated from engine-specific details here.
--- V1 can use CSS for whole-document modes.
--- True per-ruby toggling requires CREngine to expose element-aware hit testing
--- and a transient visibility override (or an equivalent paint-time mechanism).
+-- Toggle mode now uses CREngine paint-time visibility. Ruby layout remains
+-- unchanged; only <rt> painting is suppressed/re-enabled.
+
+local UIManager = require("ui/uimanager")
 
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
@@ -11,23 +11,44 @@ RubyBackend.__index = RubyBackend
 function RubyBackend:new(ui)
     return setmetatable({
         ui = ui,
-        revealed = {}, -- xpointer/id -> true, RAM only
+        revealed = {},
         page_token = nil,
+        toggle_mode = false,
     }, self)
 end
 
 function RubyBackend:isSupported()
-    -- We only target CREngine/reflowable documents.
     return self.ui
         and self.ui.document
+        and self.ui.document._document
         and not self.ui.document.info.has_pages
+        and self.ui.document._document.getRubyFromPosition
+        and self.ui.document._document.setRubyToggleMode
+        and self.ui.document._document.setRubyVisibilityOverride
+        and self.ui.document._document.clearRubyVisibilityOverrides
+end
+
+function RubyBackend:setToggleMode(enabled)
+    if not self:isSupported() then
+        return false
+    end
+
+    self.toggle_mode = enabled and true or false
+    self.ui.document._document:setRubyToggleMode(self.toggle_mode)
+
+    if not self.toggle_mode then
+        self.revealed = {}
+    end
+
+    return true
 end
 
 function RubyBackend:clearPageState()
     self.revealed = {}
 
-    -- Future CREngine API:
-    -- self.ui.document:clearRubyVisibilityOverrides()
+    if self:isSupported() then
+        self.ui.document._document:clearRubyVisibilityOverrides()
+    end
 end
 
 function RubyBackend:onPageChanged(page_token)
@@ -38,39 +59,45 @@ function RubyBackend:onPageChanged(page_token)
 end
 
 function RubyBackend:getRubyAtScreenPosition(screen_pos)
-    -- TODO: CREngine hook.
-    --
-    -- Desired contract:
-    --   local ruby = self.ui.document:getRubyAtPosition(page_pos.x, page_pos.y)
-    --
-    -- Return:
-    --   nil when no ruby base is under the tap
-    --   OR a table like:
-    --   {
-    --       id = "/body/DocFragment[3]/body/p[2]/ruby[4]",
-    --       base = "学校",
-    --       reading = "がっこう",
-    --   }
-    --
-    -- We intentionally do NOT guess from selected text because KOReader's Lua
-    -- layer does not reliably know which source HTML element text came from.
-    return nil
+    if not self:isSupported() or not screen_pos then
+        return nil
+    end
+
+    -- CREngine's hit testing expects window/screen coordinates here,
+    -- just like getNearestWordFromPosition().
+    return self.ui.document._document:getRubyFromPosition(
+        math.floor(screen_pos.x),
+        math.floor(screen_pos.y)
+    )
 end
 
 function RubyBackend:setRubyVisible(ruby_id, visible)
-    -- TODO: CREngine hook.
-    --
-    -- Desired API:
-    --   self.ui.document:setRubyVisibilityOverride(ruby_id, visible)
-    --
-    -- It must NOT trigger reflow in Toggle mode; ruby geometry is reserved.
-    return false
+    if not self:isSupported() then
+        return false
+    end
+
+    local ok = self.ui.document._document:setRubyVisibilityOverride(
+        ruby_id,
+        visible and true or false
+    )
+
+    if not ok then
+        return false
+    end
+
+    -- No reflow. We only need the current view repainted.
+    if self.ui.view then
+        UIManager:setDirty(self.ui.view, "ui")
+    end
+
+    return true
 end
 
 function RubyBackend:toggleAtScreenPosition(screen_pos)
     local ruby = self:getRubyAtScreenPosition(screen_pos)
-    if not ruby then
-        return false -- do not consume normal KOReader tap
+
+    if not ruby or not ruby.id then
+        return false
     end
 
     local id = ruby.id
@@ -86,7 +113,7 @@ function RubyBackend:toggleAtScreenPosition(screen_pos)
         self.revealed[id] = nil
     end
 
-    return true -- consume tap only after a real ruby was toggled
+    return true
 end
 
 return RubyBackend

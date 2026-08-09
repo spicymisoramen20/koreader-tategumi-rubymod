@@ -64,6 +64,10 @@ function FuriganaToggle:_applyCss()
     end
 
     self._plugin_css = Styles[self.mode] or ""
+
+    -- Toggle uses paint-time CREngine suppression; visible/off do not.
+    self.backend:setToggleMode(self.mode == "toggle")
+
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
 end
 
@@ -178,6 +182,7 @@ function FuriganaToggle:addToMainMenu(menu_items)
 end
 
 function FuriganaToggle:onCloseDocument()
+    self.backend:setToggleMode(false)
     self.backend:clearPageState()
 
     -- Restore ReaderStyleTweak method if this instance still owns the hook.

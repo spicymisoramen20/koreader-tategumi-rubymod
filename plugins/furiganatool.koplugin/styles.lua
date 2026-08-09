@@ -17,9 +17,10 @@ rt, rp {
 ]]
 
 Styles.toggle = [[
-rt {
-    visibility: hidden !important;
-}
+/*
+ * Toggle mode keeps ruby fully laid out.
+ * Per-ruby visibility is now handled at CREngine paint time.
+ */
 rp {
     display: none !important;
 }
