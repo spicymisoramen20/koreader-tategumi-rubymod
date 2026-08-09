@@ -68,6 +68,8 @@ function FuriganaToggle:_applyCss()
     -- Toggle uses paint-time CREngine suppression; visible/off do not.
     self.backend:setToggleMode(self.mode == "toggle")
 
+    -- Full stylesheet apply shows the CRE loading bar (expected once on mode
+    -- change). Tap reveal/hide must never reach this path.
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
 end
 
@@ -79,8 +81,8 @@ function FuriganaToggle:setMode(mode)
     self.mode = mode
     self.ui.doc_settings:saveSetting(SETTING_KEY, mode)
 
-    -- Individual reveals are page-local and never survive a mode change.
-    self.backend:clearPageState()
+    -- Reveals never survive a mode change.
+    self.backend:clearRevealedState()
     self:_applyCss()
 end
 
@@ -128,16 +130,12 @@ function FuriganaToggle:_setupTouchZone()
 end
 
 function FuriganaToggle:onPageUpdate(pageno)
-    -- pageno is enough as a first page token for paginated CREngine rendering.
-    -- If rolling mode needs a more precise token, this is the one place to
-    -- replace it with the current visible-page/XPointer identity.
+    -- Revealed furigana persist across page turns while Toggle stays active.
     self.backend:onPageChanged(pageno)
 end
 
 function FuriganaToggle:onPosUpdate(pos)
-    -- Rolling documents may report position updates instead of discrete pages.
-    -- Do NOT clear on every scroll movement: true "page lifetime" semantics
-    -- should be connected to the rendered screen/page boundary once verified.
+    -- Do not clear on scroll/position updates.
 end
 
 function FuriganaToggle:onSaveSettings()
@@ -185,7 +183,7 @@ end
 
 function FuriganaToggle:onCloseDocument()
     self.backend:setToggleMode(false)
-    self.backend:clearPageState()
+    self.backend:clearRevealedState()
 
     -- Restore ReaderStyleTweak method if this instance still owns the hook.
     local styletweak = self.ui and self.ui.styletweak

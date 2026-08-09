@@ -1,22 +1,13 @@
 local UIManager = require("ui/uimanager")
-local InfoMessage = require("ui/widget/infomessage")
 local logger = require("logger")
 
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 
-function RubyBackend:_debugMessage(text)
-    UIManager:show(InfoMessage:new{
-        text = "FuriganaTool: " .. tostring(text),
-        timeout = 2,
-    })
-end
-
 function RubyBackend:new(ui)
     local o = {
         ui = ui,
         revealed = {},
-        page_token = nil,
         toggle_mode = false,
     }
 
@@ -36,7 +27,6 @@ function RubyBackend:isSupported()
         return false
     end
 
-    -- Prefer type() so metatable-provided C functions are detected reliably.
     return type(doc.getRubyFromPosition) == "function"
         and type(doc.setRubyToggleMode) == "function"
         and type(doc.setRubyVisibilityOverride) == "function"
@@ -51,18 +41,12 @@ function RubyBackend:setToggleMode(enabled)
     self.toggle_mode = enabled and true or false
     self.revealed = {}
 
-    local supported = self:isSupported()
-    logger.info("FuriganaTool: toggle=" .. tostring(self.toggle_mode))
-    logger.info("FuriganaTool: api_supported=" .. tostring(supported))
-    self:_debugMessage(
-        "toggle=" .. tostring(self.toggle_mode)
-            .. " api_supported=" .. tostring(supported)
-    )
-
-    if not supported then
-        logger.warn("FuriganaTool: CREngine ruby toggle API unavailable")
+    if not self:isSupported() then
+        logger.warn("FuriganaTool: api_supported=false")
         return false
     end
+
+    logger.dbg("FuriganaTool: toggle=", self.toggle_mode)
 
     self.ui.document._document:setRubyToggleMode(self.toggle_mode)
     self.ui.document._document:clearRubyVisibilityOverrides()
@@ -72,10 +56,15 @@ function RubyBackend:setToggleMode(enabled)
 end
 
 -------------------------------------------------------------------------------
--- Page state
+-- Reveal state
+--
+-- Reveals persist for the whole document session while Toggle is active.
+-- They are cleared only on mode change / document close — not on page turns
+-- or paint refreshes (those were wiping reveals and looking like a loading
+-- re-render).
 -------------------------------------------------------------------------------
 
-function RubyBackend:clearPageState()
+function RubyBackend:clearRevealedState()
     self.revealed = {}
 
     if self:isSupported() then
@@ -87,45 +76,53 @@ function RubyBackend:clearPageState()
     end
 end
 
-function RubyBackend:onPageChanged(page_token)
-    if self.page_token ~= page_token then
-        self.page_token = page_token
-        self:clearPageState()
-    end
+-- Kept for call sites that previously meant "page-local" clears.
+function RubyBackend:clearPageState()
+    self:clearRevealedState()
+end
+
+function RubyBackend:onPageChanged(_page_token)
+    -- Intentionally no-op: revealed furigana stay until retapped or mode exits.
 end
 
 -------------------------------------------------------------------------------
 -- Hit testing
 -------------------------------------------------------------------------------
 
-function RubyBackend:getRubyAtScreenPosition(screen_pos)
-    if not self:isSupported() then
-        logger.warn("FuriganaTool: api_supported=false")
-        self:_debugMessage("api_supported=false")
-        return nil
+function RubyBackend:_rubyIdsFromHit(ruby)
+    if not ruby then
+        return {}
     end
 
-    if not screen_pos then
+    -- Preferred: contiguous sibling ruby group from native hit-test.
+    if type(ruby.ids) == "table" and #ruby.ids > 0 then
+        return ruby.ids
+    end
+
+    if ruby.id then
+        return { ruby.id }
+    end
+
+    return {}
+end
+
+function RubyBackend:getRubyAtScreenPosition(screen_pos)
+    if not self:isSupported() or not screen_pos then
         return nil
     end
 
     local x = math.floor(screen_pos.x)
     local y = math.floor(screen_pos.y)
-
-    logger.info(string.format("FuriganaTool: tap x=%d y=%d", x, y))
-    self:_debugMessage(string.format("tap x=%d y=%d", x, y))
-
     local ruby = self.ui.document._document:getRubyFromPosition(x, y)
-
-    if ruby and ruby.id then
-        logger.info("FuriganaTool: ruby id=" .. tostring(ruby.id))
-        self:_debugMessage("ruby id=" .. tostring(ruby.id))
-        return ruby
+    local ids = self:_rubyIdsFromHit(ruby)
+    if #ids == 0 then
+        return nil
     end
 
-    logger.info("FuriganaTool: no ruby")
-    self:_debugMessage("no ruby")
-    return nil
+    return {
+        id = ids[1],
+        ids = ids,
+    }
 end
 
 -------------------------------------------------------------------------------
@@ -133,13 +130,7 @@ end
 -------------------------------------------------------------------------------
 
 function RubyBackend:setRubyVisible(ruby_id, visible)
-    if not self:isSupported() then
-        logger.warn("FuriganaTool: api_supported=false")
-        self:_debugMessage("api_supported=false")
-        return false
-    end
-
-    if not ruby_id then
+    if not self:isSupported() or not ruby_id then
         return false
     end
 
@@ -147,23 +138,35 @@ function RubyBackend:setRubyVisible(ruby_id, visible)
         ruby_id,
         visible and true or false
     )
-
     if not ok then
-        logger.warn("FuriganaTool: visibility override failed id=" .. tostring(ruby_id))
-        self:_debugMessage("visibility failed id=" .. tostring(ruby_id))
+        logger.warn("FuriganaTool: visibility override failed", ruby_id)
         return false
     end
 
-    if visible then
-        logger.info("FuriganaTool: reveal id=" .. tostring(ruby_id))
-        self:_debugMessage("reveal id=" .. tostring(ruby_id))
-    else
-        logger.info("FuriganaTool: hide id=" .. tostring(ruby_id))
-        self:_debugMessage("hide id=" .. tostring(ruby_id))
+    return true
+end
+
+function RubyBackend:setRubyGroupVisible(ruby_ids, visible)
+    if not ruby_ids or #ruby_ids == 0 then
+        return false
     end
 
-    self:_redraw()
-    return true
+    local any = false
+    for _, id in ipairs(ruby_ids) do
+        if self:setRubyVisible(id, visible) then
+            any = true
+            if visible then
+                self.revealed[id] = true
+            else
+                self.revealed[id] = nil
+            end
+        end
+    end
+
+    if any then
+        self:_redraw()
+    end
+    return any
 end
 
 -------------------------------------------------------------------------------
@@ -171,35 +174,27 @@ end
 -------------------------------------------------------------------------------
 
 function RubyBackend:toggleAtScreenPosition(screen_pos)
-    if not self.toggle_mode then
-        return false
-    end
-
-    if not self:isSupported() then
-        -- Still surface the tap so we do not silently look like a gesture bug.
-        self:getRubyAtScreenPosition(screen_pos)
+    if not self.toggle_mode or not self:isSupported() then
         return false
     end
 
     local ruby = self:getRubyAtScreenPosition(screen_pos)
-    if not ruby or not ruby.id then
+    if not ruby or not ruby.ids then
         return false
     end
 
-    local id = ruby.id
-    local new_visible = not self.revealed[id]
-
-    if not self:setRubyVisible(id, new_visible) then
-        return false
+    local ids = ruby.ids
+    -- If any member of the group is hidden, reveal the whole group.
+    -- If all are revealed, hide the whole group.
+    local any_hidden = false
+    for _, id in ipairs(ids) do
+        if not self.revealed[id] then
+            any_hidden = true
+            break
+        end
     end
 
-    if new_visible then
-        self.revealed[id] = true
-    else
-        self.revealed[id] = nil
-    end
-
-    return true
+    return self:setRubyGroupVisible(ids, any_hidden)
 end
 
 -------------------------------------------------------------------------------
@@ -211,11 +206,9 @@ function RubyBackend:_redraw()
         return
     end
 
-    -- Paint-time ruby visibility does not change any CRE layout/pos tag.
-    -- With use_cre_call_cache (default on), drawCurrentView will keep blitting
-    -- the previous page image unless we trash the buffer tag first. That made
-    -- Toggle look like a no-op (and reveals appear to fail) even when the
-    -- native visibility state was updated correctly.
+    -- Paint-time ruby visibility does not change CRE layout/pos tags.
+    -- Trash only the page blitbuffer so drawCurrentView re-paints from CRE
+    -- without a full stylesheet / reflow (no loading bar).
     local doc = self.ui.document
     if doc then
         if type(doc.resetBufferCache) == "function" then
@@ -225,13 +218,11 @@ function RubyBackend:_redraw()
         end
     end
 
-    -- Match ReaderRolling / ReaderPaging: dirty the reader dialog with a
-    -- partial refresh so ReaderView re-paints from CRE.
     local widget = nil
     if self.ui.view then
         widget = self.ui.view.dialog or self.ui.view
     end
-    UIManager:setDirty(widget, "partial")
+    UIManager:setDirty(widget, "ui")
 end
 
 return RubyBackend
