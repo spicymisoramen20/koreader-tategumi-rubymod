@@ -19,6 +19,7 @@ local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
 local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
 local FOG_FALLOFF_KEY = "furigana_toggle_fog_falloff"
 local FOG_ROUNDNESS_KEY = "furigana_toggle_fog_roundness"
+local FOG_PATTERN_KEY = "furigana_toggle_fog_pattern"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -28,6 +29,14 @@ local VALID_OBSCURE = {
     hidden = true,
     bar = true,
     fog = true,
+}
+local VALID_FOG_PATTERN = {
+    bayer8 = true,
+    bayer16 = true,
+    blue_noise = true,
+    checker = true,
+    hatch45 = true,
+    multi4 = true,
 }
 
 function FuriganaToggle:init()
@@ -53,11 +62,17 @@ function FuriganaToggle:init()
     if self.fog_roundness < 0 then self.fog_roundness = 0 end
     if self.fog_roundness > 64 then self.fog_roundness = 64 end
 
+    self.fog_pattern = self.ui.doc_settings:readSetting(FOG_PATTERN_KEY) or "bayer8"
+    if not VALID_FOG_PATTERN[self.fog_pattern] then
+        self.fog_pattern = "bayer8"
+    end
+
     self.backend = RubyBackend:new(self.ui)
     self.backend.obscure_style = self.obscure_style
     self.backend.dither_intensity = self.dither_intensity
     self.backend.fog_falloff = self.fog_falloff
     self.backend.fog_roundness = self.fog_roundness
+    self.backend.fog_pattern = self.fog_pattern
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -99,7 +114,7 @@ function FuriganaToggle:_applyCss()
 
     self.backend:setObscureStyle(self.obscure_style)
     self.backend:setDitherParams(self.dither_intensity)
-    self.backend:setFogParams(self.fog_falloff, self.fog_roundness)
+    self.backend:setFogParams(self.fog_falloff, self.fog_roundness, self.fog_pattern)
     self.backend:setToggleMode(self.mode == "toggle")
 
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
@@ -139,12 +154,23 @@ function FuriganaToggle:setDitherParams(intensity)
     self.backend:setDitherParams(intensity)
 end
 
-function FuriganaToggle:setFogParams(falloff, roundness)
+function FuriganaToggle:setFogParams(falloff, roundness, pattern)
     self.fog_falloff = falloff
     self.fog_roundness = roundness
+    if pattern and VALID_FOG_PATTERN[pattern] then
+        self.fog_pattern = pattern
+    end
     self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, falloff)
     self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, roundness)
-    self.backend:setFogParams(falloff, roundness)
+    self.ui.doc_settings:saveSetting(FOG_PATTERN_KEY, self.fog_pattern)
+    self.backend:setFogParams(falloff, roundness, self.fog_pattern)
+end
+
+function FuriganaToggle:setFogPattern(pattern)
+    if not VALID_FOG_PATTERN[pattern] or pattern == self.fog_pattern then
+        return
+    end
+    self:setFogParams(self.fog_falloff, self.fog_roundness, pattern)
 end
 
 function FuriganaToggle:_spinFogParam(which)
@@ -175,13 +201,13 @@ end
 function FuriganaToggle:_spinDitherIntensity()
     local spin = SpinWidget:new{
         title_text = _("Obscure intensity"),
-        info_text = _("Approximate % black dots in the fog veil (typical 15–35).\n0 = lightest, 100 = densest.\nTypical: 25."),
+        info_text = _("Approximate % ink in the fog veil (typical 15–35 for B/W dither).\nFor 4-level gray, try 30–60.\nChecker/hatch read denser — lower if needed.\n0 = lightest, 100 = densest."),
         value = self.dither_intensity,
         value_min = 0,
         value_max = 100,
         value_step = 5,
         value_hold_step = 10,
-        default_value = 70,
+        default_value = 25,
         ok_always_enabled = true,
         callback = function(spin_widget)
             self:setDitherParams(spin_widget.value)
@@ -239,6 +265,7 @@ function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
     self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, self.fog_falloff)
     self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, self.fog_roundness)
+    self.ui.doc_settings:saveSetting(FOG_PATTERN_KEY, self.fog_pattern)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -300,6 +327,47 @@ function FuriganaToggle:addToMainMenu(menu_items)
                     obscure_radio("hidden", _("Hidden")),
                     obscure_radio("bar", _("Bar")),
                     obscure_radio("fog", _("Fog")),
+                    {
+                        text_func = function()
+                            local labels = {
+                                bayer8 = _("Bayer 8×8"),
+                                bayer16 = _("Bayer 16×16"),
+                                blue_noise = _("Blue noise"),
+                                checker = _("Checker"),
+                                hatch45 = _("45° hatch"),
+                                multi4 = _("4-level gray"),
+                            }
+                            local label = labels[self.fog_pattern] or self.fog_pattern
+                            return T(_("Fog pattern: %1"), label)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.obscure_style == "fog"
+                                and self.backend:_hasFogApi()
+                        end,
+                        sub_item_table_func = function()
+                            local function pattern_radio(id, label)
+                                return {
+                                    text = label,
+                                    radio = true,
+                                    checked_func = function()
+                                        return self.fog_pattern == id
+                                    end,
+                                    callback = function()
+                                        self:setFogPattern(id)
+                                    end,
+                                }
+                            end
+                            return {
+                                pattern_radio("bayer8", _("Bayer 8×8 (default)")),
+                                pattern_radio("bayer16", _("Bayer 16×16 (finer)")),
+                                pattern_radio("blue_noise", _("Blue noise (less grid)")),
+                                pattern_radio("checker", _("Checker")),
+                                pattern_radio("hatch45", _("45° hatch")),
+                                pattern_radio("multi4", _("4-level gray (e-ink midtones)")),
+                            }
+                        end,
+                    },
                     {
                         text_func = function()
                             return T(_("Fog falloff: %1"), self.fog_falloff)
