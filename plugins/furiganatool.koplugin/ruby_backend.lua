@@ -4,9 +4,7 @@ local logger = require("logger")
 -- Must match RubyToggleObscureStyle in lvtextfm.cpp
 local OBSCURE = {
     hidden = 0,
-    mosaic = 1,
-    bar = 2,
-    dots = 3,
+    bar = 1,
 }
 
 local RubyBackend = {}

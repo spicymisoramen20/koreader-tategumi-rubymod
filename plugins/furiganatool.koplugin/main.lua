@@ -21,9 +21,7 @@ local VALID_MODES = {
 }
 local VALID_OBSCURE = {
     hidden = true,
-    mosaic = true,
     bar = true,
-    dots = true,
 }
 
 function FuriganaToggle:init()
@@ -34,7 +32,9 @@ function FuriganaToggle:init()
 
     self.obscure_style = self.ui.doc_settings:readSetting(OBSCURE_SETTING_KEY) or "hidden"
     if not VALID_OBSCURE[self.obscure_style] then
+        -- Drop retired trial styles (mosaic/dots).
         self.obscure_style = "hidden"
+        self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
     end
 
     self.backend = RubyBackend:new(self.ui)
@@ -225,9 +225,7 @@ function FuriganaToggle:addToMainMenu(menu_items)
                 separator = true,
                 sub_item_table = {
                     obscure_radio("hidden", _("Hidden")),
-                    obscure_radio("mosaic", _("Mosaic")),
                     obscure_radio("bar", _("Bar")),
-                    obscure_radio("dots", _("Dots")),
                 },
             },
         },
