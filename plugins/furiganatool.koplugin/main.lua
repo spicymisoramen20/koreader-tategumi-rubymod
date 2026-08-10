@@ -37,6 +37,10 @@ local VALID_FOG_PATTERN = {
     checker = true,
     hatch45 = true,
     multi4 = true,
+    soft_gray = true,
+    multi8 = true,
+    bayer32 = true,
+    blue_noise32 = true,
 }
 
 function FuriganaToggle:init()
@@ -62,9 +66,10 @@ function FuriganaToggle:init()
     if self.fog_roundness < 0 then self.fog_roundness = 0 end
     if self.fog_roundness > 64 then self.fog_roundness = 64 end
 
-    self.fog_pattern = self.ui.doc_settings:readSetting(FOG_PATTERN_KEY) or "bayer8"
+    -- Soft gray is the least pixelated on GC midtones; migrate Bayer-default docs.
+    self.fog_pattern = self.ui.doc_settings:readSetting(FOG_PATTERN_KEY) or "soft_gray"
     if not VALID_FOG_PATTERN[self.fog_pattern] then
-        self.fog_pattern = "bayer8"
+        self.fog_pattern = "soft_gray"
     end
 
     self.backend = RubyBackend:new(self.ui)
@@ -138,11 +143,11 @@ function FuriganaToggle:setObscureStyle(style)
 
     self.obscure_style = style
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
-    -- Fog looks best as a light veil; older docs may still have intensity ~70.
-    if style == "fog" and self.dither_intensity > 40 then
-        self.dither_intensity = 25
-        self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, 25)
-        self.backend.dither_intensity = 25
+    -- Fog veil: soft/midtone patterns tolerate slightly higher ink %.
+    if style == "fog" and self.dither_intensity > 55 then
+        self.dither_intensity = 35
+        self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, 35)
+        self.backend.dither_intensity = 35
         self.backend:_applyDitherParams()
     end
     self.backend:setObscureStyle(style)
@@ -201,7 +206,7 @@ end
 function FuriganaToggle:_spinDitherIntensity()
     local spin = SpinWidget:new{
         title_text = _("Obscure intensity"),
-        info_text = _("Approximate % ink in the fog veil (typical 15–35 for B/W dither).\nFor 4-level gray, try 30–60.\nChecker/hatch read denser — lower if needed.\n0 = lightest, 100 = densest."),
+        info_text = _("Approximate % ink in the fog veil.\nSoft/8-level gray: try 25–55 (no speckles).\nB/W dither: try 15–35 (will look pixelated).\n0 = lightest, 100 = densest."),
         value = self.dither_intensity,
         value_min = 0,
         value_max = 100,
@@ -330,12 +335,16 @@ function FuriganaToggle:addToMainMenu(menu_items)
                     {
                         text_func = function()
                             local labels = {
+                                soft_gray = _("Soft gray"),
+                                multi8 = _("8-level gray"),
+                                multi4 = _("4-level gray"),
                                 bayer8 = _("Bayer 8×8"),
                                 bayer16 = _("Bayer 16×16"),
-                                blue_noise = _("Blue noise"),
+                                bayer32 = _("Bayer 32×32"),
+                                blue_noise = _("Blue noise 16"),
+                                blue_noise32 = _("Blue noise 32"),
                                 checker = _("Checker"),
                                 hatch45 = _("45° hatch"),
-                                multi4 = _("4-level gray"),
                             }
                             local label = labels[self.fog_pattern] or self.fog_pattern
                             return T(_("Fog pattern: %1"), label)
@@ -359,12 +368,16 @@ function FuriganaToggle:addToMainMenu(menu_items)
                                 }
                             end
                             return {
-                                pattern_radio("bayer8", _("Bayer 8×8 (default)")),
-                                pattern_radio("bayer16", _("Bayer 16×16 (finer)")),
-                                pattern_radio("blue_noise", _("Blue noise (less grid)")),
+                                pattern_radio("soft_gray", _("Soft gray (no speckles)")),
+                                pattern_radio("multi8", _("8-level gray")),
+                                pattern_radio("multi4", _("4-level gray")),
+                                pattern_radio("bayer32", _("Bayer 32×32")),
+                                pattern_radio("bayer16", _("Bayer 16×16")),
+                                pattern_radio("bayer8", _("Bayer 8×8")),
+                                pattern_radio("blue_noise32", _("Blue noise 32")),
+                                pattern_radio("blue_noise", _("Blue noise 16")),
                                 pattern_radio("checker", _("Checker")),
                                 pattern_radio("hatch45", _("45° hatch")),
-                                pattern_radio("multi4", _("4-level gray (e-ink midtones)")),
                             }
                         end,
                     },

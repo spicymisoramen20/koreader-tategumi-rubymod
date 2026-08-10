@@ -16,6 +16,10 @@ local FOG_PATTERN = {
     checker = 3,
     hatch45 = 4,
     multi4 = 5,
+    soft_gray = 6,
+    multi8 = 7,
+    bayer32 = 8,
+    blue_noise32 = 9,
 }
 
 local RubyBackend = {}
@@ -32,7 +36,7 @@ function RubyBackend:new(ui)
         dither_intensity = 70,
         fog_falloff = 4,
         fog_roundness = 5,
-        fog_pattern = "bayer8",
+        fog_pattern = "soft_gray",
     }
 
     return setmetatable(o, self)
@@ -140,7 +144,7 @@ function RubyBackend:setFogParams(falloff, roundness, pattern)
     if roundness < 0 then roundness = 0 end
     if roundness > 64 then roundness = 64 end
     if not FOG_PATTERN[pattern] then
-        pattern = "bayer8"
+        pattern = "soft_gray"
     end
 
     local changed = (self.fog_falloff ~= falloff)
