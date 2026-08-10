@@ -19,7 +19,6 @@ local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
 local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
 local FOG_FALLOFF_KEY = "furigana_toggle_fog_falloff"
 local FOG_ROUNDNESS_KEY = "furigana_toggle_fog_roundness"
-local FOG_PATTERN_KEY = "furigana_toggle_fog_pattern"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -30,18 +29,10 @@ local VALID_OBSCURE = {
     bar = true,
     fog = true,
 }
-local VALID_FOG_PATTERN = {
-    bayer8 = true,
-    bayer16 = true,
-    blue_noise = true,
-    checker = true,
-    hatch45 = true,
-    multi4 = true,
-    soft_gray = true,
-    multi8 = true,
-    bayer32 = true,
-    blue_noise32 = true,
-}
+
+local DEFAULT_INTENSITY = 10
+local DEFAULT_FALLOFF = 5
+local DEFAULT_ROUNDNESS = 15
 
 function FuriganaToggle:init()
     self.mode = self.ui.doc_settings:readSetting(SETTING_KEY) or "visible"
@@ -55,21 +46,29 @@ function FuriganaToggle:init()
         self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
     end
 
-    self.dither_intensity = tonumber(self.ui.doc_settings:readSetting(DITHER_INTENSITY_KEY)) or 70
+    self.dither_intensity = tonumber(self.ui.doc_settings:readSetting(DITHER_INTENSITY_KEY)) or DEFAULT_INTENSITY
     if self.dither_intensity < 0 then self.dither_intensity = 0 end
     if self.dither_intensity > 100 then self.dither_intensity = 100 end
 
-    self.fog_falloff = tonumber(self.ui.doc_settings:readSetting(FOG_FALLOFF_KEY)) or 4
-    self.fog_roundness = tonumber(self.ui.doc_settings:readSetting(FOG_ROUNDNESS_KEY)) or 5
+    self.fog_falloff = tonumber(self.ui.doc_settings:readSetting(FOG_FALLOFF_KEY)) or DEFAULT_FALLOFF
+    self.fog_roundness = tonumber(self.ui.doc_settings:readSetting(FOG_ROUNDNESS_KEY)) or DEFAULT_ROUNDNESS
     if self.fog_falloff < 0 then self.fog_falloff = 0 end
     if self.fog_falloff > 64 then self.fog_falloff = 64 end
     if self.fog_roundness < 0 then self.fog_roundness = 0 end
     if self.fog_roundness > 64 then self.fog_roundness = 64 end
 
-    -- Soft gray is the least pixelated on GC midtones; migrate Bayer-default docs.
-    self.fog_pattern = self.ui.doc_settings:readSetting(FOG_PATTERN_KEY) or "soft_gray"
-    if not VALID_FOG_PATTERN[self.fog_pattern] then
-        self.fog_pattern = "soft_gray"
+    -- One-shot: Soft gray is the only Fog fill now. Drop legacy pattern
+    -- settings and adopt the new falloff/roundness/intensity defaults.
+    local FOG_SOFT_DEFAULTS_KEY = "furigana_toggle_fog_soft_defaults_v1"
+    if self.ui.doc_settings:readSetting(FOG_SOFT_DEFAULTS_KEY) ~= true then
+        self.ui.doc_settings:delSetting("furigana_toggle_fog_pattern")
+        self.dither_intensity = DEFAULT_INTENSITY
+        self.fog_falloff = DEFAULT_FALLOFF
+        self.fog_roundness = DEFAULT_ROUNDNESS
+        self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, DEFAULT_INTENSITY)
+        self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, DEFAULT_FALLOFF)
+        self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, DEFAULT_ROUNDNESS)
+        self.ui.doc_settings:saveSetting(FOG_SOFT_DEFAULTS_KEY, true)
     end
 
     self.backend = RubyBackend:new(self.ui)
@@ -77,7 +76,6 @@ function FuriganaToggle:init()
     self.backend.dither_intensity = self.dither_intensity
     self.backend.fog_falloff = self.fog_falloff
     self.backend.fog_roundness = self.fog_roundness
-    self.backend.fog_pattern = self.fog_pattern
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -119,7 +117,7 @@ function FuriganaToggle:_applyCss()
 
     self.backend:setObscureStyle(self.obscure_style)
     self.backend:setDitherParams(self.dither_intensity)
-    self.backend:setFogParams(self.fog_falloff, self.fog_roundness, self.fog_pattern)
+    self.backend:setFogParams(self.fog_falloff, self.fog_roundness)
     self.backend:setToggleMode(self.mode == "toggle")
 
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
@@ -143,13 +141,6 @@ function FuriganaToggle:setObscureStyle(style)
 
     self.obscure_style = style
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
-    -- Fog veil: soft/midtone patterns tolerate slightly higher ink %.
-    if style == "fog" and self.dither_intensity > 55 then
-        self.dither_intensity = 35
-        self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, 35)
-        self.backend.dither_intensity = 35
-        self.backend:_applyDitherParams()
-    end
     self.backend:setObscureStyle(style)
 end
 
@@ -159,23 +150,12 @@ function FuriganaToggle:setDitherParams(intensity)
     self.backend:setDitherParams(intensity)
 end
 
-function FuriganaToggle:setFogParams(falloff, roundness, pattern)
+function FuriganaToggle:setFogParams(falloff, roundness)
     self.fog_falloff = falloff
     self.fog_roundness = roundness
-    if pattern and VALID_FOG_PATTERN[pattern] then
-        self.fog_pattern = pattern
-    end
     self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, falloff)
     self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, roundness)
-    self.ui.doc_settings:saveSetting(FOG_PATTERN_KEY, self.fog_pattern)
-    self.backend:setFogParams(falloff, roundness, self.fog_pattern)
-end
-
-function FuriganaToggle:setFogPattern(pattern)
-    if not VALID_FOG_PATTERN[pattern] or pattern == self.fog_pattern then
-        return
-    end
-    self:setFogParams(self.fog_falloff, self.fog_roundness, pattern)
+    self.backend:setFogParams(falloff, roundness)
 end
 
 function FuriganaToggle:_spinFogParam(which)
@@ -184,13 +164,13 @@ function FuriganaToggle:_spinFogParam(which)
         title_text = is_falloff and _("Fog falloff") or _("Fog roundness"),
         info_text = is_falloff
             and _("Soft edge width in pixels.\nDensity fades to zero over this band.\n0 = hard edge. Typical: 3–8. Allowed: 0–64.")
-            or _("Corner radius in pixels for the fog silhouette.\n0 = square corners. Typical: 3–10. Allowed: 0–64."),
+            or _("Corner radius in pixels for the fog silhouette.\n0 = square corners. Typical: 3–15. Allowed: 0–64."),
         value = is_falloff and self.fog_falloff or self.fog_roundness,
         value_min = 0,
         value_max = 64,
         value_step = 1,
         value_hold_step = 4,
-        default_value = is_falloff and 4 or 5,
+        default_value = is_falloff and DEFAULT_FALLOFF or DEFAULT_ROUNDNESS,
         ok_always_enabled = true,
         callback = function(spin_widget)
             if is_falloff then
@@ -206,13 +186,13 @@ end
 function FuriganaToggle:_spinDitherIntensity()
     local spin = SpinWidget:new{
         title_text = _("Obscure intensity"),
-        info_text = _("Approximate % ink in the fog veil.\nSoft/8-level gray: try 25–55 (no speckles).\nB/W dither: try 15–35 (will look pixelated).\n0 = lightest, 100 = densest."),
+        info_text = _("Approximate % ink in the fog veil.\nSoft gray midtones — typical 5–25.\n0 = lightest, 100 = densest."),
         value = self.dither_intensity,
         value_min = 0,
         value_max = 100,
         value_step = 5,
         value_hold_step = 10,
-        default_value = 25,
+        default_value = DEFAULT_INTENSITY,
         ok_always_enabled = true,
         callback = function(spin_widget)
             self:setDitherParams(spin_widget.value)
@@ -270,7 +250,6 @@ function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
     self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, self.fog_falloff)
     self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, self.fog_roundness)
-    self.ui.doc_settings:saveSetting(FOG_PATTERN_KEY, self.fog_pattern)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -332,55 +311,6 @@ function FuriganaToggle:addToMainMenu(menu_items)
                     obscure_radio("hidden", _("Hidden")),
                     obscure_radio("bar", _("Bar")),
                     obscure_radio("fog", _("Fog")),
-                    {
-                        text_func = function()
-                            local labels = {
-                                soft_gray = _("Soft gray"),
-                                multi8 = _("8-level gray"),
-                                multi4 = _("4-level gray"),
-                                bayer8 = _("Bayer 8×8"),
-                                bayer16 = _("Bayer 16×16"),
-                                bayer32 = _("Bayer 32×32"),
-                                blue_noise = _("Blue noise 16"),
-                                blue_noise32 = _("Blue noise 32"),
-                                checker = _("Checker"),
-                                hatch45 = _("45° hatch"),
-                            }
-                            local label = labels[self.fog_pattern] or self.fog_pattern
-                            return T(_("Fog pattern: %1"), label)
-                        end,
-                        enabled_func = function()
-                            return self.mode == "toggle"
-                                and self.obscure_style == "fog"
-                                and self.backend:_hasFogApi()
-                        end,
-                        sub_item_table_func = function()
-                            local function pattern_radio(id, label)
-                                return {
-                                    text = label,
-                                    radio = true,
-                                    checked_func = function()
-                                        return self.fog_pattern == id
-                                    end,
-                                    callback = function()
-                                        self:setFogPattern(id)
-                                    end,
-                                }
-                            end
-                            return {
-                                pattern_radio("soft_gray", _("Soft gray (no speckles)")),
-                                pattern_radio("multi8", _("8-level gray")),
-                                pattern_radio("multi4", _("4-level gray")),
-                                pattern_radio("bayer32", _("Bayer 32×32")),
-                                pattern_radio("bayer16", _("Bayer 16×16")),
-                                pattern_radio("bayer8", _("Bayer 8×8")),
-                                pattern_radio("blue_noise32", _("Blue noise 32")),
-                                pattern_radio("blue_noise", _("Blue noise 16")),
-                                pattern_radio("checker", _("Checker")),
-                                pattern_radio("hatch45", _("45° hatch")),
-                            }
-                        end,
-                    },
                     {
                         text_func = function()
                             return T(_("Fog falloff: %1"), self.fog_falloff)

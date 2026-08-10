@@ -8,24 +8,9 @@ local OBSCURE = {
     fog = 2,
 }
 
--- Must match RubyToggleFogPattern in lvtextfm.cpp
-local FOG_PATTERN = {
-    bayer8 = 0,
-    bayer16 = 1,
-    blue_noise = 2,
-    checker = 3,
-    hatch45 = 4,
-    multi4 = 5,
-    soft_gray = 6,
-    multi8 = 7,
-    bayer32 = 8,
-    blue_noise32 = 9,
-}
-
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 RubyBackend.OBSCURE = OBSCURE
-RubyBackend.FOG_PATTERN = FOG_PATTERN
 
 function RubyBackend:new(ui)
     local o = {
@@ -33,10 +18,9 @@ function RubyBackend:new(ui)
         revealed = {},
         toggle_mode = false,
         obscure_style = "hidden",
-        dither_intensity = 70,
-        fog_falloff = 4,
-        fog_roundness = 5,
-        fog_pattern = "soft_gray",
+        dither_intensity = 10,
+        fog_falloff = 5,
+        fog_roundness = 15,
     }
 
     return setmetatable(o, self)
@@ -135,33 +119,22 @@ function RubyBackend:setDitherParams(intensity)
     return true
 end
 
-function RubyBackend:setFogParams(falloff, roundness, pattern)
+function RubyBackend:setFogParams(falloff, roundness)
     falloff = tonumber(falloff) or self.fog_falloff
     roundness = tonumber(roundness) or self.fog_roundness
-    pattern = pattern or self.fog_pattern
     if falloff < 0 then falloff = 0 end
     if falloff > 64 then falloff = 64 end
     if roundness < 0 then roundness = 0 end
     if roundness > 64 then roundness = 64 end
-    if not FOG_PATTERN[pattern] then
-        pattern = "soft_gray"
-    end
 
-    local changed = (self.fog_falloff ~= falloff)
-        or (self.fog_roundness ~= roundness)
-        or (self.fog_pattern ~= pattern)
+    local changed = (self.fog_falloff ~= falloff) or (self.fog_roundness ~= roundness)
     self.fog_falloff = falloff
     self.fog_roundness = roundness
-    self.fog_pattern = pattern
     self:_applyFogParams()
     if changed and self.toggle_mode and self.obscure_style == "fog" then
         self:_redraw()
     end
     return true
-end
-
-function RubyBackend:setFogPattern(pattern)
-    return self:setFogParams(self.fog_falloff, self.fog_roundness, pattern)
 end
 
 function RubyBackend:_applyObscureStyle()
@@ -182,11 +155,7 @@ function RubyBackend:_applyFogParams()
     if not self:_hasFogApi() then
         return
     end
-    self.ui.document._document:setRubyToggleFogParams(
-        self.fog_falloff,
-        self.fog_roundness,
-        FOG_PATTERN[self.fog_pattern] or 0
-    )
+    self.ui.document._document:setRubyToggleFogParams(self.fog_falloff, self.fog_roundness)
 end
 
 -------------------------------------------------------------------------------
