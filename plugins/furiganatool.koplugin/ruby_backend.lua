@@ -54,6 +54,8 @@ function RubyBackend:new(ui)
         blur_passes = 2,
         dither_intensity = 70,
         blur_dither = "bayer4",
+        fog_falloff = 4,
+        fog_roundness = 5,
     }
 
     return setmetatable(o, self)
@@ -98,6 +100,11 @@ function RubyBackend:_hasBlurDitherApi()
     return doc and type(doc.setRubyToggleBlurDither) == "function"
 end
 
+function RubyBackend:_hasFogApi()
+    local doc = self.ui and self.ui.document and self.ui.document._document
+    return doc and type(doc.setRubyToggleFogParams) == "function"
+end
+
 function RubyBackend:isDitherStyle(style)
     return DITHER_STYLES[style or self.obscure_style] == true
 end
@@ -133,6 +140,7 @@ function RubyBackend:setToggleMode(enabled)
     self:_applyBlurParams()
     self:_applyDitherParams()
     self:_applyBlurDither()
+    self:_applyFogParams()
     self:_redraw()
 
     return true
@@ -203,6 +211,24 @@ function RubyBackend:setBlurDither(mode)
     return true
 end
 
+function RubyBackend:setFogParams(falloff, roundness)
+    falloff = tonumber(falloff) or self.fog_falloff
+    roundness = tonumber(roundness) or self.fog_roundness
+    if falloff < 0 then falloff = 0 end
+    if falloff > 64 then falloff = 64 end
+    if roundness < 0 then roundness = 0 end
+    if roundness > 64 then roundness = 64 end
+
+    local changed = (self.fog_falloff ~= falloff) or (self.fog_roundness ~= roundness)
+    self.fog_falloff = falloff
+    self.fog_roundness = roundness
+    self:_applyFogParams()
+    if changed and self.toggle_mode and self.obscure_style == "fog" then
+        self:_redraw()
+    end
+    return true
+end
+
 function RubyBackend:_applyObscureStyle()
     if not self:_hasObscureApi() then
         return
@@ -229,6 +255,13 @@ function RubyBackend:_applyBlurDither()
         return
     end
     self.ui.document._document:setRubyToggleBlurDither(BLUR_DITHER[self.blur_dither] or 0)
+end
+
+function RubyBackend:_applyFogParams()
+    if not self:_hasFogApi() then
+        return
+    end
+    self.ui.document._document:setRubyToggleFogParams(self.fog_falloff, self.fog_roundness)
 end
 
 -------------------------------------------------------------------------------

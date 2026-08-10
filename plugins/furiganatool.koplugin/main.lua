@@ -20,6 +20,8 @@ local BLUR_RADIUS_KEY = "furigana_toggle_blur_radius"
 local BLUR_PASSES_KEY = "furigana_toggle_blur_passes"
 local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
 local BLUR_DITHER_KEY = "furigana_toggle_blur_dither"
+local FOG_FALLOFF_KEY = "furigana_toggle_fog_falloff"
+local FOG_ROUNDNESS_KEY = "furigana_toggle_fog_roundness"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -89,12 +91,21 @@ function FuriganaToggle:init()
         self.ui.doc_settings:saveSetting(BLUR_DITHER_KEY, self.blur_dither)
     end
 
+    self.fog_falloff = tonumber(self.ui.doc_settings:readSetting(FOG_FALLOFF_KEY)) or 4
+    self.fog_roundness = tonumber(self.ui.doc_settings:readSetting(FOG_ROUNDNESS_KEY)) or 5
+    if self.fog_falloff < 0 then self.fog_falloff = 0 end
+    if self.fog_falloff > 64 then self.fog_falloff = 64 end
+    if self.fog_roundness < 0 then self.fog_roundness = 0 end
+    if self.fog_roundness > 64 then self.fog_roundness = 64 end
+
     self.backend = RubyBackend:new(self.ui)
     self.backend.obscure_style = self.obscure_style
     self.backend.blur_radius = self.blur_radius
     self.backend.blur_passes = self.blur_passes
     self.backend.dither_intensity = self.dither_intensity
     self.backend.blur_dither = self.blur_dither
+    self.backend.fog_falloff = self.fog_falloff
+    self.backend.fog_roundness = self.fog_roundness
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -138,6 +149,7 @@ function FuriganaToggle:_applyCss()
     self.backend:setBlurParams(self.blur_radius, self.blur_passes)
     self.backend:setDitherParams(self.dither_intensity)
     self.backend:setBlurDither(self.blur_dither)
+    self.backend:setFogParams(self.fog_falloff, self.fog_roundness)
     self.backend:setToggleMode(self.mode == "toggle")
 
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
@@ -195,6 +207,14 @@ function FuriganaToggle:setBlurDither(mode)
     self.backend:setBlurDither(mode)
 end
 
+function FuriganaToggle:setFogParams(falloff, roundness)
+    self.fog_falloff = falloff
+    self.fog_roundness = roundness
+    self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, falloff)
+    self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, roundness)
+    self.backend:setFogParams(falloff, roundness)
+end
+
 function FuriganaToggle:_spinBlurParam(which)
     local is_radius = which == "radius"
     local spin = SpinWidget:new{
@@ -214,6 +234,31 @@ function FuriganaToggle:_spinBlurParam(which)
                 self:setBlurParams(spin_widget.value, self.blur_passes)
             else
                 self:setBlurParams(self.blur_radius, spin_widget.value)
+            end
+        end,
+    }
+    UIManager:show(spin)
+end
+
+function FuriganaToggle:_spinFogParam(which)
+    local is_falloff = which == "falloff"
+    local spin = SpinWidget:new{
+        title_text = is_falloff and _("Fog falloff") or _("Fog roundness"),
+        info_text = is_falloff
+            and _("Soft edge width in pixels.\nDensity fades to zero over this band.\n0 = hard edge. Typical: 3–8. Allowed: 0–64.")
+            or _("Corner radius in pixels for the fog silhouette.\n0 = square corners. Typical: 3–10. Allowed: 0–64."),
+        value = is_falloff and self.fog_falloff or self.fog_roundness,
+        value_min = 0,
+        value_max = 64,
+        value_step = 1,
+        value_hold_step = 4,
+        default_value = is_falloff and 4 or 5,
+        ok_always_enabled = true,
+        callback = function(spin_widget)
+            if is_falloff then
+                self:setFogParams(spin_widget.value, self.fog_roundness)
+            else
+                self:setFogParams(self.fog_falloff, spin_widget.value)
             end
         end,
     }
@@ -288,6 +333,8 @@ function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(BLUR_PASSES_KEY, self.blur_passes)
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
     self.ui.doc_settings:saveSetting(BLUR_DITHER_KEY, self.blur_dither)
+    self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, self.fog_falloff)
+    self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, self.fog_roundness)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -367,6 +414,34 @@ function FuriganaToggle:addToMainMenu(menu_items)
                     obscure_radio("hidden", _("Hidden")),
                     obscure_radio("bar", _("Bar")),
                     obscure_radio("fog", _("Fog (Bayer)")),
+                    {
+                        text_func = function()
+                            return T(_("Fog falloff: %1"), self.fog_falloff)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.obscure_style == "fog"
+                                and self.backend:_hasFogApi()
+                        end,
+                        keep_menu_open = true,
+                        callback = function()
+                            self:_spinFogParam("falloff")
+                        end,
+                    },
+                    {
+                        text_func = function()
+                            return T(_("Fog roundness: %1"), self.fog_roundness)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.obscure_style == "fog"
+                                and self.backend:_hasFogApi()
+                        end,
+                        keep_menu_open = true,
+                        callback = function()
+                            self:_spinFogParam("roundness")
+                        end,
+                    },
                     obscure_radio("blur", _("Blur")),
                     {
                         text_func = function()
