@@ -36,6 +36,7 @@ local VALID_OBSCURE = {
     checker = true,
     hatch = true,
     noise = true,
+    fog = true,
 }
 local VALID_BLUR_DITHER = {
     none = true,
@@ -160,6 +161,14 @@ function FuriganaToggle:setObscureStyle(style)
 
     self.obscure_style = style
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
+    -- Fog looks best as a light veil; sharp dither styles share Intensity and
+    -- often leave it around 70, which would make Fog too dense.
+    if style == "fog" and self.dither_intensity > 40 then
+        self.dither_intensity = 25
+        self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, 25)
+        self.backend.dither_intensity = 25
+        self.backend:_applyDitherParams()
+    end
     self.backend:setObscureStyle(style)
 end
 
@@ -214,7 +223,7 @@ end
 function FuriganaToggle:_spinDitherIntensity()
     local spin = SpinWidget:new{
         title_text = _("Obscure intensity"),
-        info_text = _("How strongly dissolve/dither removes furigana ink.\nFor Blur+dither: how dark the soft blotch renders.\n0 = fully readable / soft gray only, 100 = strongest.\nTypical: 55–80."),
+        info_text = _("For Fog: approximate % black dots in the veil (typical 15–35).\nFor sharp dither / Blur+dither: how strongly ink is removed or darkened.\n0 = lightest / soft gray only, 100 = strongest.\nTypical Fog: 25. Typical dither: 55–80."),
         value = self.dither_intensity,
         value_min = 0,
         value_max = 100,
@@ -357,6 +366,7 @@ function FuriganaToggle:addToMainMenu(menu_items)
                 sub_item_table = {
                     obscure_radio("hidden", _("Hidden")),
                     obscure_radio("bar", _("Bar")),
+                    obscure_radio("fog", _("Fog (Bayer)")),
                     obscure_radio("blur", _("Blur")),
                     {
                         text_func = function()

@@ -13,6 +13,7 @@ local OBSCURE = {
     checker = 7,
     hatch = 8,
     noise = 9,
+    fog = 10,
 }
 
 -- Must match RubyToggleBlurDither in lvtextfm.cpp
@@ -102,6 +103,9 @@ function RubyBackend:isDitherStyle(style)
 end
 
 function RubyBackend:usesIntensity()
+    if self.obscure_style == "fog" then
+        return true
+    end
     if self:isDitherStyle() then
         return true
     end
