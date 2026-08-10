@@ -18,6 +18,7 @@ local SETTING_KEY = "furigana_toggle_mode"
 local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
 local BLUR_RADIUS_KEY = "furigana_toggle_blur_radius"
 local BLUR_PASSES_KEY = "furigana_toggle_blur_passes"
+local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -27,6 +28,13 @@ local VALID_OBSCURE = {
     hidden = true,
     bar = true,
     blur = true,
+    dissolve = true,
+    bayer2 = true,
+    bayer4 = true,
+    bayer8 = true,
+    checker = true,
+    hatch = true,
+    noise = true,
 }
 
 function FuriganaToggle:init()
@@ -48,10 +56,15 @@ function FuriganaToggle:init()
     if self.blur_passes < 1 then self.blur_passes = 1 end
     if self.blur_passes > 20 then self.blur_passes = 20 end
 
+    self.dither_intensity = tonumber(self.ui.doc_settings:readSetting(DITHER_INTENSITY_KEY)) or 70
+    if self.dither_intensity < 0 then self.dither_intensity = 0 end
+    if self.dither_intensity > 100 then self.dither_intensity = 100 end
+
     self.backend = RubyBackend:new(self.ui)
     self.backend.obscure_style = self.obscure_style
     self.backend.blur_radius = self.blur_radius
     self.backend.blur_passes = self.blur_passes
+    self.backend.dither_intensity = self.dither_intensity
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -93,6 +106,7 @@ function FuriganaToggle:_applyCss()
 
     self.backend:setObscureStyle(self.obscure_style)
     self.backend:setBlurParams(self.blur_radius, self.blur_passes)
+    self.backend:setDitherParams(self.dither_intensity)
     self.backend:setToggleMode(self.mode == "toggle")
 
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
@@ -127,6 +141,12 @@ function FuriganaToggle:setBlurParams(radius, passes)
     self.backend:setBlurParams(radius, passes)
 end
 
+function FuriganaToggle:setDitherParams(intensity)
+    self.dither_intensity = intensity
+    self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, intensity)
+    self.backend:setDitherParams(intensity)
+end
+
 function FuriganaToggle:_spinBlurParam(which)
     local is_radius = which == "radius"
     local spin = SpinWidget:new{
@@ -147,6 +167,24 @@ function FuriganaToggle:_spinBlurParam(which)
             else
                 self:setBlurParams(self.blur_radius, spin_widget.value)
             end
+        end,
+    }
+    UIManager:show(spin)
+end
+
+function FuriganaToggle:_spinDitherIntensity()
+    local spin = SpinWidget:new{
+        title_text = _("Obscure intensity"),
+        info_text = _("How strongly dissolve/dither removes furigana ink.\n0 = fully readable, 100 = fully hidden.\nTypical: 55–80."),
+        value = self.dither_intensity,
+        value_min = 0,
+        value_max = 100,
+        value_step = 5,
+        value_hold_step = 10,
+        default_value = 70,
+        ok_always_enabled = true,
+        callback = function(spin_widget)
+            self:setDitherParams(spin_widget.value)
         end,
     }
     UIManager:show(spin)
@@ -200,6 +238,7 @@ function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
     self.ui.doc_settings:saveSetting(BLUR_RADIUS_KEY, self.blur_radius)
     self.ui.doc_settings:saveSetting(BLUR_PASSES_KEY, self.blur_passes)
+    self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -287,6 +326,27 @@ function FuriganaToggle:addToMainMenu(menu_items)
                         keep_menu_open = true,
                         callback = function()
                             self:_spinBlurParam("passes")
+                        end,
+                    },
+                    obscure_radio("dissolve", _("Dissolve")),
+                    obscure_radio("bayer4", _("Bayer 4×4")),
+                    obscure_radio("bayer2", _("Bayer 2×2")),
+                    obscure_radio("bayer8", _("Bayer 8×8")),
+                    obscure_radio("checker", _("Checker")),
+                    obscure_radio("hatch", _("Hatch")),
+                    obscure_radio("noise", _("Noise")),
+                    {
+                        text_func = function()
+                            return T(_("Intensity: %1%%"), self.dither_intensity)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.backend:isDitherStyle(self.obscure_style)
+                                and self.backend:_hasDitherApi()
+                        end,
+                        keep_menu_open = true,
+                        callback = function()
+                            self:_spinDitherIntensity()
                         end,
                     },
                 },

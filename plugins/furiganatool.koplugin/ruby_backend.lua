@@ -6,11 +6,29 @@ local OBSCURE = {
     hidden = 0,
     bar = 1,
     blur = 2,
+    dissolve = 3,
+    bayer2 = 4,
+    bayer4 = 5,
+    bayer8 = 6,
+    checker = 7,
+    hatch = 8,
+    noise = 9,
+}
+
+local DITHER_STYLES = {
+    dissolve = true,
+    bayer2 = true,
+    bayer4 = true,
+    bayer8 = true,
+    checker = true,
+    hatch = true,
+    noise = true,
 }
 
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 RubyBackend.OBSCURE = OBSCURE
+RubyBackend.DITHER_STYLES = DITHER_STYLES
 
 function RubyBackend:new(ui)
     local o = {
@@ -20,6 +38,7 @@ function RubyBackend:new(ui)
         obscure_style = "hidden",
         blur_radius = 2,
         blur_passes = 2,
+        dither_intensity = 70,
     }
 
     return setmetatable(o, self)
@@ -54,6 +73,15 @@ function RubyBackend:_hasBlurApi()
     return doc and type(doc.setRubyToggleBlurParams) == "function"
 end
 
+function RubyBackend:_hasDitherApi()
+    local doc = self.ui and self.ui.document and self.ui.document._document
+    return doc and type(doc.setRubyToggleDitherParams) == "function"
+end
+
+function RubyBackend:isDitherStyle(style)
+    return DITHER_STYLES[style or self.obscure_style] == true
+end
+
 -------------------------------------------------------------------------------
 -- Toggle mode
 -------------------------------------------------------------------------------
@@ -73,6 +101,7 @@ function RubyBackend:setToggleMode(enabled)
     self.ui.document._document:clearRubyVisibilityOverrides()
     self:_applyObscureStyle()
     self:_applyBlurParams()
+    self:_applyDitherParams()
     self:_redraw()
 
     return true
@@ -113,6 +142,20 @@ function RubyBackend:setBlurParams(radius, passes)
     return true
 end
 
+function RubyBackend:setDitherParams(intensity)
+    intensity = tonumber(intensity) or self.dither_intensity
+    if intensity < 0 then intensity = 0 end
+    if intensity > 100 then intensity = 100 end
+
+    local changed = self.dither_intensity ~= intensity
+    self.dither_intensity = intensity
+    self:_applyDitherParams()
+    if changed and self.toggle_mode and self:isDitherStyle() then
+        self:_redraw()
+    end
+    return true
+end
+
 function RubyBackend:_applyObscureStyle()
     if not self:_hasObscureApi() then
         return
@@ -125,6 +168,13 @@ function RubyBackend:_applyBlurParams()
         return
     end
     self.ui.document._document:setRubyToggleBlurParams(self.blur_radius, self.blur_passes)
+end
+
+function RubyBackend:_applyDitherParams()
+    if not self:_hasDitherApi() then
+        return
+    end
+    self.ui.document._document:setRubyToggleDitherParams(self.dither_intensity)
 end
 
 -------------------------------------------------------------------------------
