@@ -13,10 +13,17 @@ local FuriganaToggle = WidgetContainer:extend{
 }
 
 local SETTING_KEY = "furigana_toggle_mode"
+local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
 local VALID_MODES = {
     visible = true,
     off = true,
     toggle = true,
+}
+local VALID_OBSCURE = {
+    hidden = true,
+    mosaic = true,
+    bar = true,
+    dots = true,
 }
 
 function FuriganaToggle:init()
@@ -25,7 +32,13 @@ function FuriganaToggle:init()
         self.mode = "visible"
     end
 
+    self.obscure_style = self.ui.doc_settings:readSetting(OBSCURE_SETTING_KEY) or "hidden"
+    if not VALID_OBSCURE[self.obscure_style] then
+        self.obscure_style = "hidden"
+    end
+
     self.backend = RubyBackend:new(self.ui)
+    self.backend.obscure_style = self.obscure_style
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -66,6 +79,7 @@ function FuriganaToggle:_applyCss()
     self._plugin_css = Styles[self.mode] or ""
 
     -- Toggle uses paint-time CREngine suppression; visible/off do not.
+    self.backend:setObscureStyle(self.obscure_style)
     self.backend:setToggleMode(self.mode == "toggle")
 
     -- Full stylesheet apply shows the CRE loading bar (expected once on mode
@@ -84,6 +98,17 @@ function FuriganaToggle:setMode(mode)
     -- Reveals never survive a mode change.
     self.backend:clearRevealedState()
     self:_applyCss()
+end
+
+function FuriganaToggle:setObscureStyle(style)
+    if not VALID_OBSCURE[style] or style == self.obscure_style then
+        return
+    end
+
+    self.obscure_style = style
+    self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
+    -- Paint-only: no stylesheet apply / no loading bar.
+    self.backend:setObscureStyle(style)
 end
 
 function FuriganaToggle:onReaderReady()
@@ -140,9 +165,27 @@ end
 
 function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(SETTING_KEY, self.mode)
+    self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
+    local function obscure_radio(id, label)
+        return {
+            text = label,
+            radio = true,
+            enabled_func = function()
+                return self.mode == "toggle" and self.backend:isSupported()
+                    and self.backend:_hasObscureApi()
+            end,
+            checked_func = function()
+                return self.obscure_style == id
+            end,
+            callback = function()
+                self:setObscureStyle(id)
+            end,
+        }
+    end
+
     menu_items.furigana_toggle = {
         text = _("Furigana"),
         sorting_hint = "typeset",
@@ -176,6 +219,16 @@ function FuriganaToggle:addToMainMenu(menu_items)
                 callback = function()
                     self:setMode("toggle")
                 end,
+            },
+            {
+                text = _("Toggle hide style"),
+                separator = true,
+                sub_item_table = {
+                    obscure_radio("hidden", _("Hidden")),
+                    obscure_radio("mosaic", _("Mosaic")),
+                    obscure_radio("bar", _("Bar")),
+                    obscure_radio("dots", _("Dots")),
+                },
             },
         },
     }

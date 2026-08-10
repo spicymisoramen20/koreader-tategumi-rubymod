@@ -1,14 +1,24 @@
 local UIManager = require("ui/uimanager")
 local logger = require("logger")
 
+-- Must match RubyToggleObscureStyle in lvtextfm.cpp
+local OBSCURE = {
+    hidden = 0,
+    mosaic = 1,
+    bar = 2,
+    dots = 3,
+}
+
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
+RubyBackend.OBSCURE = OBSCURE
 
 function RubyBackend:new(ui)
     local o = {
         ui = ui,
         revealed = {},
         toggle_mode = false,
+        obscure_style = "hidden",
     }
 
     return setmetatable(o, self)
@@ -33,6 +43,11 @@ function RubyBackend:isSupported()
         and type(doc.clearRubyVisibilityOverrides) == "function"
 end
 
+function RubyBackend:_hasObscureApi()
+    local doc = self.ui and self.ui.document and self.ui.document._document
+    return doc and type(doc.setRubyToggleObscureStyle) == "function"
+end
+
 -------------------------------------------------------------------------------
 -- Toggle mode
 -------------------------------------------------------------------------------
@@ -50,9 +65,32 @@ function RubyBackend:setToggleMode(enabled)
 
     self.ui.document._document:setRubyToggleMode(self.toggle_mode)
     self.ui.document._document:clearRubyVisibilityOverrides()
+    self:_applyObscureStyle()
     self:_redraw()
 
     return true
+end
+
+function RubyBackend:setObscureStyle(style)
+    if not OBSCURE[style] then
+        return false
+    end
+    if self.obscure_style == style then
+        return true
+    end
+    self.obscure_style = style
+    self:_applyObscureStyle()
+    if self.toggle_mode then
+        self:_redraw()
+    end
+    return true
+end
+
+function RubyBackend:_applyObscureStyle()
+    if not self:_hasObscureApi() then
+        return
+    end
+    self.ui.document._document:setRubyToggleObscureStyle(OBSCURE[self.obscure_style] or 0)
 end
 
 -------------------------------------------------------------------------------

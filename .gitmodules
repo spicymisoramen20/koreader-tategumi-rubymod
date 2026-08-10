@@ -16,3 +16,5 @@
 	path = l10n
 	url = https://github.com/koreader/koreader-translations.git
 	shallow = true
+[submodule "base"]
+	url = https://github.com/spicymisoramen20/koreader-base-rubymod.git
