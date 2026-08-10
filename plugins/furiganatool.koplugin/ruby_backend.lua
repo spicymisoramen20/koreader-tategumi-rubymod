@@ -15,6 +15,18 @@ local OBSCURE = {
     noise = 9,
 }
 
+-- Must match RubyToggleBlurDither in lvtextfm.cpp
+local BLUR_DITHER = {
+    none = 0,
+    dissolve = 1,
+    bayer2 = 2,
+    bayer4 = 3,
+    bayer8 = 4,
+    checker = 5,
+    hatch = 6,
+    noise = 7,
+}
+
 local DITHER_STYLES = {
     dissolve = true,
     bayer2 = true,
@@ -28,6 +40,7 @@ local DITHER_STYLES = {
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 RubyBackend.OBSCURE = OBSCURE
+RubyBackend.BLUR_DITHER = BLUR_DITHER
 RubyBackend.DITHER_STYLES = DITHER_STYLES
 
 function RubyBackend:new(ui)
@@ -39,6 +52,7 @@ function RubyBackend:new(ui)
         blur_radius = 2,
         blur_passes = 2,
         dither_intensity = 70,
+        blur_dither = "bayer4",
     }
 
     return setmetatable(o, self)
@@ -78,8 +92,20 @@ function RubyBackend:_hasDitherApi()
     return doc and type(doc.setRubyToggleDitherParams) == "function"
 end
 
+function RubyBackend:_hasBlurDitherApi()
+    local doc = self.ui and self.ui.document and self.ui.document._document
+    return doc and type(doc.setRubyToggleBlurDither) == "function"
+end
+
 function RubyBackend:isDitherStyle(style)
     return DITHER_STYLES[style or self.obscure_style] == true
+end
+
+function RubyBackend:usesIntensity()
+    if self:isDitherStyle() then
+        return true
+    end
+    return self.obscure_style == "blur" and self.blur_dither ~= "none"
 end
 
 -------------------------------------------------------------------------------
@@ -102,6 +128,7 @@ function RubyBackend:setToggleMode(enabled)
     self:_applyObscureStyle()
     self:_applyBlurParams()
     self:_applyDitherParams()
+    self:_applyBlurDither()
     self:_redraw()
 
     return true
@@ -150,7 +177,23 @@ function RubyBackend:setDitherParams(intensity)
     local changed = self.dither_intensity ~= intensity
     self.dither_intensity = intensity
     self:_applyDitherParams()
-    if changed and self.toggle_mode and self:isDitherStyle() then
+    if changed and self.toggle_mode and self:usesIntensity() then
+        self:_redraw()
+    end
+    return true
+end
+
+function RubyBackend:setBlurDither(mode)
+    if not BLUR_DITHER[mode] then
+        return false
+    end
+    if self.blur_dither == mode then
+        self:_applyBlurDither()
+        return true
+    end
+    self.blur_dither = mode
+    self:_applyBlurDither()
+    if self.toggle_mode and self.obscure_style == "blur" then
         self:_redraw()
     end
     return true
@@ -175,6 +218,13 @@ function RubyBackend:_applyDitherParams()
         return
     end
     self.ui.document._document:setRubyToggleDitherParams(self.dither_intensity)
+end
+
+function RubyBackend:_applyBlurDither()
+    if not self:_hasBlurDitherApi() then
+        return
+    end
+    self.ui.document._document:setRubyToggleBlurDither(BLUR_DITHER[self.blur_dither] or 0)
 end
 
 -------------------------------------------------------------------------------

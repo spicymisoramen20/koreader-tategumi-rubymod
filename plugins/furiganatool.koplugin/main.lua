@@ -19,6 +19,7 @@ local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
 local BLUR_RADIUS_KEY = "furigana_toggle_blur_radius"
 local BLUR_PASSES_KEY = "furigana_toggle_blur_passes"
 local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
+local BLUR_DITHER_KEY = "furigana_toggle_blur_dither"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -35,6 +36,27 @@ local VALID_OBSCURE = {
     checker = true,
     hatch = true,
     noise = true,
+}
+local VALID_BLUR_DITHER = {
+    none = true,
+    dissolve = true,
+    bayer2 = true,
+    bayer4 = true,
+    bayer8 = true,
+    checker = true,
+    hatch = true,
+    noise = true,
+}
+
+local BLUR_DITHER_LABELS = {
+    none = _("None (soft gray)"),
+    dissolve = _("Dissolve"),
+    bayer2 = _("Bayer 2×2"),
+    bayer4 = _("Bayer 4×4"),
+    bayer8 = _("Bayer 8×8"),
+    checker = _("Checker"),
+    hatch = _("Hatch"),
+    noise = _("Noise"),
 }
 
 function FuriganaToggle:init()
@@ -60,11 +82,18 @@ function FuriganaToggle:init()
     if self.dither_intensity < 0 then self.dither_intensity = 0 end
     if self.dither_intensity > 100 then self.dither_intensity = 100 end
 
+    self.blur_dither = self.ui.doc_settings:readSetting(BLUR_DITHER_KEY) or "bayer4"
+    if not VALID_BLUR_DITHER[self.blur_dither] then
+        self.blur_dither = "bayer4"
+        self.ui.doc_settings:saveSetting(BLUR_DITHER_KEY, self.blur_dither)
+    end
+
     self.backend = RubyBackend:new(self.ui)
     self.backend.obscure_style = self.obscure_style
     self.backend.blur_radius = self.blur_radius
     self.backend.blur_passes = self.blur_passes
     self.backend.dither_intensity = self.dither_intensity
+    self.backend.blur_dither = self.blur_dither
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -107,6 +136,7 @@ function FuriganaToggle:_applyCss()
     self.backend:setObscureStyle(self.obscure_style)
     self.backend:setBlurParams(self.blur_radius, self.blur_passes)
     self.backend:setDitherParams(self.dither_intensity)
+    self.backend:setBlurDither(self.blur_dither)
     self.backend:setToggleMode(self.mode == "toggle")
 
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
@@ -147,6 +177,15 @@ function FuriganaToggle:setDitherParams(intensity)
     self.backend:setDitherParams(intensity)
 end
 
+function FuriganaToggle:setBlurDither(mode)
+    if not VALID_BLUR_DITHER[mode] or mode == self.blur_dither then
+        return
+    end
+    self.blur_dither = mode
+    self.ui.doc_settings:saveSetting(BLUR_DITHER_KEY, mode)
+    self.backend:setBlurDither(mode)
+end
+
 function FuriganaToggle:_spinBlurParam(which)
     local is_radius = which == "radius"
     local spin = SpinWidget:new{
@@ -175,7 +214,7 @@ end
 function FuriganaToggle:_spinDitherIntensity()
     local spin = SpinWidget:new{
         title_text = _("Obscure intensity"),
-        info_text = _("How strongly dissolve/dither removes furigana ink.\n0 = fully readable, 100 = fully hidden.\nTypical: 55–80."),
+        info_text = _("How strongly dissolve/dither removes furigana ink.\nFor Blur+dither: how dark the soft blotch renders.\n0 = fully readable / soft gray only, 100 = strongest.\nTypical: 55–80."),
         value = self.dither_intensity,
         value_min = 0,
         value_max = 100,
@@ -239,6 +278,7 @@ function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(BLUR_RADIUS_KEY, self.blur_radius)
     self.ui.doc_settings:saveSetting(BLUR_PASSES_KEY, self.blur_passes)
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
+    self.ui.doc_settings:saveSetting(BLUR_DITHER_KEY, self.blur_dither)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -255,6 +295,24 @@ function FuriganaToggle:addToMainMenu(menu_items)
             end,
             callback = function()
                 self:setObscureStyle(id)
+            end,
+        }
+    end
+
+    local function blur_dither_radio(id)
+        return {
+            text = BLUR_DITHER_LABELS[id] or id,
+            radio = true,
+            enabled_func = function()
+                return self.mode == "toggle"
+                    and self.obscure_style == "blur"
+                    and self.backend:_hasBlurDitherApi()
+            end,
+            checked_func = function()
+                return self.blur_dither == id
+            end,
+            callback = function()
+                self:setBlurDither(id)
             end,
         }
     end
@@ -328,20 +386,41 @@ function FuriganaToggle:addToMainMenu(menu_items)
                             self:_spinBlurParam("passes")
                         end,
                     },
-                    obscure_radio("dissolve", _("Dissolve")),
-                    obscure_radio("bayer4", _("Bayer 4×4")),
-                    obscure_radio("bayer2", _("Bayer 2×2")),
-                    obscure_radio("bayer8", _("Bayer 8×8")),
-                    obscure_radio("checker", _("Checker")),
-                    obscure_radio("hatch", _("Hatch")),
-                    obscure_radio("noise", _("Noise")),
+                    {
+                        text_func = function()
+                            local label = BLUR_DITHER_LABELS[self.blur_dither] or self.blur_dither
+                            return T(_("Blur dither: %1"), label)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.obscure_style == "blur"
+                                and self.backend:_hasBlurDitherApi()
+                        end,
+                        sub_item_table = {
+                            blur_dither_radio("none"),
+                            blur_dither_radio("bayer4"),
+                            blur_dither_radio("bayer2"),
+                            blur_dither_radio("bayer8"),
+                            blur_dither_radio("dissolve"),
+                            blur_dither_radio("checker"),
+                            blur_dither_radio("hatch"),
+                            blur_dither_radio("noise"),
+                        },
+                    },
+                    obscure_radio("dissolve", _("Dissolve (sharp)")),
+                    obscure_radio("bayer4", _("Bayer 4×4 (sharp)")),
+                    obscure_radio("bayer2", _("Bayer 2×2 (sharp)")),
+                    obscure_radio("bayer8", _("Bayer 8×8 (sharp)")),
+                    obscure_radio("checker", _("Checker (sharp)")),
+                    obscure_radio("hatch", _("Hatch (sharp)")),
+                    obscure_radio("noise", _("Noise (sharp)")),
                     {
                         text_func = function()
                             return T(_("Intensity: %1%%"), self.dither_intensity)
                         end,
                         enabled_func = function()
                             return self.mode == "toggle"
-                                and self.backend:isDitherStyle(self.obscure_style)
+                                and self.backend:usesIntensity()
                                 and self.backend:_hasDitherApi()
                         end,
                         keep_menu_open = true,
