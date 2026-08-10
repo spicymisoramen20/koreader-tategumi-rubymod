@@ -1,8 +1,10 @@
 local Device = require("device")
 local Event = require("ui/event")
+local SpinWidget = require("ui/widget/spinwidget")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local _ = require("gettext")
+local T = require("ffi/util").template
 
 local Styles = require("styles")
 local RubyBackend = require("ruby_backend")
@@ -14,6 +16,8 @@ local FuriganaToggle = WidgetContainer:extend{
 
 local SETTING_KEY = "furigana_toggle_mode"
 local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
+local BLUR_RADIUS_KEY = "furigana_toggle_blur_radius"
+local BLUR_PASSES_KEY = "furigana_toggle_blur_passes"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -22,6 +26,7 @@ local VALID_MODES = {
 local VALID_OBSCURE = {
     hidden = true,
     bar = true,
+    blur = true,
 }
 
 function FuriganaToggle:init()
@@ -32,13 +37,21 @@ function FuriganaToggle:init()
 
     self.obscure_style = self.ui.doc_settings:readSetting(OBSCURE_SETTING_KEY) or "hidden"
     if not VALID_OBSCURE[self.obscure_style] then
-        -- Drop retired trial styles (mosaic/dots).
         self.obscure_style = "hidden"
         self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
     end
 
+    self.blur_radius = tonumber(self.ui.doc_settings:readSetting(BLUR_RADIUS_KEY)) or 2
+    self.blur_passes = tonumber(self.ui.doc_settings:readSetting(BLUR_PASSES_KEY)) or 2
+    if self.blur_radius < 0 then self.blur_radius = 0 end
+    if self.blur_radius > 64 then self.blur_radius = 64 end
+    if self.blur_passes < 1 then self.blur_passes = 1 end
+    if self.blur_passes > 20 then self.blur_passes = 20 end
+
     self.backend = RubyBackend:new(self.ui)
     self.backend.obscure_style = self.obscure_style
+    self.backend.blur_radius = self.blur_radius
+    self.backend.blur_passes = self.blur_passes
     self._plugin_css = ""
     self:_installCssInjection()
 
@@ -78,12 +91,10 @@ function FuriganaToggle:_applyCss()
 
     self._plugin_css = Styles[self.mode] or ""
 
-    -- Toggle uses paint-time CREngine suppression; visible/off do not.
     self.backend:setObscureStyle(self.obscure_style)
+    self.backend:setBlurParams(self.blur_radius, self.blur_passes)
     self.backend:setToggleMode(self.mode == "toggle")
 
-    -- Full stylesheet apply shows the CRE loading bar (expected once on mode
-    -- change). Tap reveal/hide must never reach this path.
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
 end
 
@@ -94,8 +105,6 @@ function FuriganaToggle:setMode(mode)
 
     self.mode = mode
     self.ui.doc_settings:saveSetting(SETTING_KEY, mode)
-
-    -- Reveals never survive a mode change.
     self.backend:clearRevealedState()
     self:_applyCss()
 end
@@ -107,8 +116,40 @@ function FuriganaToggle:setObscureStyle(style)
 
     self.obscure_style = style
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
-    -- Paint-only: no stylesheet apply / no loading bar.
     self.backend:setObscureStyle(style)
+end
+
+function FuriganaToggle:setBlurParams(radius, passes)
+    self.blur_radius = radius
+    self.blur_passes = passes
+    self.ui.doc_settings:saveSetting(BLUR_RADIUS_KEY, radius)
+    self.ui.doc_settings:saveSetting(BLUR_PASSES_KEY, passes)
+    self.backend:setBlurParams(radius, passes)
+end
+
+function FuriganaToggle:_spinBlurParam(which)
+    local is_radius = which == "radius"
+    local spin = SpinWidget:new{
+        title_text = is_radius and _("Blur radius") or _("Blur passes"),
+        info_text = is_radius
+            and _("Box-blur kernel radius in pixels.\nTypical: 1–4. Allowed: 0–64.")
+            or _("How many times to apply the blur.\nTypical: 1–3. Allowed: 1–20."),
+        value = is_radius and self.blur_radius or self.blur_passes,
+        value_min = is_radius and 0 or 1,
+        value_max = is_radius and 64 or 20,
+        value_step = 1,
+        value_hold_step = is_radius and 4 or 2,
+        default_value = 2,
+        ok_always_enabled = true,
+        callback = function(spin_widget)
+            if is_radius then
+                self:setBlurParams(spin_widget.value, self.blur_passes)
+            else
+                self:setBlurParams(self.blur_radius, spin_widget.value)
+            end
+        end,
+    }
+    UIManager:show(spin)
 end
 
 function FuriganaToggle:onReaderReady()
@@ -131,21 +172,14 @@ function FuriganaToggle:_setupTouchZone()
                 ratio_w = 1,
                 ratio_h = 1,
             },
-
-            -- We must be allowed to see a tap before ordinary page-turn zones.
-            -- The handler returns false unless an actual ruby element was hit,
-            -- so normal page turning/menu behavior can continue.
             overrides = {
                 "tap_forward",
                 "tap_backward",
             },
-
             handler = function(ges)
                 if self.mode ~= "toggle" or not ges or not ges.pos then
                     return false
                 end
-                -- Consume only when a ruby hit was toggled; otherwise allow
-                -- normal KOReader tap / page-turn behavior.
                 return self.backend:toggleAtScreenPosition(ges.pos)
             end,
         },
@@ -155,17 +189,17 @@ function FuriganaToggle:_setupTouchZone()
 end
 
 function FuriganaToggle:onPageUpdate(pageno)
-    -- Revealed furigana persist across page turns while Toggle stays active.
     self.backend:onPageChanged(pageno)
 end
 
 function FuriganaToggle:onPosUpdate(pos)
-    -- Do not clear on scroll/position updates.
 end
 
 function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(SETTING_KEY, self.mode)
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
+    self.ui.doc_settings:saveSetting(BLUR_RADIUS_KEY, self.blur_radius)
+    self.ui.doc_settings:saveSetting(BLUR_PASSES_KEY, self.blur_passes)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -226,6 +260,35 @@ function FuriganaToggle:addToMainMenu(menu_items)
                 sub_item_table = {
                     obscure_radio("hidden", _("Hidden")),
                     obscure_radio("bar", _("Bar")),
+                    obscure_radio("blur", _("Blur")),
+                    {
+                        text_func = function()
+                            return T(_("Blur radius: %1"), self.blur_radius)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.obscure_style == "blur"
+                                and self.backend:_hasBlurApi()
+                        end,
+                        keep_menu_open = true,
+                        callback = function()
+                            self:_spinBlurParam("radius")
+                        end,
+                    },
+                    {
+                        text_func = function()
+                            return T(_("Blur passes: %1"), self.blur_passes)
+                        end,
+                        enabled_func = function()
+                            return self.mode == "toggle"
+                                and self.obscure_style == "blur"
+                                and self.backend:_hasBlurApi()
+                        end,
+                        keep_menu_open = true,
+                        callback = function()
+                            self:_spinBlurParam("passes")
+                        end,
+                    },
                 },
             },
         },
@@ -236,7 +299,6 @@ function FuriganaToggle:onCloseDocument()
     self.backend:setToggleMode(false)
     self.backend:clearRevealedState()
 
-    -- Restore ReaderStyleTweak method if this instance still owns the hook.
     local styletweak = self.ui and self.ui.styletweak
     if styletweak and self._css_hook_installed and self._original_getCssText then
         styletweak.getCssText = self._original_getCssText

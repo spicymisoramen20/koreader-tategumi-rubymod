@@ -5,6 +5,7 @@ local logger = require("logger")
 local OBSCURE = {
     hidden = 0,
     bar = 1,
+    blur = 2,
 }
 
 local RubyBackend = {}
@@ -17,6 +18,8 @@ function RubyBackend:new(ui)
         revealed = {},
         toggle_mode = false,
         obscure_style = "hidden",
+        blur_radius = 2,
+        blur_passes = 2,
     }
 
     return setmetatable(o, self)
@@ -46,6 +49,11 @@ function RubyBackend:_hasObscureApi()
     return doc and type(doc.setRubyToggleObscureStyle) == "function"
 end
 
+function RubyBackend:_hasBlurApi()
+    local doc = self.ui and self.ui.document and self.ui.document._document
+    return doc and type(doc.setRubyToggleBlurParams) == "function"
+end
+
 -------------------------------------------------------------------------------
 -- Toggle mode
 -------------------------------------------------------------------------------
@@ -64,6 +72,7 @@ function RubyBackend:setToggleMode(enabled)
     self.ui.document._document:setRubyToggleMode(self.toggle_mode)
     self.ui.document._document:clearRubyVisibilityOverrides()
     self:_applyObscureStyle()
+    self:_applyBlurParams()
     self:_redraw()
 
     return true
@@ -74,11 +83,31 @@ function RubyBackend:setObscureStyle(style)
         return false
     end
     if self.obscure_style == style then
+        self:_applyObscureStyle()
         return true
     end
     self.obscure_style = style
     self:_applyObscureStyle()
     if self.toggle_mode then
+        self:_redraw()
+    end
+    return true
+end
+
+function RubyBackend:setBlurParams(radius, passes)
+    radius = tonumber(radius) or self.blur_radius
+    passes = tonumber(passes) or self.blur_passes
+    -- Match CRE safety clamps, UI may offer the same envelope.
+    if radius < 0 then radius = 0 end
+    if radius > 64 then radius = 64 end
+    if passes < 1 then passes = 1 end
+    if passes > 20 then passes = 20 end
+
+    local changed = (self.blur_radius ~= radius) or (self.blur_passes ~= passes)
+    self.blur_radius = radius
+    self.blur_passes = passes
+    self:_applyBlurParams()
+    if changed and self.toggle_mode and self.obscure_style == "blur" then
         self:_redraw()
     end
     return true
@@ -91,13 +120,15 @@ function RubyBackend:_applyObscureStyle()
     self.ui.document._document:setRubyToggleObscureStyle(OBSCURE[self.obscure_style] or 0)
 end
 
+function RubyBackend:_applyBlurParams()
+    if not self:_hasBlurApi() then
+        return
+    end
+    self.ui.document._document:setRubyToggleBlurParams(self.blur_radius, self.blur_passes)
+end
+
 -------------------------------------------------------------------------------
 -- Reveal state
---
--- Reveals persist for the whole document session while Toggle is active.
--- They are cleared only on mode change / document close — not on page turns
--- or paint refreshes (those were wiping reveals and looking like a loading
--- re-render).
 -------------------------------------------------------------------------------
 
 function RubyBackend:clearRevealedState()
@@ -112,13 +143,11 @@ function RubyBackend:clearRevealedState()
     end
 end
 
--- Kept for call sites that previously meant "page-local" clears.
 function RubyBackend:clearPageState()
     self:clearRevealedState()
 end
 
 function RubyBackend:onPageChanged(_page_token)
-    -- Intentionally no-op: revealed furigana stay until retapped or mode exits.
 end
 
 -------------------------------------------------------------------------------
@@ -130,7 +159,6 @@ function RubyBackend:_rubyIdsFromHit(ruby)
         return {}
     end
 
-    -- Preferred: contiguous sibling ruby group from native hit-test.
     if type(ruby.ids) == "table" and #ruby.ids > 0 then
         return ruby.ids
     end
@@ -220,8 +248,6 @@ function RubyBackend:toggleAtScreenPosition(screen_pos)
     end
 
     local ids = ruby.ids
-    -- If any member of the group is hidden, reveal the whole group.
-    -- If all are revealed, hide the whole group.
     local any_hidden = false
     for _, id in ipairs(ids) do
         if not self.revealed[id] then
@@ -242,9 +268,6 @@ function RubyBackend:_redraw()
         return
     end
 
-    -- Paint-time ruby visibility does not change CRE layout/pos tags.
-    -- Trash only the page blitbuffer so drawCurrentView re-paints from CRE
-    -- without a full stylesheet / reflow (no loading bar).
     local doc = self.ui.document
     if doc then
         if type(doc.resetBufferCache) == "function" then
