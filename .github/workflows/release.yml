@@ -20,7 +20,7 @@ defaults:
 
 env:
   MAKEFLAGS: "PARALLEL_JOBS=3 OUTPUT_DIR=build"
-  OTA_BASE_URL: "https://github.com/m-tky/koreader-tategumi/releases/latest/download"
+  OTA_BASE_URL: "https://github.com/${{ github.repository }}/releases/latest/download"
   RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
 
 jobs:
@@ -342,9 +342,119 @@ jobs:
           name: android-arm64
           path: koreader-android-arm64-latest-stable.apk
 
+  macos:
+    name: macOS (${{ matrix.arch_label }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: '15'
+            platform: 'x86-64'
+            arch_label: x86_64
+            xcode_version: '16.4'
+            deployment_target: '10.15'
+            jobs: 5
+          - image: '15'
+            platform: 'ARM64'
+            arch_label: arm64
+            xcode_version: '16.4'
+            deployment_target: '11.0'
+            jobs: 4
+    runs-on: "macos-${{ matrix.image }}${{ matrix.platform == 'x86-64' && '-intel' || '' }}"
+    env:
+      CLICOLOR_FORCE: '1'
+      KODEBUG: ""
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deployment_target }}
+      MAKEFLAGS: OUTPUT_DIR=build PARALLEL_JOBS=${{ matrix.jobs }} INSTALL_DIR=install TARGET=macos
+    steps:
+      - name: XCode version
+        run: |
+          sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode_version }}.app
+          xcodebuild -version
+          xcode-select -p
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          set -x
+          python3 -m pip install --disable-pip-version-check meson ruamel.yaml
+          wget -O ninjatracing.zip https://github.com/cradleapps/ninjatracing/archive/084212eaf68f25c70579958a2ed67fb4ec2a9ca4.zip
+          unzip -j ninjatracing.zip '*/ninjatracing'
+          install -m755 ninjatracing /usr/local/bin/
+          rm ninjatracing*
+          packages=(
+            autoconf
+            automake
+            bash
+            binutils
+            coreutils
+            findutils
+            libtool
+            make
+            nasm
+            ninja
+            pkg-config
+            util-linux
+          )
+          export HOMEBREW_NO_AUTO_UPDATE=1
+          export HOMEBREW_NO_INSTALL_UPGRADE=1
+          brew uninstall gradle maven || true
+          brew install --formula --overwrite --quiet "${packages[@]}"
+
+      - name: Update PATH
+        run: >
+          printf '%s\n'
+          "$(brew --prefix)/opt/findutils/libexec/gnubin"
+          "$(brew --prefix)/opt/make/libexec/gnubin"
+          "$(brew --prefix)/opt/util-linux/bin"
+          | tee "${GITHUB_PATH}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Fetch tags
+        run: git fetch --tags --force
+
+      - name: Fetch submodules
+        run: make fetchthirdparty
+
+      - name: Build
+        run: make base
+
+      - name: Checking binaries for missing dependencies
+        run: make bincheck
+
+      - name: Package
+        run: make skeleton update --assume-old=base
+
+      - name: Rename for release
+        run: |
+          shopt -s nullglob
+          files=(koreader-macos-*.7z)
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "ERROR: no macOS .7z package found"
+            ls -la
+            exit 1
+          fi
+          cp "${files[0]}" "koreader-macos-${{ matrix.arch_label }}-latest-stable.7z"
+          ls -lh "koreader-macos-${{ matrix.arch_label }}-latest-stable.7z"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-${{ matrix.arch_label }}
+          path: koreader-macos-${{ matrix.arch_label }}-latest-stable.7z
+
   release:
     name: Create Release
-    needs: [kindle, kindlehf, kindlepw2, kobo, pocketbook, cervantes, remarkable, remarkable-aarch64, android-arm, android-arm64]
+    needs: [kindle, kindlehf, kindlepw2, kobo, pocketbook, cervantes, remarkable, remarkable-aarch64, android-arm, android-arm64, macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -385,6 +495,10 @@ jobs:
           done
           # Versioned copies of APKs
           for f in artifacts/**/*-latest-stable.apk; do
+            cp "$f" "${f/latest-stable/$TAG}" 2>/dev/null || true
+          done
+          # Versioned copies of macOS 7z packages
+          for f in artifacts/**/*-latest-stable.7z; do
             cp "$f" "${f/latest-stable/$TAG}" 2>/dev/null || true
           done
           # Android "link" type OTA index files (no extension, first line = APK filename)
@@ -445,16 +559,18 @@ jobs:
 
             | Platform | Package |
             |----------|---------|
-            | Kindle (HF, Touch and newer) | [koreader-kindlehf-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-kindlehf-${{ env.RELEASE_TAG }}.zip) |
-            | Kindle (PW2 / non-HF) | [koreader-kindlepw2-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-kindlepw2-${{ env.RELEASE_TAG }}.zip) |
-            | Kindle (legacy non-touch) | [koreader-kindle-legacy-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-kindle-legacy-${{ env.RELEASE_TAG }}.zip) |
-            | Kobo | [koreader-kobo-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-kobo-${{ env.RELEASE_TAG }}.zip) |
-            | PocketBook | [koreader-pocketbook-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-pocketbook-${{ env.RELEASE_TAG }}.zip) |
-            | Cervantes | [koreader-cervantes-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-cervantes-${{ env.RELEASE_TAG }}.zip) |
-            | reMarkable (armhf) | [koreader-remarkable-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-remarkable-${{ env.RELEASE_TAG }}.zip) |
-            | reMarkable (aarch64) | [koreader-remarkable-aarch64-${{ env.RELEASE_TAG }}.zip](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-remarkable-aarch64-${{ env.RELEASE_TAG }}.zip) |
-            | Android (ARM) | [koreader-android-${{ env.RELEASE_TAG }}.apk](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-android-${{ env.RELEASE_TAG }}.apk) |
-            | Android (ARM64) | [koreader-android-arm64-${{ env.RELEASE_TAG }}.apk](https://github.com/m-tky/koreader-tategumi/releases/download/${{ env.RELEASE_TAG }}/koreader-android-arm64-${{ env.RELEASE_TAG }}.apk) |
+            | Kindle (HF, Touch and newer) | [koreader-kindlehf-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-kindlehf-${{ env.RELEASE_TAG }}.zip) |
+            | Kindle (PW2 / non-HF) | [koreader-kindlepw2-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-kindlepw2-${{ env.RELEASE_TAG }}.zip) |
+            | Kindle (legacy non-touch) | [koreader-kindle-legacy-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-kindle-legacy-${{ env.RELEASE_TAG }}.zip) |
+            | Kobo | [koreader-kobo-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-kobo-${{ env.RELEASE_TAG }}.zip) |
+            | PocketBook | [koreader-pocketbook-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-pocketbook-${{ env.RELEASE_TAG }}.zip) |
+            | Cervantes | [koreader-cervantes-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-cervantes-${{ env.RELEASE_TAG }}.zip) |
+            | reMarkable (armhf) | [koreader-remarkable-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-remarkable-${{ env.RELEASE_TAG }}.zip) |
+            | reMarkable (aarch64) | [koreader-remarkable-aarch64-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-remarkable-aarch64-${{ env.RELEASE_TAG }}.zip) |
+            | Android (ARM) | [koreader-android-${{ env.RELEASE_TAG }}.apk](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-android-${{ env.RELEASE_TAG }}.apk) |
+            | Android (ARM64) | [koreader-android-arm64-${{ env.RELEASE_TAG }}.apk](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-android-arm64-${{ env.RELEASE_TAG }}.apk) |
+            | macOS (Apple Silicon) | [koreader-macos-arm64-${{ env.RELEASE_TAG }}.7z](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-macos-arm64-${{ env.RELEASE_TAG }}.7z) |
+            | macOS (Intel) | [koreader-macos-x86_64-${{ env.RELEASE_TAG }}.7z](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-macos-x86_64-${{ env.RELEASE_TAG }}.7z) |
           files: artifacts/**/*
           draft: false
           prerelease: false
