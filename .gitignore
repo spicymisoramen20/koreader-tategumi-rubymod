@@ -45,3 +45,6 @@ i18n
 # Local furigana rubymod workflow outputs
 /out/*.apk
 /logs/furigana-*.txt
+
+# Local-only device workflow scripts (not for GitHub)
+/dev/
