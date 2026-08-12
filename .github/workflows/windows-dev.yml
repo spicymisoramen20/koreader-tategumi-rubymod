@@ -12,7 +12,9 @@ defaults:
     shell: bash
 
 env:
-  MAKEFLAGS: "PARALLEL_JOBS=3 OUTPUT_DIR=build"
+  # Include keep-going (`k`) so one thirdparty failure does not hide siblings.
+  # base/Makefile.defs maps make -k → ninja -k0.
+  MAKEFLAGS: "k PARALLEL_JOBS=3 OUTPUT_DIR=build"
 
 jobs:
   win32:
@@ -64,7 +66,55 @@ jobs:
         run: make fetchthirdparty
 
       - name: Build
-        run: make TARGET=win32
+        id: build
+        run: |
+          set +e
+          set -o pipefail
+          make -k TARGET=win32 2>&1 | tee build-win32.log
+          status=${PIPESTATUS[0]}
+          echo "exit_code=${status}" >> "$GITHUB_OUTPUT"
+          exit "${status}"
+
+      - name: Failure summary
+        if: failure() && steps.build.outcome == 'failure'
+        run: |
+          set -eux
+          log=build-win32.log
+          if [[ ! -f "$log" ]]; then
+            echo "No build-win32.log; nothing to summarize."
+            exit 0
+          fi
+
+          {
+            echo '======== Failed thirdparty packages ========'
+            grep -Eo 'thirdparty/[^/]+/stamp/(build|configure|install)' "$log" \
+              | sed 's|.*/thirdparty/||; s|/stamp/.*||' \
+              | sort -u \
+              || true
+            echo
+            echo '======== FAILED: lines ========'
+            grep 'FAILED: \[code=' "$log" | sort -u || true
+            echo
+            echo '======== Compiler / linker errors ========'
+            grep -E 'error: |undefined reference|fatal error:|collect2:' "$log" \
+              | grep -Ev 'fz_warn|Wformat|format string|unknown conversion|pcls\[' \
+              | head -n 200 \
+              || true
+          } | tee failure-summary.txt
+
+          echo
+          echo 'Full log: build-win32.log (uploaded as artifact).'
+
+      - name: Upload build log
+        if: failure() && steps.build.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: win32-build-log
+          path: |
+            build-win32.log
+            failure-summary.txt
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Package
         run: make TARGET=win32 update
