@@ -659,6 +659,17 @@ end
 
 function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note_mark)
     local x, y, w, h = rect.x, rect.y, rect.w, rect.h
+    local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
+    if is_vertical then
+        -- Vertical-rl: annotation / furigana-toggle fog sits on the "before"
+        -- (right) side of the column. Full-strut Lighten paints under that
+        -- cloud; keep the highlight on the body band and leave the right
+        -- fraction clear. Underscore/strikeout use the same inset.
+        local inset = math.max(2, math.floor(w * 2 / 5))
+        if w - inset >= math.max(4, math.floor(w / 2)) then
+            w = w - inset
+        end
+    end
     if drawer == "lighten" or drawer == "invert" then
         local pct = G_reader_settings:readSetting("highlight_height_pct")
         if pct ~= nil then
@@ -687,14 +698,14 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
         if not color then
             color = Blitbuffer.COLOR_GRAY_4
         end
-        local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
         if is_vertical then
-            -- In vertical-rl, draw a bousen (sideline) on the right edge of the column
-            -- (the "before" / annotation side), running the full selection height.
+            -- Bousen on the body/annotation boundary (not the outer strut edge),
+            -- so it does not sit under the furigana toggle fog.
+            local line_x = x + w - Size.line.thick
             if Blitbuffer.isColor8(color) then
-                bb:paintRect(x + w - Size.line.thick, y, Size.line.thick, h, color)
+                bb:paintRect(line_x, y, Size.line.thick, h, color)
             else
-                bb:paintRectRGB32(x + w - Size.line.thick, y, Size.line.thick, h, Screen.night_mode and color:invert() or color)
+                bb:paintRectRGB32(line_x, y, Size.line.thick, h, Screen.night_mode and color:invert() or color)
             end
         else
             if Blitbuffer.isColor8(color) then
@@ -707,9 +718,8 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
         if not color then
             color = Blitbuffer.COLOR_BLACK
         end
-        local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
         if is_vertical then
-            -- In vertical-rl, draw a vertical strikeout through the column center.
+            -- Strike through the body band center (after annotation-side inset).
             local line_x = x + math.floor(w / 2) - math.floor(Size.line.medium / 2)
             if Blitbuffer.isColor8(color) then
                 bb:paintRect(line_x, y, Size.line.medium, h, color)
