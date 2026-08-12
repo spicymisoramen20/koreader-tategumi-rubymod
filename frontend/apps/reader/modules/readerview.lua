@@ -661,13 +661,16 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
     local x, y, w, h = rect.x, rect.y, rect.w, rect.h
     local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
     if is_vertical then
-        -- Vertical-rl: annotation / furigana-toggle fog sits on the "before"
-        -- (right) side of the column. Full-strut Lighten paints under that
-        -- cloud; keep the highlight on the body band and leave the right
-        -- fraction clear. Underscore/strikeout use the same inset.
-        local inset = math.max(2, math.floor(w * 2 / 5))
-        if w - inset >= math.max(4, math.floor(w / 2)) then
-            w = w - inset
+        -- Vertical-rl: leave a margin on both sides of the body glyphs so the
+        -- highlight is centered in the column (not flush to one edge). The
+        -- right ("before") margin also keeps Lighten off the furigana-toggle
+        -- fog that sits in the inter-column gap.
+        local inset_total = math.max(2, math.floor(w * 2 / 5))
+        -- Keep at least half the strut as the painted band.
+        if w - inset_total >= math.max(4, math.floor(w / 2)) then
+            local side = math.floor(inset_total / 2)
+            x = x + side
+            w = w - side * 2
         end
     end
     if drawer == "lighten" or drawer == "invert" then
