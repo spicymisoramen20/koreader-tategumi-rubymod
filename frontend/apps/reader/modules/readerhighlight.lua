@@ -2021,8 +2021,13 @@ function ReaderHighlight:onHoldPan(_, ges)
         self.ui.document:clearSelection()
         -- docToWindowPoint and drawPageTo now use the same clip.right anchor, so
         -- sboxes are already at the correct screen position — no shift needed.
+        -- Keep the previous band if this pan produced no drawable segments
+        -- (transient empty boxes when the exclusive end lands on ruby <rt>
+        -- used to wipe the highlight until the next successful pan).
         local sboxes = self.selected_text.sboxes
-        self.view.highlight.temp[self.hold_pos.page] = sboxes
+        if sboxes and #sboxes > 0 then
+            self.view.highlight.temp[self.hold_pos.page] = sboxes
+        end
     end
     -- Ensure indicator overlay does not restore stale background over updated highlights.
     if self.ui.keyselection:isActive() then
