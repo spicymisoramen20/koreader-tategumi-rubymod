@@ -1,0 +1,84 @@
+name: Windows Dev Build
+
+# Iterate on MinGW TARGET=win32 outside Release builds.
+# When this workflow produces a clean zip reliably, fold it back into
+# .github/workflows/release.yml.
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  MAKEFLAGS: "PARALLEL_JOBS=3 OUTPUT_DIR=build"
+
+jobs:
+  win32:
+    name: Windows (x86_64 MinGW)
+    runs-on: ubuntu-latest
+    container:
+      image: koreader/koappimage:latest
+    env:
+      BASH_ENV: /home/ko/.bashrc
+      TARGET: win32
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Show revisions
+        run: |
+          echo "=== Top-level ==="
+          git rev-parse HEAD
+          git log -1 --oneline
+          echo
+          echo "=== base gitlink ==="
+          git ls-tree HEAD base
+          git -C base log -1 --oneline || true
+
+      - name: Install MinGW toolchain
+        run: |
+          set -eux
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            mingw-w64 \
+            gcc-mingw-w64-x86-64 \
+            g++-mingw-w64-x86-64 \
+            p7zip-full
+
+      - name: Fetch submodules
+        run: make fetchthirdparty
+
+      - name: Build
+        run: make TARGET=win32
+
+      - name: Package
+        run: make TARGET=win32 update
+
+      - name: Find zip
+        id: zip
+        run: |
+          set -eux
+          shopt -s nullglob
+          files=(koreader-win32-*.zip)
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "ERROR: no win32 zip package found"
+            ls -la
+            exit 1
+          fi
+          echo "Using: ${files[0]}"
+          cp "${files[0]}" koreader-win32-dev.zip
+          ls -lh koreader-win32-dev.zip
+          echo "path=koreader-win32-dev.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: koreader-win32-dev
+          path: ${{ steps.zip.outputs.path }}
+          if-no-files-found: error
+          retention-days: 14
