@@ -1,8 +1,7 @@
 name: Windows Dev Build
 
-# Iterate on MinGW TARGET=win32 outside Release builds.
-# When this workflow produces a clean zip reliably, fold it back into
-# .github/workflows/release.yml.
+# Standalone MinGW TARGET=win32 iteration path. Release builds also ship
+# win32 via .github/workflows/release.yml; keep this for quick redispatch.
 
 on:
   workflow_dispatch:
