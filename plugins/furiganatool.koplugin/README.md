@@ -45,6 +45,6 @@ If CREngine does not preserve layout for `visibility:hidden`, the correct implem
 
 ## Tap priority
 
-The plugin asks to run before ordinary forward/backward page-turn tap zones, but it returns `false` unless `RubyBackend:toggleAtScreenPosition()` actually toggles a ruby. This is intentional: taps on non-ruby text should fall through to KOReader.
+The plugin asks to run before ordinary forward/backward page-turn tap zones, but it returns `false` unless `RubyBackend:toggleAtScreenPosition()` actually toggles a ruby. Taps on non-ruby text fall through to KOReader. Links and highlight taps are **not** overridden.
 
-Before final integration, link/highlight/menu priority should be tested against KOReader's existing `ReaderHighlight` touch-zone ordering.
+When furigana is in **Toggle** mode and the user taps an existing highlight on a ruby word, the highlight edit dialog gains a top **Show furigana** / **Hide furigana** button for the ruby under the finger (not the whole highlight).

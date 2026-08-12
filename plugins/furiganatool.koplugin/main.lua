@@ -79,6 +79,12 @@ function FuriganaToggle:init()
     self._plugin_css = ""
     self:_installCssInjection()
 
+    -- Stable aliases for other modules (directory name is furiganatool).
+    self.ui.furigana = self
+    if self.ui.highlight then
+        self.ui.highlight._furigana_plugin = self
+    end
+
     self.ui.menu:registerToMainMenu(self)
 end
 
@@ -235,6 +241,77 @@ function FuriganaToggle:_setupTouchZone()
     })
 
     self._touch_zone_registered = true
+end
+
+-- Button for ReaderHighlight's edit dialog. Targets only the ruby under
+-- screen_pos (the finger tap that opened the dialog), not every ruby in the
+-- highlight range.
+function FuriganaToggle:buildHighlightDialogButton(annotation, on_done, screen_pos)
+    if self.mode ~= "toggle" or not self.backend then
+        return nil
+    end
+    if not annotation or type(annotation.pos0) ~= "string" then
+        return nil
+    end
+
+    -- Ensure engine toggle flag is on if the UI mode says so.
+    if not self.backend.toggle_mode then
+        self.backend:setToggleMode(true)
+    end
+
+    local function resolve_ids_at_tap()
+        if not screen_pos then
+            return {}
+        end
+        local ruby = self.backend:getRubyAtScreenPosition(screen_pos)
+        if ruby and ruby.ids and #ruby.ids > 0 then
+            return ruby.ids
+        end
+        -- Modest finger fudge around the tap (base glyph ↔ fog sit side by
+        -- side in vertical-rl). Still returns at most one ruby group.
+        local Device = require("device")
+        local step = Device.screen:scaleBySize(14)
+        local ox, oy = screen_pos.x, screen_pos.y
+        for _, d in ipairs({
+            { step, 0 }, { -step, 0 }, { 0, step }, { 0, -step },
+            { 2 * step, 0 }, { -2 * step, 0 },
+        }) do
+            ruby = self.backend:getRubyAtScreenPosition({ x = ox + d[1], y = oy + d[2] })
+            if ruby and ruby.ids and #ruby.ids > 0 then
+                return ruby.ids
+            end
+        end
+        return {}
+    end
+
+    local ids = resolve_ids_at_tap()
+    if #ids == 0 then
+        return nil
+    end
+
+    local any_hidden = false
+    for _, id in ipairs(ids) do
+        if not self.backend.revealed[id] then
+            any_hidden = true
+            break
+        end
+    end
+
+    local Notification = require("ui/widget/notification")
+    return {
+        text = any_hidden and _("Show furigana") or _("Hide furigana"),
+        callback = function()
+            if on_done then
+                on_done()
+            end
+            local live_ids = resolve_ids_at_tap()
+            if not live_ids or #live_ids == 0 then
+                Notification:notify(_("No furigana under finger"))
+                return
+            end
+            self.backend:toggleRubyIds(live_ids)
+        end,
+    }
 end
 
 function FuriganaToggle:onPageUpdate(pageno)

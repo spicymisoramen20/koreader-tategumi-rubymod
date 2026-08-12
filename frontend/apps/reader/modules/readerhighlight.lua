@@ -1014,6 +1014,9 @@ function ReaderHighlight:onTap(_, ges)
             end
         end
         if #highlights_tapped > 0 then
+            -- Remember where the finger landed so furigana Show/Hide targets
+            -- only the ruby under the tap, not every ruby in the highlight.
+            self._highlight_tap_pos = ges.pos
             return self:showChooseHighlightDialog(highlights_tapped)
         end
     end
@@ -1472,6 +1475,34 @@ function ReaderHighlight:showHighlightDialog(index)
             },
         },
     }
+
+    -- Furigana: prefer the stable alias installed in FuriganaToggle:init.
+    local furigana = self._furigana_plugin or self.ui.furigana
+        or self.ui.furiganatool or self.ui.furiganatoggle
+    if not furigana then
+        local ok, PluginLoader = pcall(require, "pluginloader")
+        if ok and PluginLoader then
+            furigana = PluginLoader:getPluginInstance("furiganatool")
+                or PluginLoader:getPluginInstance("furiganatoggle")
+        end
+    end
+    if not furigana then
+        for _, mod in ipairs(self.ui) do
+            if mod and mod.buildHighlightDialogButton then
+                furigana = mod
+                break
+            end
+        end
+    end
+    if furigana and furigana.buildHighlightDialogButton then
+        local ok, furigana_button = pcall(furigana.buildHighlightDialogButton, furigana, item, function()
+            UIManager:close(edit_highlight_dialog)
+        end, self._highlight_tap_pos)
+        if ok and furigana_button then
+            table.insert(buttons, 1, { furigana_button })
+        end
+    end
+
     edit_highlight_dialog = ButtonDialog:new{
         name = "edit_highlight_dialog", -- for unit tests
         buttons = buttons,

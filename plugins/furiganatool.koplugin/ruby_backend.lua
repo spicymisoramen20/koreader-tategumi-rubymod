@@ -220,6 +220,82 @@ function RubyBackend:getRubyAtScreenPosition(screen_pos)
     }
 end
 
+function RubyBackend:getRubyAtXPointer(xp)
+    if not self:isSupported() or type(xp) ~= "string" then
+        return nil
+    end
+
+    local cre = self.ui.document._document
+    if type(cre.getRubyFromXPointer) ~= "function" then
+        return nil
+    end
+
+    local ruby = cre:getRubyFromXPointer(xp)
+    local ids = self:_rubyIdsFromHit(ruby)
+    if #ids == 0 then
+        return nil
+    end
+
+    return {
+        id = ids[1],
+        ids = ids,
+    }
+end
+
+-- Walk an annotation's xpointer range and collect every ruby group it covers.
+function RubyBackend:getRubyIdsInXPointerRange(pos0, pos1)
+    if not self:isSupported() or type(pos0) ~= "string" then
+        return {}
+    end
+
+    local cre = self.ui.document._document
+    if type(cre.getRubiesFromXPointers) == "function" and type(pos1) == "string" then
+        local ids = cre:getRubiesFromXPointers(pos0, pos1)
+        if type(ids) == "table" and #ids > 0 then
+            return ids
+        end
+    end
+
+    -- Fallback when the C range API is missing or returned nothing.
+    local doc = self.ui.document
+    local ids, seen = {}, {}
+    local function add_from_xp(xp)
+        local ruby = self:getRubyAtXPointer(xp)
+        if not ruby or not ruby.ids then
+            return
+        end
+        for _, id in ipairs(ruby.ids) do
+            if not seen[id] then
+                seen[id] = true
+                table.insert(ids, id)
+            end
+        end
+    end
+
+    add_from_xp(pos0)
+    if type(pos1) == "string" and pos1 ~= pos0 then
+        add_from_xp(pos1)
+        local xp = pos0
+        for _ = 1, 400 do
+            local next_xp = doc:getNextVisibleChar(xp)
+            if not next_xp or next_xp == xp then
+                break
+            end
+            local cmp = doc:compareXPointers(next_xp, pos1)
+            if not cmp or cmp < 0 then
+                break
+            end
+            xp = next_xp
+            add_from_xp(xp)
+            if cmp == 0 then
+                break
+            end
+        end
+    end
+
+    return ids
+end
+
 -------------------------------------------------------------------------------
 -- Visibility
 -------------------------------------------------------------------------------
@@ -278,7 +354,14 @@ function RubyBackend:toggleAtScreenPosition(screen_pos)
         return false
     end
 
-    local ids = ruby.ids
+    return self:toggleRubyIds(ruby.ids)
+end
+
+function RubyBackend:toggleRubyIds(ids)
+    if not self.toggle_mode or not self:isSupported() or not ids or #ids == 0 then
+        return false
+    end
+
     local any_hidden = false
     for _, id in ipairs(ids) do
         if not self.revealed[id] then
