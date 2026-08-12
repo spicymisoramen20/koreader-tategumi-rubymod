@@ -48,7 +48,10 @@ jobs:
             mingw-w64 \
             gcc-mingw-w64-x86-64 \
             g++-mingw-w64-x86-64 \
+            binutils-mingw-w64-x86-64 \
             p7zip-full
+          # FreeType meson needs this once host_machine.system=windows.
+          command -v x86_64-w64-mingw32-windres
 
       - name: Fetch submodules
         run: make fetchthirdparty
