@@ -668,6 +668,82 @@ describe("Vertical text", function()
             end
         end)
 
+        it("ruby column selection is one connected sbox without annotation phantoms #highlight_merge", function()
+            -- Mono-ruby DOM order used to flush a segment after every <rb> and
+            -- paint detached <rt> boxes in the margin.  After skipping
+            -- annotations + column merge, a single-column drag must yield one
+            -- (or very few) body-width sboxes — not N per-char / phantom bars.
+            local h = Screen:getHeight()
+            local w = Screen:getWidth()
+            local top_y = math.floor(h * 0.15)
+            local xs = find_content_columns(doc, top_y, 1)
+            if not xs then
+                pending("No ruby content column for highlight-merge test")
+                return
+            end
+            local x = xs[1]
+            local bot_y = top_y
+            local step = math.max(10, math.floor(h / 32))
+            for ty = top_y, math.floor(h * 0.85), step do
+                local ok_p, word = pcall(function()
+                    return doc:getWordFromPosition({x = x, y = ty})
+                end)
+                if ok_p and word and word.word and #word.word > 0 then
+                    bot_y = ty
+                end
+            end
+            if bot_y - top_y < math.floor(h * 0.15) then
+                pending("Column too short for highlight-merge test")
+                return
+            end
+            local ok, result = pcall(function()
+                return doc:getTextFromPositions({x = x, y = top_y}, {x = x, y = bot_y})
+            end)
+            assert.truthy(ok and result, "getTextFromPositions failed for ruby column")
+            local sboxes = result.sboxes or {}
+            assert.truthy(#sboxes > 0, "No sboxes for ruby column selection")
+
+            -- Body strut ≈ mode of sbox.w in [20, 80].
+            local freq = {}
+            for _, sb in ipairs(sboxes) do
+                if sb.w >= 20 and sb.w <= 80 then
+                    freq[sb.w] = (freq[sb.w] or 0) + 1
+                end
+            end
+            local strut, best = 0, 0
+            for ww, cnt in pairs(freq) do
+                if cnt > best then best = cnt; strut = ww end
+            end
+            if strut == 0 then
+                -- Fall back: largest sbox width in a plausible range.
+                for _, sb in ipairs(sboxes) do
+                    if sb.w > strut and sb.w <= 100 then strut = sb.w end
+                end
+            end
+            assert.truthy(strut >= 16, "Could not determine body strut from sboxes")
+
+            -- No annotation phantoms: every sbox must be near body width (not
+            -- half-size rt bars sitting in the inter-column gutter).
+            for i, sb in ipairs(sboxes) do
+                assert.truthy(sb.w >= strut - 4,
+                    string.format("sbox[%d].w=%d looks like ruby annotation (strut=%d)",
+                        i, sb.w, strut))
+            end
+
+            -- Connected: for a single-column drag, expect ≤ 2 sboxes (one
+            -- continuous bar; allow a split only at a hard block boundary).
+            -- Before the fix this was typically ≈ character count (≫ 5).
+            assert.truthy(#sboxes <= 2,
+                string.format("ruby column selection fragmented into %d sboxes (want ≤2)", #sboxes))
+
+            -- And the selection should cover a meaningful vertical span.
+            local total_h = 0
+            for _, sb in ipairs(sboxes) do total_h = total_h + sb.h end
+            assert.truthy(total_h >= (bot_y - top_y) * 0.4,
+                string.format("merged height %d too small for drag span %d (screen %dx%d)",
+                    total_h, bot_y - top_y, w, h))
+        end)
+
         -- Ruby column-width and alignment tests
         --
         -- In vertical-rl, every column must be exactly strut_height wide.
