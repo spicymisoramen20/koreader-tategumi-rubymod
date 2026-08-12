@@ -344,6 +344,20 @@ From the footnote popup, you can jump to the footnote location in the book by sw
                 separator = Device:isTouchDevice() and true or false,
             },
             {
+                text = _("Japanese support"),
+                enabled_func = function()
+                    return isFootnoteLinkInPopupEnabled() and
+                        (isTapToFollowLinksOn() or isSwipeToFollowNearestLinkEnabled())
+                end,
+                checked_func = function()
+                    return G_reader_settings:isTrue("footnote_popup_japanese_support")
+                end,
+                callback = function()
+                    G_reader_settings:flipNilOrFalse("footnote_popup_japanese_support")
+                end,
+                help_text = _([[Use a small CREngine view for footnote popups so Japanese ruby displays correctly. Slightly heavier than the standard popup; furigana Off/Toggle in the book also apply inside this popup.]]),
+            },
+            {
                 text = _("Use book font in popups"),
                 enabled_func = function()
                     return isFootnoteLinkInPopupEnabled() and
@@ -1583,6 +1597,17 @@ function ReaderLink:showAsFootnotePopup(link, neglect_current_location)
     local popup
     popup = FootnoteWidget:new{
         html = html,
+        japanese_support = G_reader_settings:isTrue("footnote_popup_japanese_support"),
+        furigana_toggle_mode = self.ui.doc_settings
+            and self.ui.doc_settings:readSetting("furigana_toggle_mode") or "visible",
+        furigana_toggle_obscure = self.ui.doc_settings
+            and self.ui.doc_settings:readSetting("furigana_toggle_obscure") or "hidden",
+        furigana_toggle_dither_intensity = self.ui.doc_settings
+            and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_dither_intensity")) or 10,
+        furigana_toggle_fog_falloff = self.ui.doc_settings
+            and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_fog_falloff")) or 5,
+        furigana_toggle_fog_roundness = self.ui.doc_settings
+            and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_fog_roundness")) or 15,
         doc_font_name = self.ui.font.font_face,
         doc_font_size = Screen:scaleBySize(self.document.configurable.font_size),
         doc_margins = self.document:getPageMargins(),

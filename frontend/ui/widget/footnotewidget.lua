@@ -11,6 +11,7 @@ local HorizontalGroup = require("ui/widget/horizontalgroup")
 local HorizontalSpan = require("ui/widget/horizontalspan")
 local InputContainer = require("ui/widget/container/inputcontainer")
 local LineWidget = require("ui/widget/linewidget")
+local ScrollCreHtmlWidget = require("ui/widget/scrollcrehtmlwidget")
 local ScrollHtmlWidget = require("ui/widget/scrollhtmlwidget")
 local Size = require("ui/size")
 local UIManager = require("ui/uimanager")
@@ -121,6 +122,15 @@ local FootnoteWidget = InputContainer:extend{
     css = nil,
     -- font_face can't really be overridden, it needs to be known by MuPDF
     font_face = "Noto Sans",
+    -- When true, render with a small temporary CRE DocView (CSS Ruby / furigana).
+    -- Default remains MuPDF (lighter); gated by footnote_popup_japanese_support.
+    japanese_support = false,
+    -- Book furigana settings (CRE path only; plugin stays book-only)
+    furigana_toggle_mode = "visible",
+    furigana_toggle_obscure = "hidden",
+    furigana_toggle_dither_intensity = 10,
+    furigana_toggle_fog_falloff = 5,
+    furigana_toggle_fog_roundness = 15,
     -- For the doc_* values, we expect to be provided with the real
     -- (already scaled) sizes in screen pixels
     doc_font_size = Screen:scaleBySize(18),
@@ -209,17 +219,21 @@ function FootnoteWidget:init()
         }
     end
 
-    -- Workaround bugs in MuPDF:
-    -- There is something with its handling of <BR>:
-    --   <div>abc<br/>def</div> : 2 lines, no space in between
-    --   <div>abc<br anyattr="anyvalue"/>def</div> : 3 lines, empty line in between
-    -- Remove any attribute, let a <br/> be a plain <br/>
-    self.html = self.html:gsub([[<br[^>]*>]], [[<br/>]])
-    -- Elements with a id= attribute get a line above them (by some internal MuPDF
-    -- code, possibly generate_anchor() in html-layout.c).
-    -- Working around it with the following does not work: *[id] {margin-top: -1em;}
-    -- So, just rename the id= attribute, as we don't follow links in this popup.
-    self.html = self.html:gsub([[(<[^>]* )[iI][dD]=]], [[%1disabledID=]])
+    local use_cre = self.japanese_support
+
+    if not use_cre then
+        -- Workaround bugs in MuPDF:
+        -- There is something with its handling of <BR>:
+        --   <div>abc<br/>def</div> : 2 lines, no space in between
+        --   <div>abc<br anyattr="anyvalue"/>def</div> : 3 lines, empty line in between
+        -- Remove any attribute, let a <br/> be a plain <br/>
+        self.html = self.html:gsub([[<br[^>]*>]], [[<br/>]])
+        -- Elements with a id= attribute get a line above them (by some internal MuPDF
+        -- code, possibly generate_anchor() in html-layout.c).
+        -- Working around it with the following does not work: *[id] {margin-top: -1em;}
+        -- So, just rename the id= attribute, as we don't follow links in this popup.
+        self.html = self.html:gsub([[(<[^>]* )[iI][dD]=]], [[%1disabledID=]])
+    end
 
     -- We may use a font size a bit smaller than the document one (because
     -- footnotes are usually smaller, and because NotoSans is a bit on the
@@ -232,35 +246,40 @@ function FootnoteWidget:init()
     end
 
     local font_css = ""
+    local cre_font_face = self.font_face
     if G_reader_settings:isTrue("footnote_popup_use_book_font") then
-        local cre = require("document/credocument"):engineInit()
-        -- Note: we can't provide any base weight (as supported by crengine), as MuPDF
-        -- will use the bold font for anything with a weight > 400. We can only use the
-        -- font as-is, without its natural weight tweaked.
-        local seen_font_path = {}
-        for i=1, 4 do
-            local bold = i >= 3
-            local italic = i == 2 or i ==4
-            -- We assume the font is not from a collection, and ignore the index.
-            local font_path = cre.getFontFaceFilenameAndFaceIndex(self.doc_font_name, bold, italic)
-            -- crengine returns the regular filename when requesting a bold that
-            -- it has synthesized; but MuPDF would consider it as real bold and
-            -- would use it as-is: by not providing the fake bold font file path,
-            -- we let MuPDF itself synthesize the bold (and also italic if none
-            -- provided). So, keep track of what's been seen and used.
-            if font_path and not seen_font_path[font_path] then
-                seen_font_path[font_path] = true
-                font_css = font_css .. T("\n@font-face { font-family: 'KOReaderFootnoteFont'; src: url('%1')%2%3}",
-                            font_path,
-                            bold and "; font-weight: bold" or "",
-                            italic and "; font-style: italic" or "")
+        if use_cre then
+            cre_font_face = self.doc_font_name or self.font_face
+        else
+            local cre = require("document/credocument"):engineInit()
+            -- Note: we can't provide any base weight (as supported by crengine), as MuPDF
+            -- will use the bold font for anything with a weight > 400. We can only use the
+            -- font as-is, without its natural weight tweaked.
+            local seen_font_path = {}
+            for i=1, 4 do
+                local bold = i >= 3
+                local italic = i == 2 or i ==4
+                -- We assume the font is not from a collection, and ignore the index.
+                local font_path = cre.getFontFaceFilenameAndFaceIndex(self.doc_font_name, bold, italic)
+                -- crengine returns the regular filename when requesting a bold that
+                -- it has synthesized; but MuPDF would consider it as real bold and
+                -- would use it as-is: by not providing the fake bold font file path,
+                -- we let MuPDF itself synthesize the bold (and also italic if none
+                -- provided). So, keep track of what's been seen and used.
+                if font_path and not seen_font_path[font_path] then
+                    seen_font_path[font_path] = true
+                    font_css = font_css .. T("\n@font-face { font-family: 'KOReaderFootnoteFont'; src: url('%1')%2%3}",
+                                font_path,
+                                bold and "; font-weight: bold" or "",
+                                italic and "; font-style: italic" or "")
+                end
             end
-        end
-        if font_css ~= "" then
-            -- If not using our standard font, override "line-height:1.3" (which is fine
-            -- with Noto Sans) to use something smaller (looks like MuPDF's default is 1.2
-            -- and we can't make it use the font natural line height...)
-            font_css = font_css .. "\nbody { font-family: 'KOReaderFootnoteFont'; line-height: 1.2 !important; }\n"
+            if font_css ~= "" then
+                -- If not using our standard font, override "line-height:1.3" (which is fine
+                -- with Noto Sans) to use something smaller (looks like MuPDF's default is 1.2
+                -- and we can't make it use the font natural line height...)
+                font_css = font_css .. "\nbody { font-family: 'KOReaderFootnoteFont'; line-height: 1.2 !important; }\n"
+            end
         end
     end
 
@@ -282,10 +301,19 @@ function FootnoteWidget:init()
         html_left_margin, html_right_margin = html_right_margin, html_left_margin
     end
 
-    local css = T(PAGE_CSS, "0", html_right_margin, "0", html_left_margin, -- top right bottom left
-                    self.font_face, font_css, DEFAULT_CSS, text_align_css)
-    if self.css then -- add any provided css
-        css = css .. "\n" .. self.css
+    local css
+    if use_cre then
+        css = table.concat({
+            T("body { margin: 0 %1 0 %2; }\n", html_right_margin, html_left_margin),
+            text_align_css,
+            self.css or "",
+        })
+    else
+        css = T(PAGE_CSS, "0", html_right_margin, "0", html_left_margin, -- top right bottom left
+                        self.font_face, font_css, DEFAULT_CSS, text_align_css)
+        if self.css then -- add any provided css
+            css = css .. "\n" .. self.css
+        end
     end
     -- require("logger").dbg("CSS:", css)
     -- require("logger").dbg("HTML:", self.html)
@@ -314,20 +342,39 @@ function FootnoteWidget:init()
     local padding_bottom = Size.padding.large
     local htmlwidget_height = self.height - padding_top - padding_bottom
 
-    -- We always get balanced XHTML from crengine for HTML snippets, so we
-    -- pass is_xhtml=true to avoid side effects from MuPDF's HTML5 parser.
-    self.htmlwidget = ScrollHtmlWidget:new{
-        html_body = self.html,
-        is_xhtml = true,
-        css = css,
-        default_font_size = font_size,
-        width = htmlwidget_width,
-        height = htmlwidget_height,
-        scroll_bar_width = scroll_bar_width,
-        text_scroll_span = text_scroll_span,
-        dialog = self.dialog,
-        highlight_text_selection = true,
-    }
+    if use_cre then
+        self.htmlwidget = ScrollCreHtmlWidget:new{
+            html_body = self.html,
+            css = css,
+            default_font_size = font_size,
+            font_face = cre_font_face,
+            width = htmlwidget_width,
+            height = htmlwidget_height,
+            scroll_bar_width = scroll_bar_width,
+            text_scroll_span = text_scroll_span,
+            dialog = self.dialog,
+            furigana_toggle_mode = self.furigana_toggle_mode or "visible",
+            furigana_toggle_obscure = self.furigana_toggle_obscure or "hidden",
+            furigana_toggle_dither_intensity = self.furigana_toggle_dither_intensity or 10,
+            furigana_toggle_fog_falloff = self.furigana_toggle_fog_falloff or 5,
+            furigana_toggle_fog_roundness = self.furigana_toggle_fog_roundness or 15,
+        }
+    else
+        -- We always get balanced XHTML from crengine for HTML snippets, so we
+        -- pass is_xhtml=true to avoid side effects from MuPDF's HTML5 parser.
+        self.htmlwidget = ScrollHtmlWidget:new{
+            html_body = self.html,
+            is_xhtml = true,
+            css = css,
+            default_font_size = font_size,
+            width = htmlwidget_width,
+            height = htmlwidget_height,
+            scroll_bar_width = scroll_bar_width,
+            text_scroll_span = text_scroll_span,
+            dialog = self.dialog,
+            highlight_text_selection = true,
+        }
+    end
 
     -- We only want a top border, so use a LineWidget for that
     local top_border_size = Size.line.thick
@@ -440,7 +487,7 @@ function FootnoteWidget:onSwipeFollow(arg, ges)
     elseif direction == "south" or direction == "east" then
         UIManager:close(self)
         -- We can close with swipe down. If footnote is scrollable,
-        -- this event will be eaten by ScrollHtmlWidget, and it will
+        -- this event will be eaten by ScrollHtmlWidget / ScrollCreHtmlWidget, and it will
         -- work only when started outside the footnote.
         -- Also allow closing with swipe east (like we do to go back
         -- from link)
