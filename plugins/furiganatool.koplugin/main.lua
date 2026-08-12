@@ -76,7 +76,10 @@ function FuriganaToggle:init()
     self.backend.dither_intensity = self.dither_intensity
     self.backend.fog_falloff = self.fog_falloff
     self.backend.fog_roundness = self.fog_roundness
-    self._plugin_css = ""
+    -- Install CSS text early so any later styletweak pull includes it.
+    -- ApplyStyleSheet itself is deferred to postReaderReady (UpdatePos is a
+    -- no-op while ReaderUI:init is still running).
+    self._plugin_css = Styles[self.mode] or ""
     self:_installCssInjection()
 
     -- Stable aliases for other modules (directory name is furiganatool).
@@ -127,6 +130,11 @@ function FuriganaToggle:_applyCss()
     self.backend:setToggleMode(self.mode == "toggle")
 
     self.ui:handleEvent(Event:new("ApplyStyleSheet"))
+    -- First-open highlight boxes can be computed before this reflow settles;
+    -- drop any cached screen geometry so the next paint recomputes.
+    if self.ui.view and self.ui.view.resetHighlightBoxesCache then
+        self.ui.view:resetHighlightBoxesCache()
+    end
 end
 
 function FuriganaToggle:setMode(mode)
@@ -208,7 +216,13 @@ function FuriganaToggle:_spinDitherIntensity()
 end
 
 function FuriganaToggle:onReaderReady()
-    self:_applyCss()
+    -- ApplyStyleSheet → UpdatePos is ignored while postReaderReadyCallback is
+    -- still set. Prepend so setStyleSheet runs before ReaderRolling's
+    -- updatePos() (registered in Rolling:init); that updatePos then sees the
+    -- new rendering hash and reflows.
+    table.insert(self.ui.postReaderReadyCallback, 1, function()
+        self:_applyCss()
+    end)
     self:_setupTouchZone()
 end
 

@@ -590,7 +590,12 @@ function ReaderView:drawPageSavedHighlight(bb, x, y)
 end
 
 function ReaderView:drawXPointerSavedHighlight(bb, x, y)
+    -- Vertical-rl: highlight segments depend on settled column layout (and on
+    -- furigana/CSS reflow). Caching the first paint's boxes leaves a broken
+    -- band on the opening page until a later DocumentRerendered / reload.
     local do_cache = self.view_mode == "page"
+        and not (self.document and self.document.isVerticalText
+            and self.document:isVerticalText())
     local colorful
     local page = self.document:getCurrentPage()
     if self.highlight.page_boxes[page] ~= nil then -- cached
@@ -1268,6 +1273,7 @@ end
 
 ReaderView.onReflowUpdated = ReaderView.resetHighlightBoxesCache
 ReaderView.onDocumentRerendered = ReaderView.resetHighlightBoxesCache
+ReaderView.onDocumentPartiallyRerendered = ReaderView.resetHighlightBoxesCache
 ReaderView.onAnnotationsModified = ReaderView.resetHighlightBoxesCache
 
 function ReaderView:onPageGapUpdate(page_gap)

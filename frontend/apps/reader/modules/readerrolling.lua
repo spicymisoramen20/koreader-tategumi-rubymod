@@ -1687,6 +1687,11 @@ function ReaderRolling:handlePartialRerendering()
     self.nb_partial_rerenderings = nb_partial_rerenderings
 
     self.ui.document:resetCallCache() -- trash invalid cached info
+    -- In-paint partial path does not emit DocumentPartiallyRerendered; drop
+    -- highlight screen boxes so drawSavedHighlight recomputes after reflow.
+    if self.view and self.view.resetHighlightBoxesCache then
+        self.view:resetHighlightBoxesCache()
+    end
 
     -- crengine should have handled repositionning to the initial page xpointer,
     -- and redraw the page if needed.
