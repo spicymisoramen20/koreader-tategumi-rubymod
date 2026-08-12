@@ -155,8 +155,11 @@ endif
 	@echo "[*] Install update once marker"
 	@echo "# This file indicates that update once patches have not been applied yet." > $(INSTALL_DIR)/koreader/update_once.marker
 ifdef WIN32
+	@echo "[*] Install win32 launcher..."
+	$(SYMLINK) $(WIN32_DIR)/koreader.bat $(INSTALL_DIR)/koreader/
 	@echo "[*] Install runtime libraries for win32..."
-	$(SYMLINK) $(WIN32_DIR)/*.dll $(INSTALL_DIR)/koreader/
+	# Optional vendor DLLs (directory may be empty).
+	-@$(SYMLINK) $(WIN32_DIR)/*.dll $(INSTALL_DIR)/koreader/
 endif
 	@echo "[*] Install plugins"
 	$(SYMLINK) plugins $(INSTALL_DIR)/koreader/
