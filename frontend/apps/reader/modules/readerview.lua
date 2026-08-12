@@ -666,13 +666,11 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
     local x, y, w, h = rect.x, rect.y, rect.w, rect.h
     local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
     if is_vertical then
-        -- Vertical-rl: leave a margin on both sides of the body glyphs so the
-        -- highlight is centered in the column (not flush to one edge). The
-        -- right ("before") margin also keeps Lighten off the furigana-toggle
-        -- fog that sits in the inter-column gap.
-        local inset_total = math.max(2, math.floor(w * 2 / 5))
-        -- Keep at least half the strut as the painted band.
-        if w - inset_total >= math.max(4, math.floor(w / 2)) then
+        -- Vertical-rl segments are already the base/em column band (getRect
+        -- excludes ruby annotation width). Only a light centered pad so Lighten
+        -- is not flush to the glyph edges.
+        local inset_total = math.max(2, math.floor(w / 10))
+        if w - inset_total >= math.max(4, math.floor(w * 3 / 4)) then
             local side = math.floor(inset_total / 2)
             x = x + side
             w = w - side * 2
@@ -727,7 +725,7 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
             color = Blitbuffer.COLOR_BLACK
         end
         if is_vertical then
-            -- Strike through the body band center (after annotation-side inset).
+            -- Strike through the body band center (after before-side fog inset).
             local line_x = x + math.floor(w / 2) - math.floor(Size.line.medium / 2)
             if Blitbuffer.isColor8(color) then
                 bb:paintRect(line_x, y, Size.line.medium, h, color)
