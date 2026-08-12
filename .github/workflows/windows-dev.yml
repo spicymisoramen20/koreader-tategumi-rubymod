@@ -86,14 +86,17 @@ jobs:
           fi
 
           {
-            echo '======== Failed thirdparty packages ========'
-            grep -Eo 'thirdparty/[^/]+/stamp/(build|configure|install)' "$log" \
-              | sed 's|.*/thirdparty/||; s|/stamp/.*||' \
+            echo '======== Failed packages ========'
+            grep 'FAILED: \[code=' "$log" \
+              | sed -n 's/.*thirdparty\/\([^/]*\)\/stamp.*/\1/p; s/.*cmake\/koreader.*/koreader/p' \
               | sort -u \
               || true
             echo
             echo '======== FAILED: lines ========'
             grep 'FAILED: \[code=' "$log" | sort -u || true
+            echo
+            echo '======== ninja: error ========'
+            grep 'ninja: error:' "$log" | sort -u || true
             echo
             echo '======== Compiler / linker errors ========'
             grep -E 'error: |undefined reference|fatal error:|collect2:' "$log" \
