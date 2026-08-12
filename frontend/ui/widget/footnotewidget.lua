@@ -17,6 +17,7 @@ local Size = require("ui/size")
 local UIManager = require("ui/uimanager")
 local VerticalGroup = require("ui/widget/verticalgroup")
 local VerticalSpan = require("ui/widget/verticalspan")
+local util = require("util")
 local _ = require("gettext")
 local Screen = Device.screen
 local T = require("ffi/util").template
@@ -220,6 +221,18 @@ function FootnoteWidget:init()
     end
 
     local use_cre = self.japanese_support
+
+    -- Footnote HTML is a bare snippet: EPUB-relative image paths (gaiji note
+    -- numbers like <img alt="233" src="../images/00171.jpeg">) cannot resolve
+    -- here and become empty white boxes. Prefer the alt text when present.
+    self.html = self.html:gsub("<%s*[Ii][Mm][Gg]%s+([^>]-)/?>", function(attrs)
+        local alt = attrs:match('[Aa][Ll][Tt]%s*=%s*"([^"]*)"')
+            or attrs:match("[Aa][Ll][Tt]%s*=%s*'([^']*)'")
+        if alt and alt ~= "" then
+            return util.htmlEscape(alt)
+        end
+        return ""
+    end)
 
     if not use_cre then
         -- Workaround bugs in MuPDF:
