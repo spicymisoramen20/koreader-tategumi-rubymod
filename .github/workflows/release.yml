@@ -454,6 +454,9 @@ jobs:
 
   win32:
     name: Windows (x86_64)
+    # MinGW desktop builds are still being hardened; don't block the
+    # multi-platform Release page if win32 hits another third-party issue.
+    continue-on-error: true
     runs-on: ubuntu-latest
     container:
       image: koreader/koappimage:latest
