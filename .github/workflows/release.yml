@@ -463,7 +463,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.RELEASE_TAG }}
+          # Use the workflow ref (branch tip or tag SHA), not RELEASE_TAG alone.
+          # Tag v2026.08.12 predates make/win32.mk and the MinGW ldflags fix;
+          # dispatching from feature/ruby-toggle must build that tip.
+          ref: ${{ github.sha }}
           fetch-depth: 0
           fetch-tags: true
 
