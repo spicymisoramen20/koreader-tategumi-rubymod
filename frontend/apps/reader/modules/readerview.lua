@@ -665,27 +665,17 @@ end
 function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note_mark)
     local x, y, w, h = rect.x, rect.y, rect.w, rect.h
     local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
-    -- Shared cross-axis breathing room for Lighten/Invert (vertical: column
-    -- width; horizontal: line/em height). Segments are already the base/em
-    -- band from getRect; inset so the fill is not flush to glyph-box edges.
-    -- Value: total inset = max(2px, floor(cross / HIGHLIGHT_CROSS_INSET_DIV)).
-    -- Current DIV=10 → ~10% total (~5% each side).
-    local HIGHLIGHT_CROSS_INSET_DIV = 10
+    -- Shared outward pad past the base/em band (getRect is glyph-tight).
+    -- One number for both writing modes: pixels added on each cross-axis side.
+    -- Vertical grows column width; horizontal grows line/em height.
+    local HIGHLIGHT_CROSS_PAD_PX = 2
     if drawer == "lighten" or drawer == "invert" then
         if is_vertical then
-            local inset_total = math.max(2, math.floor(w / HIGHLIGHT_CROSS_INSET_DIV))
-            if w - inset_total >= math.max(4, math.floor(w * 3 / 4)) then
-                local side = math.floor(inset_total / 2)
-                x = x + side
-                w = w - side * 2
-            end
+            x = x - HIGHLIGHT_CROSS_PAD_PX
+            w = w + 2 * HIGHLIGHT_CROSS_PAD_PX
         else
-            local inset_total = math.max(2, math.floor(h / HIGHLIGHT_CROSS_INSET_DIV))
-            if h - inset_total >= math.max(4, math.floor(h * 3 / 4)) then
-                local side = math.floor(inset_total / 2)
-                y = y + side
-                h = h - side * 2
-            end
+            y = y - HIGHLIGHT_CROSS_PAD_PX
+            h = h + 2 * HIGHLIGHT_CROSS_PAD_PX
         end
         local pct = G_reader_settings:readSetting("highlight_height_pct")
         if pct ~= nil then
