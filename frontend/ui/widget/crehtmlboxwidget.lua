@@ -62,6 +62,7 @@ local CreHtmlBoxWidget = InputContainer:extend{
     -- Internal
     _tmp_path = nil,
     _revealed = nil, -- map of ruby xpointer id -> true (popup-local only)
+    content_font_size = nil, -- px; used to unify Lighten band height
 }
 
 function CreHtmlBoxWidget:init()
@@ -259,6 +260,7 @@ function CreHtmlBoxWidget:setContent(body, css, default_font_size, font_face)
         self.document:setFontFace(font_face)
     end
     if default_font_size and default_font_size > 0 then
+        self.content_font_size = default_font_size
         self.document:setFontSize(default_font_size)
     end
 
@@ -319,8 +321,13 @@ function CreHtmlBoxWidget:_render()
         Screen.sw_dithering and true or false
     )
     if self.highlight_text_selection and self.highlight_rects then
-        -- Footnote-only pad (unpaired from book CROSS_PAD_PX).
+        -- Footnote-only pad; unify ruby/plain band height to content font size.
         local pad = HighlightGeom.FOOTNOTE_CROSS_PAD_PX
+        local band_h = self.content_font_size
+        if (not band_h or band_h < 1) and self.document and type(self.document.getFontSize) == "function" then
+            band_h = self.document:getFontSize()
+        end
+        HighlightGeom.normalizeHorizontalBandHeight(self.highlight_rects, band_h)
         for _, rect in ipairs(self.highlight_rects) do
             local x, y, w, h = HighlightGeom.padCrossAxis(
                 rect.x, rect.y, rect.w, rect.h, false, pad)

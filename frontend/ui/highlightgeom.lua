@@ -22,4 +22,19 @@ function HighlightGeom.padCrossAxis(x, y, w, h, is_vertical, pad_px)
     return x, y - pad, w, h + 2 * pad
 end
 
+--- Force every rect to the same content-band height (bottom-aligned).
+-- Footnote ruby vs plain getRect bands can differ; normalize before pad/paint
+-- so long-press and drag Lighten match.
+function HighlightGeom.normalizeHorizontalBandHeight(rects, band_h)
+    if not rects or not band_h or band_h < 1 then
+        return rects
+    end
+    for _, r in ipairs(rects) do
+        local bottom = r.y + r.h
+        r.h = band_h
+        r.y = bottom - band_h
+    end
+    return rects
+end
+
 return HighlightGeom
