@@ -954,10 +954,18 @@ function ReaderHighlight:clear(clear_id)
     end
     self.is_word_selection = false
     self.selected_text_start_xpointer = nil
+    local external_clear = self._external_selection_clear
+    self._external_selection_clear = nil
     if self.hold_pos then
         self.hold_pos = nil
         self.selected_text = nil
         UIManager:setDirty(self.dialog, "ui")
+        return true
+    end
+    -- Orphan/external selection (e.g. footnote popup): no book hold_pos.
+    if external_clear then
+        self.selected_text = nil
+        external_clear()
         return true
     end
 end
@@ -1550,7 +1558,7 @@ function ReaderHighlight:onShowHighlightMenu(index)
             return self:_getDialogAnchor(self.highlight_dialog, index)
         end,
         tap_close_callback = function()
-            if self.hold_pos then
+            if self._external_selection_clear or self.hold_pos then
                 self:clear()
             end
         end,
@@ -1558,6 +1566,27 @@ function ReaderHighlight:onShowHighlightMenu(index)
     -- NOTE: Disable merging for this update,
     --       or the buggy Sage kernel may alpha-blend it into the page (with a bogus alpha value, to boot)...
     UIManager:show(self.highlight_dialog, "[ui]")
+end
+
+-- Show the normal highlight/selection menu for text that is not from the
+-- book document (e.g. footnote popup selection). Highlight / Add note stay
+-- disabled because hold_pos is unset. clear_callback clears the external
+-- selection paint when the menu (or a follow-up lookup) finishes.
+function ReaderHighlight:showHighlightMenuForExternalText(text, clear_callback)
+    text = util.cleanupSelectedText(text)
+    if not text or text == "" then
+        return
+    end
+    if self.highlight_dialog then
+        UIManager:close(self.highlight_dialog)
+        self.highlight_dialog = nil
+    end
+    self.selected_text = { text = text }
+    self.hold_pos = nil
+    self.selected_link = nil
+    self.is_word_selection = false
+    self._external_selection_clear = clear_callback
+    self:onShowHighlightMenu()
 end
 
 function ReaderHighlight:_getDialogAnchor(dialog, index)
@@ -2130,7 +2159,8 @@ function ReaderHighlight:viewSelectionHTML(debug_view, no_css_files_buttons)
 end
 
 function ReaderHighlight:translate(index)
-    if self.ui.rolling then
+    if self.ui.rolling and self.selected_text
+            and self.selected_text.pos0 and self.selected_text.pos1 then
         -- Extend the selected text to include any punctuation at start or end,
         -- which may give a better translation with the added context.
         local extended_text = self.ui.document:extendXPointersToSentenceSegment(self.selected_text.pos0, self.selected_text.pos1)

@@ -200,16 +200,7 @@ function FootnoteWidget:init()
                 },
                 -- callback function when HoldReleaseText is handled as args
                 args = function(text, hold_duration)
-                    if self.dialog then
-                        local dict_close_callback = function()
-                            self.htmlwidget.htmlbox_widget:scheduleClearHighlightAndRedraw()
-                        end
-
-                        local lookup_target = hold_duration < time.s(3) and "LookupWord" or "LookupWikipedia"
-                        self.dialog:handleEvent(
-                            Event:new(lookup_target, text, nil, nil, nil, nil, dict_close_callback)
-                        )
-                    end
+                    self:onTextSelected(text, hold_duration)
                 end
             },
         }
@@ -454,6 +445,63 @@ function FootnoteWidget:onCloseWidget()
     UIManager:setDirty(self.dialog, function()
         return "partial", self.container.dimen
     end)
+end
+
+function FootnoteWidget:_getHtmlBox()
+    return self.htmlwidget and self.htmlwidget.htmlbox_widget
+end
+
+function FootnoteWidget:_clearSelectionHighlight()
+    local box = self:_getHtmlBox()
+    if not box then
+        return
+    end
+    if box.scheduleClearHighlightAndRedraw then
+        box:scheduleClearHighlightAndRedraw()
+    elseif box.clearHighlight then
+        if box:clearHighlight() and box.redrawHighlight then
+            box:redrawHighlight()
+        end
+    end
+end
+
+function FootnoteWidget:onTextSelected(text, hold_duration)
+    if not text or text == "" or not self.dialog then
+        return
+    end
+    local clean = util.cleanupSelectedText(text)
+    if not clean or clean == "" then
+        return
+    end
+
+    local clear_hl = function()
+        self:_clearSelectionHighlight()
+    end
+
+    local box = self:_getHtmlBox()
+    local is_word = box and box.is_word_selection
+    local long_hold = hold_duration and hold_duration >= time.s(3)
+
+    -- Match ReaderHighlight: short hold on an unexpanded word → dictionary,
+    -- unless the user forced the highlight action for single words.
+    if is_word and not long_hold
+            and not G_reader_settings:isTrue("highlight_action_on_single_word") then
+        self.dialog:handleEvent(Event:new(
+            "LookupWord", clean, nil, nil, nil, nil, clear_hl
+        ))
+        return
+    end
+
+    local highlight = self.dialog.highlight
+    if highlight and highlight.showHighlightMenuForExternalText then
+        highlight:showHighlightMenuForExternalText(clean, clear_hl)
+        return
+    end
+
+    -- Fallback if highlight module is unavailable.
+    self.dialog:handleEvent(Event:new(
+        "LookupWord", clean, nil, nil, nil, nil, clear_hl
+    ))
 end
 
 function FootnoteWidget:onClose()
