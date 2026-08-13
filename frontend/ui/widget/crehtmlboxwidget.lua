@@ -312,6 +312,9 @@ function CreHtmlBoxWidget:setContent(body, css, default_font_size, font_face)
     self.document:setIntProperty("crengine.doc.embedded.fonts.enabled", 0)
     self.document:setHeaderInfo(0)
     self.document:setPageMargins(0, 0, 0, 0)
+    -- LVDocView defaults to 2 visible pages; on a wide Mac window that is
+    -- considered sane, so text would only fill the left half of the panel.
+    self.document:setVisiblePageCount(1, false)
 
     -- Each DocView has its own props; without readDefaults we still need CJK fallbacks.
     local fallbacks = {}
