@@ -319,10 +319,11 @@ function CreHtmlBoxWidget:_render()
         Screen.sw_dithering and true or false
     )
     if self.highlight_text_selection and self.highlight_rects then
-        -- Same padCrossAxis as ReaderView (footnote is horizontal-tb).
+        -- Footnote-only pad (unpaired from book CROSS_PAD_PX).
+        local pad = HighlightGeom.FOOTNOTE_CROSS_PAD_PX
         for _, rect in ipairs(self.highlight_rects) do
             local x, y, w, h = HighlightGeom.padCrossAxis(
-                rect.x, rect.y, rect.w, rect.h, false)
+                rect.x, rect.y, rect.w, rect.h, false, pad)
             self.bb:darkenRect(x, y, w, h, self.highlight_lighten_factor)
         end
     end

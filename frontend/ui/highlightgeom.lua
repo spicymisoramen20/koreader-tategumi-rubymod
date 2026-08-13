@@ -4,15 +4,18 @@ Shared highlight geometry (ReaderView + CreHtmlBoxWidget footnote popup).
 
 local HighlightGeom = {}
 
--- Breathing room past the base/em band on *both* cross-axis sides so Lighten
--- stays centered on the glyphs (vertical: width; horizontal: height).
--- Annotation/fog clearance comes from getRect's base-only band, not from
--- skipping the annotation-side pad (that un-centered horizontal highlights).
+-- Book ReaderView (vertical + horizontal rolling): breathing room past the
+-- base/em band on both cross-axis sides.
 HighlightGeom.CROSS_PAD_PX = 4
 
+-- CRE footnote popup only (always horizontal-tb). Smaller than the book pad so
+-- Lighten does not look oversized next to compact footnote type.
+HighlightGeom.FOOTNOTE_CROSS_PAD_PX = 2
+
 --- Expand a screen-space Lighten/Invert rect symmetrically on the cross axis.
-function HighlightGeom.padCrossAxis(x, y, w, h, is_vertical)
-    local pad = HighlightGeom.CROSS_PAD_PX
+-- @tparam number|nil pad_px Override (e.g. FOOTNOTE_CROSS_PAD_PX); default CROSS_PAD_PX.
+function HighlightGeom.padCrossAxis(x, y, w, h, is_vertical, pad_px)
+    local pad = pad_px or HighlightGeom.CROSS_PAD_PX
     if is_vertical then
         return x - pad, y, w + 2 * pad, h
     end
