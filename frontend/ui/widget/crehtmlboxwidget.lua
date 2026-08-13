@@ -48,6 +48,8 @@ local CreHtmlBoxWidget = InputContainer:extend{
     furigana_toggle_dither_intensity = 10,
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
+    -- 0 = off; >0 = hide revealed popup furigana after this many seconds
+    furigana_toggle_auto_hide_sec = 0,
     ruby_tap_callback = nil, -- function(handled) optional; if nil, handle taps locally
     -- Hold selection / dictionary (parity with HtmlBoxWidget)
     highlight_text_selection = true,
@@ -62,11 +64,13 @@ local CreHtmlBoxWidget = InputContainer:extend{
     -- Internal
     _tmp_path = nil,
     _revealed = nil, -- map of ruby xpointer id -> true (popup-local only)
+    _auto_hide_tasks = nil, -- map of ruby id -> scheduled hide callback
     content_font_size = nil, -- px; used to unify Lighten band height
 }
 
 function CreHtmlBoxWidget:init()
     self._revealed = {}
+    self._auto_hide_tasks = {}
     self.highlight_lighten_factor = G_reader_settings:readSetting("highlight_lighten_factor", 0.2)
     if Device:isTouchDevice() then
         self.ges_events.TapText = {
@@ -193,6 +197,7 @@ function CreHtmlBoxWidget:_applyTogglePaintState()
 end
 
 function CreHtmlBoxWidget:_clearPopupReveals()
+    self:_cancelAllAutoHide()
     if not self.document or not self._revealed then
         return
     end
@@ -206,6 +211,69 @@ function CreHtmlBoxWidget:_clearPopupReveals()
         end)
     end
     self._revealed = {}
+end
+
+function CreHtmlBoxWidget:_autoHideEnabled()
+    local sec = tonumber(self.furigana_toggle_auto_hide_sec) or 0
+    return self.furigana_toggle_mode == "toggle" and sec >= 0.1
+end
+
+function CreHtmlBoxWidget:_cancelAutoHideForIds(ids)
+    if not ids or not self._auto_hide_tasks then
+        return
+    end
+    for _, id in ipairs(ids) do
+        local task = self._auto_hide_tasks[id]
+        if task then
+            UIManager:unschedule(task)
+            self._auto_hide_tasks[id] = nil
+        end
+    end
+end
+
+function CreHtmlBoxWidget:_cancelAllAutoHide()
+    if not self._auto_hide_tasks then
+        self._auto_hide_tasks = {}
+        return
+    end
+    for id, task in pairs(self._auto_hide_tasks) do
+        UIManager:unschedule(task)
+        self._auto_hide_tasks[id] = nil
+    end
+end
+
+function CreHtmlBoxWidget:_scheduleAutoHide(ids)
+    if not self:_autoHideEnabled() or not ids or #ids == 0 then
+        return
+    end
+    self:_cancelAutoHideForIds(ids)
+    local delay = tonumber(self.furigana_toggle_auto_hide_sec) or 0
+    for _, id in ipairs(ids) do
+        local ruby_id = id
+        local task
+        task = function()
+            if self._auto_hide_tasks[ruby_id] ~= task then
+                return
+            end
+            self._auto_hide_tasks[ruby_id] = nil
+            if not self:_autoHideEnabled() or not self.document then
+                return
+            end
+            if not self._revealed[ruby_id] then
+                return
+            end
+            local ok = self.document:setRubyVisibilityOverride(ruby_id, false)
+            if ok then
+                self._revealed[ruby_id] = nil
+                self:freeBb()
+                UIManager:setDirty(self.dialog or "all", function()
+                    return "ui", self.dimen
+                end)
+            end
+        end
+        self._auto_hide_tasks[ruby_id] = task
+        UIManager:scheduleIn(delay, task)
+    end
 end
 
 --- Load and layout an HTML/XHTML body snippet.
@@ -451,6 +519,11 @@ function CreHtmlBoxWidget:_toggleRubyAtPos(pos)
         end
     end
     if any then
+        if visible then
+            self:_scheduleAutoHide(ids)
+        else
+            self:_cancelAutoHideForIds(ids)
+        end
         self:freeBb()
         UIManager:setDirty(self.dialog or "all", function()
             return "ui", self.dimen

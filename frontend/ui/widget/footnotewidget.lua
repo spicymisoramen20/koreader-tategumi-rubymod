@@ -132,6 +132,7 @@ local FootnoteWidget = InputContainer:extend{
     furigana_toggle_dither_intensity = 10,
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
+    furigana_toggle_auto_hide_sec = 0,
     -- For the doc_* values, we expect to be provided with the real
     -- (already scaled) sizes in screen pixels
     doc_font_size = Screen:scaleBySize(18),
@@ -371,6 +372,7 @@ function FootnoteWidget:init()
             furigana_toggle_dither_intensity = self.furigana_toggle_dither_intensity or 10,
             furigana_toggle_fog_falloff = self.furigana_toggle_fog_falloff or 5,
             furigana_toggle_fog_roundness = self.furigana_toggle_fog_roundness or 15,
+            furigana_toggle_auto_hide_sec = self.furigana_toggle_auto_hide_sec or 0,
         }
     else
         -- We always get balanced XHTML from crengine for HTML snippets, so we

@@ -19,6 +19,7 @@ local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
 local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
 local FOG_FALLOFF_KEY = "furigana_toggle_fog_falloff"
 local FOG_ROUNDNESS_KEY = "furigana_toggle_fog_roundness"
+local AUTO_HIDE_KEY = "furigana_toggle_auto_hide_sec"
 local VALID_MODES = {
     visible = true,
     off = true,
@@ -33,6 +34,9 @@ local VALID_OBSCURE = {
 local DEFAULT_INTENSITY = 10
 local DEFAULT_FALLOFF = 5
 local DEFAULT_ROUNDNESS = 15
+local DEFAULT_AUTO_HIDE_SEC = 1
+local AUTO_HIDE_MIN_SEC = 0.1
+local AUTO_HIDE_MAX_SEC = 60
 
 function FuriganaToggle:init()
     self.mode = self.ui.doc_settings:readSetting(SETTING_KEY) or "visible"
@@ -56,6 +60,15 @@ function FuriganaToggle:init()
     if self.fog_falloff > 64 then self.fog_falloff = 64 end
     if self.fog_roundness < 0 then self.fog_roundness = 0 end
     if self.fog_roundness > 64 then self.fog_roundness = 64 end
+
+    self.auto_hide_sec = tonumber(self.ui.doc_settings:readSetting(AUTO_HIDE_KEY)) or 0
+    if self.auto_hide_sec < 0 then self.auto_hide_sec = 0 end
+    if self.auto_hide_sec > AUTO_HIDE_MAX_SEC then self.auto_hide_sec = AUTO_HIDE_MAX_SEC end
+    -- Treat tiny positives as off; SpinWidget min is AUTO_HIDE_MIN_SEC when enabling.
+    if self.auto_hide_sec > 0 and self.auto_hide_sec < AUTO_HIDE_MIN_SEC then
+        self.auto_hide_sec = AUTO_HIDE_MIN_SEC
+    end
+    self._auto_hide_tasks = {}
 
     -- One-shot: Soft gray is the only Fog fill now. Drop legacy pattern
     -- settings and adopt the new falloff/roundness/intensity defaults.
@@ -142,10 +155,162 @@ function FuriganaToggle:setMode(mode)
         return
     end
 
+    self:_cancelAllAutoHide()
     self.mode = mode
     self.ui.doc_settings:saveSetting(SETTING_KEY, mode)
     self.backend:clearRevealedState()
     self:_applyCss()
+end
+
+function FuriganaToggle:_autoHideEnabled()
+    return self.mode == "toggle"
+        and self.auto_hide_sec
+        and self.auto_hide_sec >= AUTO_HIDE_MIN_SEC
+end
+
+function FuriganaToggle:setAutoHide(seconds)
+    seconds = tonumber(seconds) or 0
+    if seconds < 0 then seconds = 0 end
+    if seconds > AUTO_HIDE_MAX_SEC then seconds = AUTO_HIDE_MAX_SEC end
+    if seconds > 0 and seconds < AUTO_HIDE_MIN_SEC then
+        seconds = AUTO_HIDE_MIN_SEC
+    end
+    -- Round to 0.1 s so stored values match the spin step.
+    if seconds > 0 then
+        seconds = math.floor(seconds * 10 + 0.5) / 10
+    end
+    self.auto_hide_sec = seconds
+    self.ui.doc_settings:saveSetting(AUTO_HIDE_KEY, seconds)
+    if not self:_autoHideEnabled() then
+        self:_cancelAllAutoHide()
+    end
+end
+
+function FuriganaToggle:_formatAutoHideSec(seconds)
+    seconds = tonumber(seconds) or 0
+    if seconds == math.floor(seconds) then
+        return string.format("%d", seconds)
+    end
+    return string.format("%.1f", seconds)
+end
+
+function FuriganaToggle:_cancelAutoHideForIds(ids)
+    if not ids or not self._auto_hide_tasks then
+        return
+    end
+    for _, id in ipairs(ids) do
+        local task = self._auto_hide_tasks[id]
+        if task then
+            UIManager:unschedule(task)
+            self._auto_hide_tasks[id] = nil
+        end
+    end
+end
+
+function FuriganaToggle:_cancelAllAutoHide()
+    if not self._auto_hide_tasks then
+        self._auto_hide_tasks = {}
+        return
+    end
+    for id, task in pairs(self._auto_hide_tasks) do
+        UIManager:unschedule(task)
+        self._auto_hide_tasks[id] = nil
+    end
+end
+
+function FuriganaToggle:_scheduleAutoHide(ids)
+    if not self:_autoHideEnabled() or not ids or #ids == 0 then
+        return
+    end
+
+    self:_cancelAutoHideForIds(ids)
+    local delay = self.auto_hide_sec
+    for _, id in ipairs(ids) do
+        local ruby_id = id
+        local task
+        task = function()
+            if self._auto_hide_tasks[ruby_id] ~= task then
+                return
+            end
+            self._auto_hide_tasks[ruby_id] = nil
+            if not self:_autoHideEnabled() or not self.backend then
+                return
+            end
+            if self.backend.revealed[ruby_id] then
+                self.backend:setRubyGroupVisible({ ruby_id }, false)
+            end
+        end
+        self._auto_hide_tasks[ruby_id] = task
+        UIManager:scheduleIn(delay, task)
+    end
+end
+
+function FuriganaToggle:toggleRubyIds(ids)
+    if not self.backend or not ids or #ids == 0 then
+        return false
+    end
+
+    local revealing = false
+    for _, id in ipairs(ids) do
+        if not self.backend.revealed[id] then
+            revealing = true
+            break
+        end
+    end
+
+    local ok = self.backend:toggleRubyIds(ids)
+    if not ok then
+        return false
+    end
+
+    if revealing then
+        self:_scheduleAutoHide(ids)
+    else
+        self:_cancelAutoHideForIds(ids)
+    end
+    return true
+end
+
+function FuriganaToggle:toggleAtScreenPosition(screen_pos)
+    if self.mode ~= "toggle" or not self.backend then
+        return false
+    end
+    local ruby = self.backend:getRubyAtScreenPosition(screen_pos)
+    if not ruby or not ruby.ids then
+        return false
+    end
+    return self:toggleRubyIds(ruby.ids)
+end
+
+function FuriganaToggle:_spinAutoHide(touchmenu_instance)
+    local spin = SpinWidget:new{
+        title_text = _("Auto-hide delay"),
+        info_text = _("Automatically hide revealed furigana after this many seconds.\nFractions are allowed (e.g. 0.3).\nDisable turns auto-hide off."),
+        value = self:_autoHideEnabled() and self.auto_hide_sec or DEFAULT_AUTO_HIDE_SEC,
+        value_min = AUTO_HIDE_MIN_SEC,
+        value_max = AUTO_HIDE_MAX_SEC,
+        value_step = 0.1,
+        value_hold_step = 1,
+        precision = "%.1f",
+        unit = "s",
+        default_value = DEFAULT_AUTO_HIDE_SEC,
+        ok_text = _("Set"),
+        ok_always_enabled = true,
+        cancel_text = _("Disable"),
+        cancel_callback = function()
+            self:setAutoHide(0)
+            if touchmenu_instance then
+                touchmenu_instance:updateItems()
+            end
+        end,
+        callback = function(spin_widget)
+            self:setAutoHide(spin_widget.value)
+            if touchmenu_instance then
+                touchmenu_instance:updateItems()
+            end
+        end,
+    }
+    UIManager:show(spin)
 end
 
 function FuriganaToggle:setObscureStyle(style)
@@ -249,7 +414,7 @@ function FuriganaToggle:_setupTouchZone()
                 if self.mode ~= "toggle" or not ges or not ges.pos then
                     return false
                 end
-                return self.backend:toggleAtScreenPosition(ges.pos)
+                return self:toggleAtScreenPosition(ges.pos)
             end,
         },
     })
@@ -323,7 +488,7 @@ function FuriganaToggle:buildHighlightDialogButton(annotation, on_done, screen_p
                 Notification:notify(_("No furigana under finger"))
                 return
             end
-            self.backend:toggleRubyIds(live_ids)
+            self:toggleRubyIds(live_ids)
         end,
     }
 end
@@ -341,6 +506,7 @@ function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
     self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, self.fog_falloff)
     self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, self.fog_roundness)
+    self.ui.doc_settings:saveSetting(AUTO_HIDE_KEY, self.auto_hide_sec or 0)
 end
 
 function FuriganaToggle:addToMainMenu(menu_items)
@@ -393,6 +559,24 @@ function FuriganaToggle:addToMainMenu(menu_items)
                 end,
                 callback = function()
                     self:setMode("toggle")
+                end,
+            },
+            {
+                text_func = function()
+                    if self:_autoHideEnabled() then
+                        return T(_("Auto-hide: %1 s"), self:_formatAutoHideSec(self.auto_hide_sec))
+                    end
+                    return _("Auto-hide")
+                end,
+                checked_func = function()
+                    return self:_autoHideEnabled()
+                end,
+                enabled_func = function()
+                    return self.mode == "toggle" and self.backend:isSupported()
+                end,
+                keep_menu_open = true,
+                callback = function(touchmenu_instance)
+                    self:_spinAutoHide(touchmenu_instance)
                 end,
             },
             {
@@ -451,6 +635,7 @@ function FuriganaToggle:addToMainMenu(menu_items)
 end
 
 function FuriganaToggle:onCloseDocument()
+    self:_cancelAllAutoHide()
     self.backend:setToggleMode(false)
     self.backend:clearRevealedState()
 

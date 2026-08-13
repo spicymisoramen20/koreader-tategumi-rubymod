@@ -36,6 +36,7 @@ local ScrollCreHtmlWidget = InputContainer:extend{
     furigana_toggle_dither_intensity = 10,
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
+    furigana_toggle_auto_hide_sec = 0,
 }
 
 function ScrollCreHtmlWidget:init()
@@ -51,6 +52,7 @@ function ScrollCreHtmlWidget:init()
         furigana_toggle_dither_intensity = self.furigana_toggle_dither_intensity,
         furigana_toggle_fog_falloff = self.furigana_toggle_fog_falloff,
         furigana_toggle_fog_roundness = self.furigana_toggle_fog_roundness,
+        furigana_toggle_auto_hide_sec = self.furigana_toggle_auto_hide_sec,
     }
 
     self.htmlbox_widget:setContent(self.html_body, self.css, self.default_font_size, self.font_face)

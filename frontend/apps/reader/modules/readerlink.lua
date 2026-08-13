@@ -1608,6 +1608,8 @@ function ReaderLink:showAsFootnotePopup(link, neglect_current_location)
             and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_fog_falloff")) or 5,
         furigana_toggle_fog_roundness = self.ui.doc_settings
             and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_fog_roundness")) or 15,
+        furigana_toggle_auto_hide_sec = self.ui.doc_settings
+            and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_auto_hide_sec")) or 0,
         doc_font_name = self.ui.font.font_face,
         doc_font_size = Screen:scaleBySize(self.document.configurable.font_size),
         doc_margins = self.document:getPageMargins(),
