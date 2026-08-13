@@ -15,6 +15,7 @@ local UIManager = require("ui/uimanager")
 local logger = require("logger")
 local time = require("ui/time")
 local util = require("util")
+local HighlightGeom = require("ui/highlightgeom")
 local Screen = Device.screen
 
 -- Furigana Off CSS (keep in sync with plugins/furiganatool.koplugin/styles.lua).
@@ -318,8 +319,10 @@ function CreHtmlBoxWidget:_render()
         Screen.sw_dithering and true or false
     )
     if self.highlight_text_selection and self.highlight_rects then
+        -- Same CROSS_PAD_PX as ReaderView (horizontal: grow height).
+        local pad = HighlightGeom.CROSS_PAD_PX
         for _, rect in ipairs(self.highlight_rects) do
-            self.bb:darkenRect(rect.x, rect.y, rect.w, rect.h, self.highlight_lighten_factor)
+            self.bb:darkenRect(rect.x, rect.y - pad, rect.w, rect.h + 2 * pad, self.highlight_lighten_factor)
         end
     end
 end

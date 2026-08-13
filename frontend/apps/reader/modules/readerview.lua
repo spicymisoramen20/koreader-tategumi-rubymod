@@ -668,7 +668,8 @@ function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note
     -- Shared outward pad past the base/em band (getRect is glyph-tight).
     -- One number for both writing modes: pixels added on each cross-axis side.
     -- Vertical grows column width; horizontal grows line/em height.
-    local HIGHLIGHT_CROSS_PAD_PX = 4
+    -- Kept in sync with CreHtmlBoxWidget via ui/highlightgeom.lua.
+    local HIGHLIGHT_CROSS_PAD_PX = require("ui/highlightgeom").CROSS_PAD_PX
     if drawer == "lighten" or drawer == "invert" then
         if is_vertical then
             x = x - HIGHLIGHT_CROSS_PAD_PX
