@@ -13,6 +13,7 @@ local GestureRange = require("ui/gesturerange")
 local InputContainer = require("ui/widget/container/inputcontainer")
 local UIManager = require("ui/uimanager")
 local logger = require("logger")
+local time = require("ui/time")
 local Screen = Device.screen
 
 -- Furigana Off CSS (keep in sync with plugins/furiganatool.koplugin/styles.lua).
@@ -46,6 +47,14 @@ local CreHtmlBoxWidget = InputContainer:extend{
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
     ruby_tap_callback = nil, -- function(handled) optional; if nil, handle taps locally
+    -- Hold selection / dictionary (parity with HtmlBoxWidget)
+    highlight_text_selection = true,
+    hold_start_pos = nil,
+    hold_end_pos = nil,
+    hold_start_time = nil,
+    highlight_text = nil,
+    highlight_rects = nil,
+    highlight_clear_and_redraw_action = nil,
     -- Internal
     _tmp_path = nil,
     _revealed = nil, -- map of ruby xpointer id -> true (popup-local only)
@@ -53,6 +62,7 @@ local CreHtmlBoxWidget = InputContainer:extend{
 
 function CreHtmlBoxWidget:init()
     self._revealed = {}
+    self.highlight_lighten_factor = G_reader_settings:readSetting("highlight_lighten_factor", 0.2)
     if Device:isTouchDevice() then
         self.ges_events.TapText = {
             GestureRange:new{
@@ -304,6 +314,11 @@ function CreHtmlBoxWidget:_render()
         false,
         Screen.sw_dithering and true or false
     )
+    if self.highlight_text_selection and self.highlight_rects then
+        for _, rect in ipairs(self.highlight_rects) do
+            self.bb:darkenRect(rect.x, rect.y, rect.w, rect.h, self.highlight_lighten_factor)
+        end
+    end
 end
 
 function CreHtmlBoxWidget:getSize()
@@ -358,6 +373,7 @@ function CreHtmlBoxWidget:setPageNumber(page_number)
     if page_number ~= self.page_number then
         self.page_number = page_number
         self.document:gotoPage(page_number)
+        self:clearHighlight()
         self:freeBb()
     end
 end
@@ -446,12 +462,147 @@ function CreHtmlBoxWidget:onTapText(arg, ges)
     end
 end
 
--- Stubs so FootnoteWidget hold/dictionary path does not crash on the CRE branch.
-function CreHtmlBoxWidget:scheduleClearHighlightAndRedraw() end
-function CreHtmlBoxWidget:unscheduleClearHighlightAndRedraw() end
-function CreHtmlBoxWidget:clearHighlight() return false end
-function CreHtmlBoxWidget:onHoldStartText() return false end
-function CreHtmlBoxWidget:onHoldPanText() return false end
-function CreHtmlBoxWidget:onHoldReleaseText() return false end
+-- Hold selection for dictionary / Wikipedia lookup (parity with HtmlBoxWidget).
+-- Native CRE selection paint is not used: drawCurrentPage re-Renders each time,
+-- so we paint highlight_rects ourselves after the page blit.
+
+function CreHtmlBoxWidget:clearHighlight()
+    self.hold_start_pos = nil
+    self.hold_end_pos = nil
+    return self:updateHighlight()
+end
+
+function CreHtmlBoxWidget:updateHighlight()
+    if not (self.hold_start_pos and self.hold_end_pos and self.document) then
+        local changed = self.highlight_rects ~= nil
+        self.highlight_rects = nil
+        self.highlight_text = nil
+        if self.document and type(self.document.clearSelection) == "function" then
+            pcall(function() self.document:clearSelection() end)
+        end
+        return changed
+    end
+
+    -- drawSelection=false: we paint boxes ourselves after drawCurrentPage.
+    local ok, range = pcall(function()
+        return self.document:getTextFromPositions(
+            math.floor(self.hold_start_pos.x), math.floor(self.hold_start_pos.y),
+            math.floor(self.hold_end_pos.x), math.floor(self.hold_end_pos.y),
+            false, false)
+    end)
+    if not ok or not range or not range.text or range.text == "" then
+        local changed = self.highlight_text ~= nil
+        self.highlight_text = nil
+        self.highlight_rects = nil
+        return changed
+    end
+
+    local rects = {}
+    if range.pos0 and range.pos1 and type(self.document.getWordBoxesFromPositions) == "function" then
+        local boxes_ok, boxes = pcall(function()
+            return self.document:getWordBoxesFromPositions(range.pos0, range.pos1, true)
+        end)
+        if boxes_ok and type(boxes) == "table" then
+            for _, b in ipairs(boxes) do
+                if b.x0 and b.y0 and b.x1 and b.y1 then
+                    table.insert(rects, Geom:new{
+                        x = b.x0,
+                        y = b.y0,
+                        w = math.max(1, b.x1 - b.x0),
+                        h = math.max(1, b.y1 - b.y0),
+                    })
+                end
+            end
+        end
+    end
+
+    local prev_text = self.highlight_text
+    local prev_n = self.highlight_rects and #self.highlight_rects or 0
+    self.highlight_text = range.text
+    self.highlight_rects = #rects > 0 and rects or nil
+    return prev_text ~= range.text or prev_n ~= (#rects)
+end
+
+function CreHtmlBoxWidget:redrawHighlight()
+    if not self.highlight_text_selection then
+        return
+    end
+    self:freeBb()
+    UIManager:setDirty(self.dialog or "all", function()
+        return "ui", self.dimen
+    end)
+end
+
+function CreHtmlBoxWidget:scheduleClearHighlightAndRedraw()
+    if self.highlight_clear_and_redraw_action then
+        return
+    end
+    self.highlight_clear_and_redraw_action = function()
+        self.highlight_clear_and_redraw_action = nil
+        if self:clearHighlight() then
+            self:redrawHighlight()
+        end
+    end
+    UIManager:scheduleIn(G_defaults:readSetting("DELAY_CLEAR_HIGHLIGHT_S"), self.highlight_clear_and_redraw_action)
+end
+
+function CreHtmlBoxWidget:unscheduleClearHighlightAndRedraw()
+    if self.highlight_clear_and_redraw_action then
+        UIManager:unschedule(self.highlight_clear_and_redraw_action)
+        self.highlight_clear_and_redraw_action = nil
+    end
+end
+
+function CreHtmlBoxWidget:onHoldStartText(_, ges)
+    self:unscheduleClearHighlightAndRedraw()
+    self.hold_start_pos = self:getPosFromAbsPos(ges.pos)
+    self.hold_end_pos = self.hold_start_pos
+    self.highlight_rects = nil
+    self.highlight_text = nil
+
+    if not self.hold_start_pos then
+        return false
+    end
+
+    self.hold_start_time = UIManager:getTime()
+    if self:updateHighlight() then
+        self:redrawHighlight()
+    end
+    return true
+end
+
+function CreHtmlBoxWidget:onHoldPanText(_, ges)
+    if not self.hold_start_pos then
+        return false
+    end
+    self.hold_end_pos = Geom:new{
+        x = ges.pos.x - self.dimen.x,
+        y = ges.pos.y - self.dimen.y,
+    }
+    if self:updateHighlight() then
+        self.hold_start_time = UIManager:getTime()
+        self:redrawHighlight()
+    end
+    return true
+end
+
+function CreHtmlBoxWidget:onHoldReleaseText(callback, ges)
+    if not callback or not self.hold_start_pos then
+        return false
+    end
+    self.hold_end_pos = Geom:new{
+        x = ges.pos.x - self.dimen.x,
+        y = ges.pos.y - self.dimen.y,
+    }
+    if self:updateHighlight() then
+        self:redrawHighlight()
+    end
+    if not self.highlight_text or self.highlight_text == "" then
+        return false
+    end
+    local hold_duration = time.now() - self.hold_start_time
+    callback(self.highlight_text, hold_duration)
+    return true
+end
 
 return CreHtmlBoxWidget
