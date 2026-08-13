@@ -484,6 +484,74 @@ end
 
 -- Expand a single-char CJK hold using LanguageSupport / japanese.koplugin.
 -- Uses the popup DocView (not the book) for xpointer walks.
+function CreHtmlBoxWidget:_snapRangeOffRubyAnnotations(range)
+    if not (range and range.pos0 and range.pos1 and self.document) then
+        return range
+    end
+    local doc = self.document
+    if type(doc.isRubyAnnotationXPointer) ~= "function"
+            or type(doc.getPrevVisibleChar) ~= "function"
+            or type(doc.getNextVisibleChar) ~= "function" then
+        return range
+    end
+
+    local pos0, pos1 = range.pos0, range.pos1
+    local changed = false
+
+    -- Hold on furigana: walk back onto the base character.
+    for _ = 1, 128 do
+        local ok, is_rt = pcall(function() return doc:isRubyAnnotationXPointer(pos0) end)
+        if not ok or not is_rt then
+            break
+        end
+        local prev = doc:getPrevVisibleChar(pos0)
+        if not prev or prev == pos0 then
+            break
+        end
+        pos0 = prev
+        changed = true
+    end
+
+    -- Exclusive end on/after <rt>: land just after the last base char.
+    for _ = 1, 128 do
+        local ok, is_rt = pcall(function() return doc:isRubyAnnotationXPointer(pos1) end)
+        if not ok or not is_rt then
+            break
+        end
+        local prev = doc:getPrevVisibleChar(pos1)
+        if prev and not doc:isRubyAnnotationXPointer(prev) then
+            local nxt = doc:getNextVisibleChar(prev)
+            if nxt then
+                pos1 = nxt
+                changed = true
+            end
+            break
+        end
+        local nxt = doc:getNextVisibleChar(pos1)
+        if not nxt or nxt == pos1 then
+            break
+        end
+        pos1 = nxt
+        changed = true
+    end
+
+    if not changed then
+        return range
+    end
+
+    local text_ok, text = pcall(function()
+        return doc:getTextFromXPointers(pos0, pos1)
+    end)
+    if not text_ok or not text or text == "" then
+        return range
+    end
+    return {
+        text = util.cleanupSelectedText(text),
+        pos0 = pos0,
+        pos1 = pos1,
+    }
+end
+
 function CreHtmlBoxWidget:_improveWordSelection(range)
     if not range or not range.text or range.text == "" then
         return nil
@@ -575,15 +643,39 @@ function CreHtmlBoxWidget:updateHighlight()
         return changed
     end
 
+    -- Furigana hits: snap onto base before expand / boxes (segments skip <rt>).
+    range = self:_snapRangeOffRubyAnnotations(range)
+
     if self.is_word_selection then
         local improved = self:_improveWordSelection(range)
         if improved then
             range = improved
         end
+        range = self:_snapRangeOffRubyAnnotations(range)
     end
 
     local rects = {}
     if range.pos0 and range.pos1 and type(self.document.getWordBoxesFromPositions) == "function" then
+        local boxes_ok, boxes = pcall(function()
+            return self.document:getWordBoxesFromPositions(range.pos0, range.pos1, true)
+        end)
+        if boxes_ok and type(boxes) == "table" then
+            for _, b in ipairs(boxes) do
+                if b.x0 and b.y0 and b.x1 and b.y1 then
+                    table.insert(rects, Geom:new{
+                        x = b.x0,
+                        y = b.y0,
+                        w = math.max(1, b.x1 - b.x0),
+                        h = math.max(1, b.y1 - b.y0),
+                    })
+                end
+            end
+        end
+    end
+
+    -- If boxes are empty (exclusive end still on ruby), try one more snap+fetch.
+    if #rects == 0 and range.pos0 and range.pos1 then
+        range = self:_snapRangeOffRubyAnnotations(range)
         local boxes_ok, boxes = pcall(function()
             return self.document:getWordBoxesFromPositions(range.pos0, range.pos1, true)
         end)
