@@ -14,6 +14,7 @@ local InputContainer = require("ui/widget/container/inputcontainer")
 local UIManager = require("ui/uimanager")
 local logger = require("logger")
 local time = require("ui/time")
+local util = require("util")
 local Screen = Device.screen
 
 -- Furigana Off CSS (keep in sync with plugins/furiganatool.koplugin/styles.lua).
@@ -55,6 +56,8 @@ local CreHtmlBoxWidget = InputContainer:extend{
     highlight_text = nil,
     highlight_rects = nil,
     highlight_clear_and_redraw_action = nil,
+    -- True after HoldStart until HoldPan: expand CJK via japanese.koplugin.
+    is_word_selection = false,
     -- Internal
     _tmp_path = nil,
     _revealed = nil, -- map of ruby xpointer id -> true (popup-local only)
@@ -465,11 +468,82 @@ end
 -- Hold selection for dictionary / Wikipedia lookup (parity with HtmlBoxWidget).
 -- Native CRE selection paint is not used: drawCurrentPage re-Renders each time,
 -- so we paint highlight_rects ourselves after the page blit.
+-- Point holds expand via japanese.koplugin (same as ReaderHighlight), because
+-- CRE getTextFromPositions at a point returns a single CJK character.
 
 function CreHtmlBoxWidget:clearHighlight()
     self.hold_start_pos = nil
     self.hold_end_pos = nil
+    self.is_word_selection = false
     return self:updateHighlight()
+end
+
+-- Expand a single-char CJK hold using LanguageSupport / japanese.koplugin.
+-- Uses the popup DocView (not the book) for xpointer walks.
+function CreHtmlBoxWidget:_improveWordSelection(range)
+    if not range or not range.text or range.text == "" then
+        return nil
+    end
+    if not util.hasCJKChar(range.text) then
+        return nil
+    end
+    if not (range.pos0 and range.pos1 and self.document) then
+        return nil
+    end
+
+    local ls = self.dialog and self.dialog.languagesupport
+    if not ls or not ls:hasActiveLanguagePlugins() then
+        return nil
+    end
+
+    local language_code = "ja"
+    if self.dialog.doc_props and self.dialog.doc_props.language then
+        language_code = self.dialog.doc_props.language
+    elseif ls.ui and ls.ui.doc_props and ls.ui.doc_props.language then
+        language_code = ls.ui.doc_props.language
+    end
+
+    local doc = self.document
+    local callbacks = {
+        get_prev_char_pos = function(pos)
+            return doc:getPrevVisibleChar(pos)
+        end,
+        get_next_char_pos = function(pos)
+            return doc:getNextVisibleChar(pos)
+        end,
+        get_text_in_range = function(pos0, pos1)
+            return doc:getTextFromXPointers(pos0, pos1)
+        end,
+    }
+
+    local new_pos0, new_pos1 = unpack(ls:_findAndCallPlugin(
+        language_code, "WordSelection",
+        {
+            text = range.text,
+            pos0 = range.pos0,
+            pos1 = range.pos1,
+            callbacks = callbacks,
+        }
+    ) or {})
+    if not new_pos0 or not new_pos1 then
+        return nil
+    end
+    if new_pos0 == range.pos0 and new_pos1 == range.pos1 then
+        return nil
+    end
+
+    local text_ok, new_text = pcall(function()
+        return doc:getTextFromXPointers(new_pos0, new_pos1)
+    end)
+    if not text_ok or not new_text or new_text == "" then
+        return nil
+    end
+
+    return {
+        text = util.cleanupSelectedText(new_text),
+        pos0 = new_pos0,
+        pos1 = new_pos1,
+    }
 end
 
 function CreHtmlBoxWidget:updateHighlight()
@@ -495,6 +569,13 @@ function CreHtmlBoxWidget:updateHighlight()
         self.highlight_text = nil
         self.highlight_rects = nil
         return changed
+    end
+
+    if self.is_word_selection then
+        local improved = self:_improveWordSelection(range)
+        if improved then
+            range = improved
+        end
     end
 
     local rects = {}
@@ -559,6 +640,7 @@ function CreHtmlBoxWidget:onHoldStartText(_, ges)
     self.hold_end_pos = self.hold_start_pos
     self.highlight_rects = nil
     self.highlight_text = nil
+    self.is_word_selection = true
 
     if not self.hold_start_pos then
         return false
@@ -579,6 +661,13 @@ function CreHtmlBoxWidget:onHoldPanText(_, ges)
         x = ges.pos.x - self.dimen.x,
         y = ges.pos.y - self.dimen.y,
     }
+    -- Ignore micro-pans (common before hold_release); keep word expansion.
+    local dx = self.hold_end_pos.x - self.hold_start_pos.x
+    local dy = self.hold_end_pos.y - self.hold_start_pos.y
+    local pan_slop = Screen:scaleBySize(8)
+    if (dx * dx + dy * dy) > (pan_slop * pan_slop) then
+        self.is_word_selection = false
+    end
     if self:updateHighlight() then
         self.hold_start_time = UIManager:getTime()
         self:redrawHighlight()
