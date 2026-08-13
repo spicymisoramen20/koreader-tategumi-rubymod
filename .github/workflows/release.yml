@@ -452,63 +452,12 @@ jobs:
           name: macos-${{ matrix.arch_label }}
           path: koreader-macos-${{ matrix.arch_label }}-latest-stable.7z
 
-  win32:
-    name: Windows (x86_64 MinGW)
-    runs-on: ubuntu-latest
-    container:
-      image: koreader/koappimage:latest
-    env:
-      BASH_ENV: /home/ko/.bashrc
-      TARGET: win32
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ env.RELEASE_TAG }}
-          fetch-depth: 0
-          fetch-tags: true
-      - name: Install MinGW toolchain
-        run: |
-          set -eux
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends \
-            mingw-w64 \
-            gcc-mingw-w64-x86-64 \
-            g++-mingw-w64-x86-64 \
-            binutils-mingw-w64-x86-64 \
-            p7zip-full
-          command -v x86_64-w64-mingw32-windres
-          # Default Ubuntu MinGW is win32-threaded and lacks std::mutex
-          # (tesseract object_cache.h). Prefer the POSIX-threaded compilers.
-          sudo update-alternatives --set x86_64-w64-mingw32-gcc \
-            /usr/bin/x86_64-w64-mingw32-gcc-posix
-          sudo update-alternatives --set x86_64-w64-mingw32-g++ \
-            /usr/bin/x86_64-w64-mingw32-g++-posix
-          x86_64-w64-mingw32-g++ -v 2>&1 | grep -i 'Thread model'
-      - name: Fetch submodules
-        run: make fetchthirdparty
-      - name: Build
-        run: make TARGET=win32
-      - name: Package
-        run: make TARGET=win32 update
-      - name: Rename for release
-        run: |
-          shopt -s nullglob
-          files=(koreader-win32-*.zip)
-          if [[ ${#files[@]} -eq 0 ]]; then
-            echo "ERROR: no win32 zip package found"
-            ls -la
-            exit 1
-          fi
-          cp "${files[0]}" koreader-win32-latest-stable.zip
-          ls -lh koreader-win32-latest-stable.zip
-      - uses: actions/upload-artifact@v4
-        with:
-          name: win32
-          path: koreader-win32-latest-stable.zip
+  # Windows (win32) temporarily omitted from releases while MinGW packaging is
+  # unstable. Re-enable via windows-dev.yml / this job when ready to ship again.
 
   release:
     name: Create Release
-    needs: [kindle, kindlehf, kindlepw2, kobo, pocketbook, cervantes, remarkable, remarkable-aarch64, android-arm, android-arm64, macos, win32]
+    needs: [kindle, kindlehf, kindlepw2, kobo, pocketbook, cervantes, remarkable, remarkable-aarch64, android-arm, android-arm64, macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -625,7 +574,6 @@ jobs:
             | Android (ARM64) | [koreader-android-arm64-${{ env.RELEASE_TAG }}.apk](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-android-arm64-${{ env.RELEASE_TAG }}.apk) |
             | macOS (Apple Silicon) | [koreader-macos-arm64-${{ env.RELEASE_TAG }}.7z](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-macos-arm64-${{ env.RELEASE_TAG }}.7z) |
             | macOS (Intel) | [koreader-macos-x86_64-${{ env.RELEASE_TAG }}.7z](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-macos-x86_64-${{ env.RELEASE_TAG }}.7z) |
-            | Windows (x86_64) | [koreader-win32-${{ env.RELEASE_TAG }}.zip](https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_TAG }}/koreader-win32-${{ env.RELEASE_TAG }}.zip) |
           files: artifacts/**/*
           draft: false
           prerelease: false
