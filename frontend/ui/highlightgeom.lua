@@ -4,20 +4,19 @@ Shared highlight geometry (ReaderView + CreHtmlBoxWidget footnote popup).
 
 local HighlightGeom = {}
 
--- Breathing room past the base/em band, on the side *away* from ruby/fog.
--- The annotation-facing edge stays on the getRect band so Lighten does not
--- eat the furigana gap (same rule for vertical-rl and horizontal-tb).
+-- Breathing room past the base/em band on *both* cross-axis sides so Lighten
+-- stays centered on the glyphs (vertical: width; horizontal: height).
+-- Annotation/fog clearance comes from getRect's base-only band, not from
+-- skipping the annotation-side pad (that un-centered horizontal highlights).
 HighlightGeom.CROSS_PAD_PX = 4
 
---- Expand a screen-space Lighten/Invert rect away from ruby/fog.
--- Vertical-rl: grow left (after); keep right (before / fog).
--- Horizontal-tb: grow down; keep top (ruby-position:over / fog).
-function HighlightGeom.padAwayFromAnnotation(x, y, w, h, is_vertical)
+--- Expand a screen-space Lighten/Invert rect symmetrically on the cross axis.
+function HighlightGeom.padCrossAxis(x, y, w, h, is_vertical)
     local pad = HighlightGeom.CROSS_PAD_PX
     if is_vertical then
-        return x - pad, y, w + pad, h
+        return x - pad, y, w + 2 * pad, h
     end
-    return x, y, w, h + pad
+    return x, y - pad, w, h + 2 * pad
 end
 
 return HighlightGeom

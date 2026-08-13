@@ -319,9 +319,9 @@ function CreHtmlBoxWidget:_render()
         Screen.sw_dithering and true or false
     )
     if self.highlight_text_selection and self.highlight_rects then
-        -- Same padAwayFromAnnotation as ReaderView (footnote is horizontal-tb).
+        -- Same padCrossAxis as ReaderView (footnote is horizontal-tb).
         for _, rect in ipairs(self.highlight_rects) do
-            local x, y, w, h = HighlightGeom.padAwayFromAnnotation(
+            local x, y, w, h = HighlightGeom.padCrossAxis(
                 rect.x, rect.y, rect.w, rect.h, false)
             self.bb:darkenRect(x, y, w, h, self.highlight_lighten_factor)
         end
