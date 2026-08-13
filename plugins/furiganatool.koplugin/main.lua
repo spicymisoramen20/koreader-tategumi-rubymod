@@ -16,6 +16,7 @@ local FuriganaToggle = WidgetContainer:extend{
 
 local SETTING_KEY = "furigana_toggle_mode"
 local OBSCURE_SETTING_KEY = "furigana_toggle_obscure"
+local LEVEL_SETTING_KEY = "furigana_toggle_level_scheme"
 local DITHER_INTENSITY_KEY = "furigana_toggle_dither_intensity"
 local FOG_FALLOFF_KEY = "furigana_toggle_fog_falloff"
 local FOG_ROUNDNESS_KEY = "furigana_toggle_fog_roundness"
@@ -29,6 +30,12 @@ local VALID_OBSCURE = {
     hidden = true,
     bar = true,
     fog = true,
+}
+local VALID_LEVEL = {
+    off = true,
+    jlpt = true,
+    joyo = true,
+    kanken = true,
 }
 
 local DEFAULT_INTENSITY = 10
@@ -48,6 +55,12 @@ function FuriganaToggle:init()
     if not VALID_OBSCURE[self.obscure_style] then
         self.obscure_style = "hidden"
         self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
+    end
+
+    self.level_scheme = self.ui.doc_settings:readSetting(LEVEL_SETTING_KEY) or "off"
+    if not VALID_LEVEL[self.level_scheme] then
+        self.level_scheme = "off"
+        self.ui.doc_settings:saveSetting(LEVEL_SETTING_KEY, self.level_scheme)
     end
 
     self.dither_intensity = tonumber(self.ui.doc_settings:readSetting(DITHER_INTENSITY_KEY)) or DEFAULT_INTENSITY
@@ -86,6 +99,7 @@ function FuriganaToggle:init()
 
     self.backend = RubyBackend:new(self.ui)
     self.backend.obscure_style = self.obscure_style
+    self.backend.level_scheme = self.level_scheme
     self.backend.dither_intensity = self.dither_intensity
     self.backend.fog_falloff = self.fog_falloff
     self.backend.fog_roundness = self.fog_roundness
@@ -138,6 +152,7 @@ function FuriganaToggle:_applyCss()
     self._plugin_css = Styles[self.mode] or ""
 
     self.backend:setObscureStyle(self.obscure_style)
+    self.backend:setLevelScheme(self.level_scheme)
     self.backend:setDitherParams(self.dither_intensity)
     self.backend:setFogParams(self.fog_falloff, self.fog_roundness)
     self.backend:setToggleMode(self.mode == "toggle")
@@ -323,6 +338,16 @@ function FuriganaToggle:setObscureStyle(style)
     self.backend:setObscureStyle(style)
 end
 
+function FuriganaToggle:setLevelScheme(scheme)
+    if not VALID_LEVEL[scheme] or scheme == self.level_scheme then
+        return
+    end
+
+    self.level_scheme = scheme
+    self.ui.doc_settings:saveSetting(LEVEL_SETTING_KEY, scheme)
+    self.backend:setLevelScheme(scheme)
+end
+
 function FuriganaToggle:setDitherParams(intensity)
     self.dither_intensity = intensity
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, intensity)
@@ -503,6 +528,7 @@ end
 function FuriganaToggle:onSaveSettings()
     self.ui.doc_settings:saveSetting(SETTING_KEY, self.mode)
     self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, self.obscure_style)
+    self.ui.doc_settings:saveSetting(LEVEL_SETTING_KEY, self.level_scheme)
     self.ui.doc_settings:saveSetting(DITHER_INTENSITY_KEY, self.dither_intensity)
     self.ui.doc_settings:saveSetting(FOG_FALLOFF_KEY, self.fog_falloff)
     self.ui.doc_settings:saveSetting(FOG_ROUNDNESS_KEY, self.fog_roundness)
@@ -523,6 +549,23 @@ function FuriganaToggle:addToMainMenu(menu_items)
             end,
             callback = function()
                 self:setObscureStyle(id)
+            end,
+        }
+    end
+
+    local function level_radio(id, label)
+        return {
+            text = label,
+            radio = true,
+            enabled_func = function()
+                return self.mode == "toggle" and self.backend:isSupported()
+                    and self.backend:_hasLevelApi()
+            end,
+            checked_func = function()
+                return self.level_scheme == id
+            end,
+            callback = function()
+                self:setLevelScheme(id)
             end,
         }
     end
@@ -627,6 +670,16 @@ function FuriganaToggle:addToMainMenu(menu_items)
                         callback = function()
                             self:_spinDitherIntensity()
                         end,
+                    },
+                    {
+                        text = _("Kanji level label"),
+                        separator = true,
+                        sub_item_table = {
+                            level_radio("off", _("Off")),
+                            level_radio("jlpt", _("JLPT")),
+                            level_radio("joyo", _("Joyo (常用)")),
+                            level_radio("kanken", _("Kanken (漢検)")),
+                        },
                     },
                 },
             },

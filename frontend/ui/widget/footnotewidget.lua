@@ -129,6 +129,7 @@ local FootnoteWidget = InputContainer:extend{
     -- Book furigana settings (CRE path only; plugin stays book-only)
     furigana_toggle_mode = "visible",
     furigana_toggle_obscure = "hidden",
+    furigana_toggle_level_scheme = "off",
     furigana_toggle_dither_intensity = 10,
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
@@ -360,6 +361,7 @@ function FootnoteWidget:init()
             dialog = self.dialog,
             furigana_toggle_mode = self.furigana_toggle_mode or "visible",
             furigana_toggle_obscure = self.furigana_toggle_obscure or "hidden",
+            furigana_toggle_level_scheme = self.furigana_toggle_level_scheme or "off",
             furigana_toggle_dither_intensity = self.furigana_toggle_dither_intensity or 10,
             furigana_toggle_fog_falloff = self.furigana_toggle_fog_falloff or 5,
             furigana_toggle_fog_roundness = self.furigana_toggle_fog_roundness or 15,

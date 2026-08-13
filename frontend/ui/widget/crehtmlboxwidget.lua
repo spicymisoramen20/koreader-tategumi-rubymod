@@ -34,6 +34,13 @@ local OBSCURE = {
     fog = 2,
 }
 
+local LEVEL = {
+    off = 0,
+    jlpt = 1,
+    joyo = 2,
+    kanken = 3,
+}
+
 local CreHtmlBoxWidget = InputContainer:extend{
     bb = nil,
     dimen = nil,
@@ -45,6 +52,7 @@ local CreHtmlBoxWidget = InputContainer:extend{
     -- Furigana (optional; FootnoteWidget passes book settings)
     furigana_toggle_mode = "visible", -- visible | off | toggle
     furigana_toggle_obscure = "hidden",
+    furigana_toggle_level_scheme = "off",
     furigana_toggle_dither_intensity = 10,
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
@@ -193,6 +201,9 @@ function CreHtmlBoxWidget:_applyTogglePaintState()
         self.document:setRubyToggleFogParams(
             self.furigana_toggle_fog_falloff or 5,
             self.furigana_toggle_fog_roundness or 15)
+    end
+    if type(self.document.setRubyToggleLevelScheme) == "function" then
+        self.document:setRubyToggleLevelScheme(LEVEL[self.furigana_toggle_level_scheme] or 0)
     end
 end
 

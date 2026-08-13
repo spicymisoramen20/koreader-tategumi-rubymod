@@ -59,6 +59,12 @@ function Version:getShortVersion()
         local rev = self:getCurrentRevision()
         if (not rev or rev == "") then return "unknown" end
         local year, month, point, revision = rev:match("v(%d%d%d%d)%.(%d%d)%.?(%d?%d?)-?(%d*)")
+        -- Local/untagged builds may ship a bare hash or non-semver git-rev.
+        -- Don't crash the reader on concat of nils.
+        if not year or not month then
+            self.short = rev
+            return self.short
+        end
         self.short = year .. "." .. month
         if point and point ~= "" then
             self.short = self.short .. "." .. point

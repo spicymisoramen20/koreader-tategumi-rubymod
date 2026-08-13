@@ -33,6 +33,7 @@ local ScrollCreHtmlWidget = InputContainer:extend{
     -- Furigana parity (passed through to CreHtmlBoxWidget)
     furigana_toggle_mode = "visible",
     furigana_toggle_obscure = "hidden",
+    furigana_toggle_level_scheme = "off",
     furigana_toggle_dither_intensity = 10,
     furigana_toggle_fog_falloff = 5,
     furigana_toggle_fog_roundness = 15,
@@ -49,6 +50,7 @@ function ScrollCreHtmlWidget:init()
         html_link_tapped_callback = self.html_link_tapped_callback,
         furigana_toggle_mode = self.furigana_toggle_mode,
         furigana_toggle_obscure = self.furigana_toggle_obscure,
+        furigana_toggle_level_scheme = self.furigana_toggle_level_scheme,
         furigana_toggle_dither_intensity = self.furigana_toggle_dither_intensity,
         furigana_toggle_fog_falloff = self.furigana_toggle_fog_falloff,
         furigana_toggle_fog_roundness = self.furigana_toggle_fog_roundness,

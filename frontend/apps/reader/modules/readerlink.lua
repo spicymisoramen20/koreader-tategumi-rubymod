@@ -1602,6 +1602,8 @@ function ReaderLink:showAsFootnotePopup(link, neglect_current_location)
             and self.ui.doc_settings:readSetting("furigana_toggle_mode") or "visible",
         furigana_toggle_obscure = self.ui.doc_settings
             and self.ui.doc_settings:readSetting("furigana_toggle_obscure") or "hidden",
+        furigana_toggle_level_scheme = self.ui.doc_settings
+            and self.ui.doc_settings:readSetting("furigana_toggle_level_scheme") or "off",
         furigana_toggle_dither_intensity = self.ui.doc_settings
             and tonumber(self.ui.doc_settings:readSetting("furigana_toggle_dither_intensity")) or 10,
         furigana_toggle_fog_falloff = self.ui.doc_settings

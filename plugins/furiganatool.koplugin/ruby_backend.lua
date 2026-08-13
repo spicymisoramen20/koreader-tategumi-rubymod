@@ -8,9 +8,18 @@ local OBSCURE = {
     fog = 2,
 }
 
+-- Must match RubyToggleLevelScheme in lvkanjilevel.h
+local LEVEL = {
+    off = 0,
+    jlpt = 1,
+    joyo = 2,
+    kanken = 3,
+}
+
 local RubyBackend = {}
 RubyBackend.__index = RubyBackend
 RubyBackend.OBSCURE = OBSCURE
+RubyBackend.LEVEL = LEVEL
 
 function RubyBackend:new(ui)
     local o = {
@@ -18,6 +27,7 @@ function RubyBackend:new(ui)
         revealed = {},
         toggle_mode = false,
         obscure_style = "hidden",
+        level_scheme = "off",
         dither_intensity = 10,
         fog_falloff = 5,
         fog_roundness = 15,
@@ -60,6 +70,11 @@ function RubyBackend:_hasFogApi()
     return doc and type(doc.setRubyToggleFogParams) == "function"
 end
 
+function RubyBackend:_hasLevelApi()
+    local doc = self.ui and self.ui.document and self.ui.document._document
+    return doc and type(doc.setRubyToggleLevelScheme) == "function"
+end
+
 function RubyBackend:usesIntensity()
     return self.obscure_style == "fog"
 end
@@ -84,6 +99,7 @@ function RubyBackend:setToggleMode(enabled)
     self:_applyObscureStyle()
     self:_applyDitherParams()
     self:_applyFogParams()
+    self:_applyLevelScheme()
     self:_redraw()
 
     return true
@@ -137,6 +153,22 @@ function RubyBackend:setFogParams(falloff, roundness)
     return true
 end
 
+function RubyBackend:setLevelScheme(scheme)
+    if not LEVEL[scheme] then
+        return false
+    end
+    if self.level_scheme == scheme then
+        self:_applyLevelScheme()
+        return true
+    end
+    self.level_scheme = scheme
+    self:_applyLevelScheme()
+    if self.toggle_mode then
+        self:_redraw()
+    end
+    return true
+end
+
 function RubyBackend:_applyObscureStyle()
     if not self:_hasObscureApi() then
         return
@@ -156,6 +188,13 @@ function RubyBackend:_applyFogParams()
         return
     end
     self.ui.document._document:setRubyToggleFogParams(self.fog_falloff, self.fog_roundness)
+end
+
+function RubyBackend:_applyLevelScheme()
+    if not self:_hasLevelApi() then
+        return
+    end
+    self.ui.document._document:setRubyToggleLevelScheme(LEVEL[self.level_scheme] or 0)
 end
 
 -------------------------------------------------------------------------------
