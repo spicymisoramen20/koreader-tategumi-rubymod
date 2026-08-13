@@ -1713,7 +1713,8 @@ function ReaderHighlight:onHold(arg, ges)
         self.hold_pos = nil
         return false
     end
-    local ok, word = pcall(self.ui.document.getWordFromPosition, self.ui.document, self.hold_pos)
+    local ok, word = pcall(self.ui.document.getWordFromPosition, self.ui.document, self.hold_pos,
+        self.ui.rolling and true or nil) -- rolling: Lua paints; skip native CRE flash
     if ok and word then
         logger.dbg("selected word:", word)
         -- Convert "word selection" table to "text selection" table because we
@@ -1758,17 +1759,15 @@ function ReaderHighlight:onHold(arg, ges)
             end
         end
 
-        local is_vertical = self.ui.document.isVerticalText and self.ui.document:isVerticalText()
         if self.ui.paging then
             self.view.highlight.temp[self.hold_pos.page] = self.selected_text.sboxes
             -- Unfortunately, getWordFromPosition() may not return good coordinates,
             -- so refresh the whole page
             UIManager:setDirty(self.dialog, "ui")
-        elseif is_vertical and self.ui.rolling and self.selected_text.sboxes and #self.selected_text.sboxes > 0 then
-            -- Vertical-rl: native crengine selection draws scattered per-word boxes.
-            -- Use Lua-side invert boxes (same as onHoldPan) for a cleaner appearance.
-            -- docToWindowPoint and drawPageTo now use the same clip.right anchor, so
-            -- sboxes from getWordFromPosition are already at the correct screen position.
+        elseif self.ui.rolling and self.selected_text.sboxes and #self.selected_text.sboxes > 0 then
+            -- Rolling CRE: paint live selection via Lua (same Lighten + padCrossAxis
+            -- as saved highlights). Native CRE selection skips that pad and, on
+            -- vertical-rl, also draws scattered per-word boxes.
             self.ui.document:clearSelection()
             local sboxes = self.selected_text.sboxes
             self.view.highlight.temp[self.hold_pos.page] = sboxes
@@ -1989,10 +1988,10 @@ function ReaderHighlight:onHoldPan(_, ges)
     end
 
     local old_text = self.selected_text and self.selected_text.text
-    -- For vertical-rl rolling documents, native crengine selection draws
-    -- per-word boxes (scattered) rather than column-spanning boxes.
-    -- Use Lua-side drawing via view.highlight.temp for cleaner appearance.
-    local use_lua_highlight = is_vertical and self.ui.rolling
+    -- Rolling CRE: native selection skips ReaderView padCrossAxis (and on
+    -- vertical-rl draws scattered per-word boxes). Use Lua highlight.temp
+    -- for hold-pan so live selection matches saved Lighten / footnotes.
+    local use_lua_highlight = self.ui.rolling
     self.selected_text = self.ui.document:getTextFromPositions(self.hold_pos, self.holdpan_pos,
         use_lua_highlight)
     self.is_word_selection = false
@@ -2047,8 +2046,8 @@ function ReaderHighlight:onHoldPan(_, ges)
     if self.ui.paging and self.selected_text then
         self.view.highlight.temp[self.hold_pos.page] = self.selected_text.sboxes
     elseif use_lua_highlight and self.selected_text then
-        -- Clear the native crengine word selection from onHold so it does not
-        -- show through the Lua column boxes.
+        -- Clear native crengine selection from onHold / getTextFromPositions
+        -- so it does not show through the Lua Lighten boxes.
         self.ui.document:clearSelection()
         -- docToWindowPoint and drawPageTo now use the same clip.right anchor, so
         -- sboxes are already at the correct screen position — no shift needed.
