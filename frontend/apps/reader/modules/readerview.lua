@@ -665,19 +665,11 @@ end
 function ReaderView:drawHighlightRect(bb, _x, _y, rect, drawer, color, draw_note_mark)
     local x, y, w, h = rect.x, rect.y, rect.w, rect.h
     local is_vertical = self.document and self.document.isVerticalText and self.document:isVerticalText()
-    -- Shared outward pad past the base/em band (getRect is glyph-tight).
-    -- One number for both writing modes: pixels added on each cross-axis side.
-    -- Vertical grows column width; horizontal grows line/em height.
-    -- Kept in sync with CreHtmlBoxWidget via ui/highlightgeom.lua.
-    local HIGHLIGHT_CROSS_PAD_PX = require("ui/highlightgeom").CROSS_PAD_PX
+    -- Shared outward pad past the base/em band, away from ruby/fog only
+    -- (see ui/highlightgeom.lua). Same rule for vertical and horizontal.
     if drawer == "lighten" or drawer == "invert" then
-        if is_vertical then
-            x = x - HIGHLIGHT_CROSS_PAD_PX
-            w = w + 2 * HIGHLIGHT_CROSS_PAD_PX
-        else
-            y = y - HIGHLIGHT_CROSS_PAD_PX
-            h = h + 2 * HIGHLIGHT_CROSS_PAD_PX
-        end
+        local HighlightGeom = require("ui/highlightgeom")
+        x, y, w, h = HighlightGeom.padAwayFromAnnotation(x, y, w, h, is_vertical)
         local pct = G_reader_settings:readSetting("highlight_height_pct")
         if pct ~= nil then
             -- Upstream menu "Highlight line height": further shrink along
