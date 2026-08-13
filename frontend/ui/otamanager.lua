@@ -24,8 +24,8 @@ local OTAManager = {
     -- NOTE: Each URL *MUST* end with a /
     -- Keyed by channel name; getOTAServer() auto-selects based on getOTAChannel().
     ota_servers = {
-        stable  = "https://github.com/m-tky/koreader-tategumi/releases/latest/download/",
-        nightly = "https://github.com/m-tky/koreader-tategumi/releases/download/nightly/",
+        stable  = "https://github.com/spicymisoramen20/koreader-tategumi-rubymod/releases/latest/download/",
+        nightly = "https://github.com/spicymisoramen20/koreader-tategumi-rubymod/releases/download/nightly/",
     },
     ota_channels = {
         "stable",
