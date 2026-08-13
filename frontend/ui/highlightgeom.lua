@@ -22,17 +22,45 @@ function HighlightGeom.padCrossAxis(x, y, w, h, is_vertical, pad_px)
     return x, y - pad, w, h + 2 * pad
 end
 
---- Force every rect to the same content-band height (bottom-aligned).
--- Footnote ruby vs plain getRect bands can differ; normalize before pad/paint
--- so long-press and drag Lighten match.
+--- Force every rect to the same content-band height, centered on the source mid-Y.
+-- Bottom-aligning taller drag-select unions shifted the bar down vs word holds;
+-- preserving mid-Y keeps long-press and drag optically aligned. Same-line
+-- fragments also share one mid so multi-box lines stay level.
 function HighlightGeom.normalizeHorizontalBandHeight(rects, band_h)
-    if not rects or not band_h or band_h < 1 then
+    if not rects or #rects == 0 or not band_h or band_h < 1 then
         return rects
     end
+
+    local clusters = {}
     for _, r in ipairs(rects) do
-        local bottom = r.y + r.h
-        r.h = band_h
-        r.y = bottom - band_h
+        local mid = r.y + r.h / 2
+        local placed = false
+        for _, c in ipairs(clusters) do
+            if math.abs(mid - c.mid) <= math.max(band_h, r.h) * 0.6 then
+                table.insert(c.rects, r)
+                c.mid_sum = c.mid_sum + mid
+                c.n = c.n + 1
+                c.mid = c.mid_sum / c.n
+                placed = true
+                break
+            end
+        end
+        if not placed then
+            table.insert(clusters, {
+                rects = { r },
+                mid_sum = mid,
+                n = 1,
+                mid = mid,
+            })
+        end
+    end
+
+    for _, c in ipairs(clusters) do
+        local y = math.floor(c.mid - band_h / 2)
+        for _, r in ipairs(c.rects) do
+            r.y = y
+            r.h = band_h
+        end
     end
     return rects
 end
