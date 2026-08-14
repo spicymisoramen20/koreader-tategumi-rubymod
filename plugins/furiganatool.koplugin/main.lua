@@ -1,9 +1,11 @@
 local Device = require("device")
+local Dispatcher = require("dispatcher")
 local Event = require("ui/event")
 local SpinWidget = require("ui/widget/spinwidget")
 local UIManager = require("ui/uimanager")
 local WidgetContainer = require("ui/widget/container/widgetcontainer")
 local _ = require("gettext")
+local C_ = _.pgettext
 local T = require("ffi/util").template
 
 local Styles = require("styles")
@@ -98,6 +100,7 @@ function FuriganaToggle:init()
     end
 
     self.backend = RubyBackend:new(self.ui)
+    self:onDispatcherRegisterActions()
     self.backend.obscure_style = self.obscure_style
     self.backend.level_scheme = self.level_scheme
     self.backend.dither_intensity = self.dither_intensity
@@ -116,6 +119,82 @@ function FuriganaToggle:init()
     end
 
     self.ui.menu:registerToMainMenu(self)
+end
+
+function FuriganaToggle:onDispatcherRegisterActions()
+    Dispatcher:registerAction("set_furigana_mode", {
+        category = "string",
+        event = "SetFuriganaMode",
+        title = _("Furigana mode"),
+        rolling = true,
+        args = {"visible", "off", "toggle"},
+        toggle = {_("Visible"), _("Off"), _("Toggle")},
+    })
+    Dispatcher:registerAction("set_furigana_obscure", {
+        category = "string",
+        event = "SetFuriganaObscure",
+        title = _("Furigana toggle hide style"),
+        rolling = true,
+        args = {"hidden", "bar", "fog"},
+        toggle = {_("Hidden"), _("Bar"), _("Fog")},
+    })
+    Dispatcher:registerAction("set_furigana_dither_intensity", {
+        category = "absolutenumber",
+        event = "SetFuriganaDitherIntensity",
+        title = _("Furigana fog/bar intensity"),
+        rolling = true,
+        min = 0,
+        max = 100,
+        default = DEFAULT_INTENSITY,
+        unit = "%",
+    })
+    Dispatcher:registerAction("set_furigana_auto_hide", {
+        category = "absolutenumber",
+        event = "SetFuriganaAutoHide",
+        title = _("Furigana auto-hide"),
+        rolling = true,
+        min = 0,
+        max = AUTO_HIDE_MAX_SEC,
+        step = 0.1,
+        default = 0,
+        unit = C_("Time", "s"),
+    })
+    Dispatcher:registerAction("set_furigana_level_scheme", {
+        category = "string",
+        event = "SetFuriganaLevelScheme",
+        title = _("Furigana kanji level label"),
+        rolling = true,
+        args = {"off", "jlpt", "joyo", "kanken"},
+        toggle = {_("Off"), _("JLPT"), _("Joyo"), _("Kanken")},
+    })
+end
+
+function FuriganaToggle:onSetFuriganaMode(mode)
+    self:setMode(mode)
+    return true
+end
+
+function FuriganaToggle:onSetFuriganaObscure(style)
+    self:setObscureStyle(style)
+    return true
+end
+
+function FuriganaToggle:onSetFuriganaDitherIntensity(intensity)
+    intensity = tonumber(intensity) or DEFAULT_INTENSITY
+    if intensity < 0 then intensity = 0 end
+    if intensity > 100 then intensity = 100 end
+    self:setDitherParams(intensity)
+    return true
+end
+
+function FuriganaToggle:onSetFuriganaAutoHide(seconds)
+    self:setAutoHide(seconds)
+    return true
+end
+
+function FuriganaToggle:onSetFuriganaLevelScheme(scheme)
+    self:setLevelScheme(scheme)
+    return true
 end
 
 function FuriganaToggle:_installCssInjection()
@@ -175,6 +254,34 @@ function FuriganaToggle:setMode(mode)
     self.ui.doc_settings:saveSetting(SETTING_KEY, mode)
     self.backend:clearRevealedState()
     self:_applyCss()
+end
+
+function FuriganaToggle:setObscureStyle(style)
+    if not VALID_OBSCURE[style] then
+        return
+    end
+    if style == self.obscure_style then
+        self.backend:setObscureStyle(style)
+        return
+    end
+
+    self.obscure_style = style
+    self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
+    self.backend:setObscureStyle(style)
+end
+
+function FuriganaToggle:setLevelScheme(scheme)
+    if not VALID_LEVEL[scheme] then
+        return
+    end
+    if scheme == self.level_scheme then
+        self.backend:setLevelScheme(scheme)
+        return
+    end
+
+    self.level_scheme = scheme
+    self.ui.doc_settings:saveSetting(LEVEL_SETTING_KEY, scheme)
+    self.backend:setLevelScheme(scheme)
 end
 
 function FuriganaToggle:_autoHideEnabled()
@@ -326,26 +433,6 @@ function FuriganaToggle:_spinAutoHide(touchmenu_instance)
         end,
     }
     UIManager:show(spin)
-end
-
-function FuriganaToggle:setObscureStyle(style)
-    if not VALID_OBSCURE[style] or style == self.obscure_style then
-        return
-    end
-
-    self.obscure_style = style
-    self.ui.doc_settings:saveSetting(OBSCURE_SETTING_KEY, style)
-    self.backend:setObscureStyle(style)
-end
-
-function FuriganaToggle:setLevelScheme(scheme)
-    if not VALID_LEVEL[scheme] or scheme == self.level_scheme then
-        return
-    end
-
-    self.level_scheme = scheme
-    self.ui.doc_settings:saveSetting(LEVEL_SETTING_KEY, scheme)
-    self.backend:setLevelScheme(scheme)
 end
 
 function FuriganaToggle:setDitherParams(intensity)

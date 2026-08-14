@@ -513,6 +513,15 @@ function ReaderMenu:onTapCloseMenu()
     self.ui:handleEvent(Event:new("CloseConfigMenu"))
 end
 
+function ReaderMenu:onSetActivateMenu(mode)
+    if mode ~= "swipe" and mode ~= "tap" and mode ~= "swipe_tap" then
+        return true
+    end
+    G_reader_settings:saveSetting("activate_menu", mode)
+    self.activation_menu = mode
+    return true
+end
+
 function ReaderMenu:onReadSettings(config)
     self.last_tab_index = config:readSetting("readermenu_tab_index") or 1
 end

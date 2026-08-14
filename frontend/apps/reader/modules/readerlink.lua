@@ -768,6 +768,36 @@ function ReaderLink:onToggleTapLinks()
     return true
 end
 
+function ReaderLink:onSetTapToFollowLinks(enable)
+    G_reader_settings:saveSetting("tap_to_follow_links", enable and true or false)
+    return true
+end
+
+function ReaderLink:onSetLargerTapAreaToFollowLinks(enable)
+    G_reader_settings:saveSetting("larger_tap_area_to_follow_links", enable and true or false)
+    return true
+end
+
+function ReaderLink:onSetFootnoteLinkInPopup(enable)
+    G_reader_settings:saveSetting("footnote_link_in_popup", enable and true or false)
+    return true
+end
+
+function ReaderLink:onSetLinkPreferFootnote(enable)
+    G_reader_settings:saveSetting("link_prefer_footnote", enable and true or false)
+    return true
+end
+
+function ReaderLink:onSetFootnotePopupJapaneseSupport(enable)
+    G_reader_settings:saveSetting("footnote_popup_japanese_support", enable and true or false)
+    return true
+end
+
+function ReaderLink:onSetPageTurnsDisableTap(disable)
+    G_reader_settings:saveSetting("page_turns_disable_tap", disable and true or false)
+    return true
+end
+
 function ReaderLink:getCurrentLocation()
     return self.ui.paging and self.ui.paging:getBookLocation()
                            or {xpointer = self.ui.rolling:getBookLocation()}

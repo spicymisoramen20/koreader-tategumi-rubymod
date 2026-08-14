@@ -50,8 +50,67 @@ function Profiles:loadSettings()
                 self.updated = true
             end
         end
+        self:seedFuriganaProfile()
     end
     self.data = Profiles.settings.data
+end
+
+-- One-shot seed of the fork's default Furigana reading profile.
+-- Does not overwrite an existing profile named "Furigana".
+local FURIGANA_PROFILE_SEED_KEY = "furigana_profile_seed_v1"
+local FURIGANA_PROFILE_NAME = "Furigana"
+
+function Profiles:seedFuriganaProfile()
+    if G_reader_settings:isTrue(FURIGANA_PROFILE_SEED_KEY) then
+        return
+    end
+    if not Profiles.settings.data[FURIGANA_PROFILE_NAME] then
+        local order = {
+            "set_tap_to_follow_links",
+            "set_larger_tap_area_to_follow_links",
+            "set_footnote_link_in_popup",
+            "set_link_prefer_footnote",
+            "set_footnote_popup_japanese_support",
+            "set_page_turns_disable_tap",
+            "set_activate_menu",
+            "set_furigana_obscure",
+            "set_furigana_dither_intensity",
+            "set_furigana_auto_hide",
+            "set_furigana_level_scheme",
+            "set_furigana_mode",
+        }
+        Profiles.settings.data[FURIGANA_PROFILE_NAME] = {
+            settings = {
+                name = FURIGANA_PROFILE_NAME,
+                order = order,
+            },
+            set_tap_to_follow_links = true,
+            set_larger_tap_area_to_follow_links = true,
+            set_footnote_link_in_popup = true,
+            set_link_prefer_footnote = true,
+            set_footnote_popup_japanese_support = true,
+            set_page_turns_disable_tap = true,
+            set_activate_menu = "swipe",
+            set_furigana_obscure = "fog",
+            set_furigana_dither_intensity = 20,
+            set_furigana_auto_hide = 1.4,
+            set_furigana_level_scheme = "jlpt",
+            set_furigana_mode = "toggle",
+        }
+        self.updated = true
+    end
+    -- Auto-exec on every book open unless already configured for this profile.
+    local already = util.tableGetValue(self.autoexec, "ReaderReady", FURIGANA_PROFILE_NAME)
+        or util.tableGetValue(self.autoexec, "ReaderReadyAll", FURIGANA_PROFILE_NAME)
+    if not already then
+        util.tableSetValue(self.autoexec, true, "ReaderReady", FURIGANA_PROFILE_NAME)
+        G_reader_settings:saveSetting("profiles_autoexec", self.autoexec)
+    end
+    G_reader_settings:saveSetting(FURIGANA_PROFILE_SEED_KEY, true)
+    if self.updated then
+        Profiles.settings:flush()
+        self.updated = nil
+    end
 end
 
 function Profiles:onFlushSettings()
@@ -72,11 +131,63 @@ end
 
 function Profiles:onDispatcherRegisterActions()
     self:loadSettings()
+    self:registerFuriganaDispatcherActions()
     for k, v in pairs(self.data) do
         if v.settings.registered then
             dispatcherRegisterProfile(k)
         end
     end
+end
+
+-- Keep Furigana profile actions visible in the dispatcher/profile editor
+-- even when furiganatool (doc-only) is not loaded. Event handlers live in
+-- furiganatool when a book is open.
+function Profiles:registerFuriganaDispatcherActions()
+    Dispatcher:registerAction("set_furigana_mode", {
+        category = "string",
+        event = "SetFuriganaMode",
+        title = _("Furigana mode"),
+        rolling = true,
+        args = {"visible", "off", "toggle"},
+        toggle = {_("Visible"), _("Off"), _("Toggle")},
+    })
+    Dispatcher:registerAction("set_furigana_obscure", {
+        category = "string",
+        event = "SetFuriganaObscure",
+        title = _("Furigana toggle hide style"),
+        rolling = true,
+        args = {"hidden", "bar", "fog"},
+        toggle = {_("Hidden"), _("Bar"), _("Fog")},
+    })
+    Dispatcher:registerAction("set_furigana_dither_intensity", {
+        category = "absolutenumber",
+        event = "SetFuriganaDitherIntensity",
+        title = _("Furigana fog/bar intensity"),
+        rolling = true,
+        min = 0,
+        max = 100,
+        default = 10,
+        unit = "%",
+    })
+    Dispatcher:registerAction("set_furigana_auto_hide", {
+        category = "absolutenumber",
+        event = "SetFuriganaAutoHide",
+        title = _("Furigana auto-hide"),
+        rolling = true,
+        min = 0,
+        max = 60,
+        step = 0.1,
+        default = 0,
+        unit = C_("Time", "s"),
+    })
+    Dispatcher:registerAction("set_furigana_level_scheme", {
+        category = "string",
+        event = "SetFuriganaLevelScheme",
+        title = _("Furigana kanji level label"),
+        rolling = true,
+        args = {"off", "jlpt", "joyo", "kanken"},
+        toggle = {_("Off"), _("JLPT"), _("Joyo"), _("Kanken")},
+    })
 end
 
 function Profiles:registerAutoExecTrigger(trigger)
