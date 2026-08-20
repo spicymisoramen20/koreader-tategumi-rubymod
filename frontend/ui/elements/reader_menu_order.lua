@@ -54,6 +54,7 @@ local order = {
         "----------------------------",
         "change_font",
         "typography",
+        "vertical_layout",
         "----------------------------",
         "switch_zoom_mode",
         "----------------------------",

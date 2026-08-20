@@ -1509,6 +1509,13 @@ function CreDocument:isVerticalText()
     return self._document:isVerticalText()
 end
 
+-- mode: 0 = uniform column tops, 1 = print-faithful first-column indent
+-- scale: 0–100 percent of CSS text-indent, used only in print-faithful mode
+function CreDocument:setVertColumnTopPrefs(mode, scale)
+    logger.dbg("CreDocument: set vertical column top prefs", mode, scale)
+    self._document:setVertColumnTopPrefs(mode, scale)
+end
+
 function CreDocument:hasCacheFile()
     return self._document:hasCacheFile()
 end

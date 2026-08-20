@@ -56,6 +56,7 @@ local ReaderThumbnail = require("apps/reader/modules/readerthumbnail")
 local ReaderToc = require("apps/reader/modules/readertoc")
 local ReaderTypeset = require("apps/reader/modules/readertypeset")
 local ReaderTypography = require("apps/reader/modules/readertypography")
+local ReaderVerticalLayout = require("apps/reader/modules/readerverticallayout")
 local ReaderUserHyph = require("apps/reader/modules/readeruserhyph")
 local ReaderAutoDirection = require("apps/reader/modules/reader_auto_direction")
 local ReaderView = require("apps/reader/modules/readerview")
@@ -375,6 +376,11 @@ function ReaderUI:init()
         })
         -- typography menu (replaces previous hyphenation menu / ReaderHyphenation)
         self:registerModule("typography", ReaderTypography:new{
+            dialog = self.dialog,
+            view = self.view,
+            ui = self
+        })
+        self:registerModule("verticallayout", ReaderVerticalLayout:new{
             dialog = self.dialog,
             view = self.view,
             ui = self
