@@ -2948,6 +2948,14 @@ local dictionaries = {
         url = "https://www.reader-dict.com/file/ja/dict-ja-ja.zip"
     },
     {
+        name = "reader.dict Korean",
+        lang_in = "kor",
+        lang_out = "kor",
+        entries = 67047,
+        license = "MIT https://github.com/reader-dict/monolingual",
+        url = "https://www.reader-dict.com/file/ko/dict-ko-ko.zip"
+    },
+    {
         name = "reader.dict Lithuanian",
         lang_in = "lit",
         lang_out = "lit",
@@ -3015,31 +3023,124 @@ local dictionaries = {
         name = "Wikcionario Alemán-Español",
         lang_in = "deu",
         lang_out = "spa",
-        entries = 4115,
+        entries = 4117,
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-es.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wikcionario Español-Español",
+        lang_in = "spa",
+        lang_out = "spa",
+        entries = 121104,
+=======
+        name = "Wikcionario Asturiano-Español",
+        lang_in = "ast",
+        lang_out = "spa",
+        entries = 1404,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ast-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Azerí-Español",
+        lang_in = "aze",
+        lang_out = "spa",
+        entries = 1898,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/az-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Bretón-Español",
+        lang_in = "bre",
+        lang_out = "spa",
+        entries = 1676,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/br-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Catalán-Español",
+        lang_in = "cat",
+        lang_out = "spa",
+        entries = 3031,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-es.tar.zst",
     },
     {
         name = "Wikcionario Español-Español",
         lang_in = "spa",
         lang_out = "spa",
-        entries = 121104,
+        entries = 122556,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-es.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wikcionario Francés-Español",
+        lang_in = "fra",
+        lang_out = "spa",
+        entries = 8981,
+=======
+        name = "Wikcionario Esperanto-Español",
+        lang_in = "epo",
+        lang_out = "spa",
+        entries = 1539,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Finés-Español",
+        lang_in = "fin",
+        lang_out = "spa",
+        entries = 784,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-es.tar.zst",
     },
     {
         name = "Wikcionario Francés-Español",
         lang_in = "fra",
         lang_out = "spa",
-        entries = 8981,
+        entries = 9014,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-es.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wikcionario Inglés-Español",
+        lang_in = "eng",
+        lang_out = "spa",
+        entries = 19385,
+=======
+        name = "Wikcionario Gallego-Español",
+        lang_in = "glg",
+        lang_out = "spa",
+        entries = 2351,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Guaraní-Español",
+        lang_in = "grn",
+        lang_out = "spa",
+        entries = 993,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gn-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Hebreo-Español",
+        lang_in = "heb",
+        lang_out = "spa",
+        entries = 2059,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-es.tar.zst",
     },
     {
         name = "Wikcionario Inglés-Español",
         lang_in = "eng",
         lang_out = "spa",
-        entries = 19385,
+        entries = 19430,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-es.tar.zst",
     },
@@ -3047,7 +3148,11 @@ local dictionaries = {
         name = "Wikcionario Italiano-Español",
         lang_in = "ita",
         lang_out = "spa",
+<<<<<<< HEAD
         entries = 5914,
+=======
+        entries = 5919,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-es.tar.zst",
     },
@@ -3063,23 +3168,737 @@ local dictionaries = {
         name = "Wikcionario Latín-Español",
         lang_in = "lat",
         lang_out = "spa",
+<<<<<<< HEAD
         entries = 3994,
+=======
+        entries = 4008,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-es.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wikcionario Portugués-Español",
+        lang_in = "por",
+        lang_out = "spa",
+        entries = 4915,
+=======
+        name = "Wikcionario Maya yucateco-Español",
+        lang_in = "yua",
+        lang_out = "spa",
+        entries = 2448,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yua-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Neerlandés-Español",
+        lang_in = "nld",
+        lang_out = "spa",
+        entries = 1889,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Náhuatl clásico-Español",
+        lang_in = "nci",
+        lang_out = "spa",
+        entries = 2731,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nci-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Náhuatl de la Huasteca central-Español",
+        lang_in = "nch",
+        lang_out = "spa",
+        entries = 1886,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nch-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Occitano-Español",
+        lang_in = "oci",
+        lang_out = "spa",
+        entries = 944,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/oc-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Polaco-Español",
+        lang_in = "pol",
+        lang_out = "spa",
+        entries = 1273,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-es.tar.zst",
     },
     {
         name = "Wikcionario Portugués-Español",
         lang_in = "por",
         lang_out = "spa",
-        entries = 4915,
+        entries = 4940,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-es.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wikisanakirja Englanti-Suomi",
+        lang_in = "eng",
+        lang_out = "fin",
+        entries = 61826,
+=======
+        name = "Wikcionario Quechua cuzqueño-Español",
+        lang_in = "quz",
+        lang_out = "spa",
+        entries = 1268,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/quz-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Rumano-Español",
+        lang_in = "ron",
+        lang_out = "spa",
+        entries = 1834,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Sueco-Español",
+        lang_in = "swe",
+        lang_out = "spa",
+        entries = 2232,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Vasco-Español",
+        lang_in = "eus",
+        lang_out = "spa",
+        entries = 1865,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eu-es.tar.zst",
+    },
+    {
+        name = "Wikcionario Yagán-Español",
+        lang_in = "yag",
+        lang_out = "spa",
+        entries = 1508,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yag-es.tar.zst",
+    },
+    {
+        name = "Wikcionário Alemão-Português",
+        lang_in = "deu",
+        lang_out = "por",
+        entries = 4617,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Asturiano-Português",
+        lang_in = "ast",
+        lang_out = "por",
+        entries = 3057,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ast-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Basco-Português",
+        lang_in = "eus",
+        lang_out = "por",
+        entries = 1238,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eu-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Búlgaro-Português",
+        lang_in = "bul",
+        lang_out = "por",
+        entries = 973,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bg-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Catalão-Português",
+        lang_in = "cat",
+        lang_out = "por",
+        entries = 2920,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Checo-Português",
+        lang_in = "ces",
+        lang_out = "por",
+        entries = 1696,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Chinês-Português",
+        lang_in = "zho",
+        lang_out = "por",
+        entries = 2169,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Coreano-Português",
+        lang_in = "kor",
+        lang_out = "por",
+        entries = 840,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Curdo-Português",
+        lang_in = "kur",
+        lang_out = "por",
+        entries = 1049,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ku-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Dinamarquês-Português",
+        lang_in = "dan",
+        lang_out = "por",
+        entries = 1508,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Eslovaco-Português",
+        lang_in = "slk",
+        lang_out = "por",
+        entries = 998,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Espanhol-Português",
+        lang_in = "spa",
+        lang_out = "por",
+        entries = 9383,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Esperanto-Português",
+        lang_in = "epo",
+        lang_out = "por",
+        entries = 2535,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Finlandês-Português",
+        lang_in = "fin",
+        lang_out = "por",
+        entries = 1849,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Francês-Português",
+        lang_in = "fra",
+        lang_out = "por",
+        entries = 5182,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Galego-Português",
+        lang_in = "glg",
+        lang_out = "por",
+        entries = 30963,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Galego-Português Medieval-Português",
+        lang_in = "roa-gpm",
+        lang_out = "por",
+        entries = 1477,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/roa-gpm-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Galês-Português",
+        lang_in = "cym",
+        lang_out = "por",
+        entries = 936,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cy-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Gaélico Escocês-Português",
+        lang_in = "gla",
+        lang_out = "por",
+        entries = 1081,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gd-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Grego-Português",
+        lang_in = "ell",
+        lang_out = "por",
+        entries = 1355,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Holandês-Português",
+        lang_in = "nld",
+        lang_out = "por",
+        entries = 2083,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Húngaro-Português",
+        lang_in = "hun",
+        lang_out = "por",
+        entries = 1122,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Ido-Português",
+        lang_in = "ido",
+        lang_out = "por",
+        entries = 1330,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/io-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Indonésio-Português",
+        lang_in = "ind",
+        lang_out = "por",
+        entries = 1066,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Inglês-Português",
+        lang_in = "eng",
+        lang_out = "por",
+        entries = 15162,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Interlíngua-Português",
+        lang_in = "ina",
+        lang_out = "por",
+        entries = 1090,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ia-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Islandês-Português",
+        lang_in = "isl",
+        lang_out = "por",
+        entries = 2368,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Italiano-Português",
+        lang_in = "ita",
+        lang_out = "por",
+        entries = 4508,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Japonês-Português",
+        lang_in = "jpn",
+        lang_out = "por",
+        entries = 6264,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Latim-Português",
+        lang_in = "lat",
+        lang_out = "por",
+        entries = 3191,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Língua Franca Nova-Português",
+        lang_in = "lfn",
+        lang_out = "por",
+        entries = 1992,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lfn-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Mirandês-Português",
+        lang_in = "mwl",
+        lang_out = "por",
+        entries = 2318,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mwl-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Norueguês Bokmål-Português",
+        lang_in = "nob",
+        lang_out = "por",
+        entries = 1573,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nb-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Occitano-Português",
+        lang_in = "oci",
+        lang_out = "por",
+        entries = 1070,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/oc-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Polonês-Português",
+        lang_in = "pol",
+        lang_out = "por",
+        entries = 2025,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Português-Português",
+        lang_in = "por",
+        lang_out = "por",
+        entries = 93933,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Romeno-Português",
+        lang_in = "ron",
+        lang_out = "por",
+        entries = 1358,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Russo-Português",
+        lang_in = "rus",
+        lang_out = "por",
+        entries = 3005,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Sueco-Português",
+        lang_in = "swe",
+        lang_out = "por",
+        entries = 1840,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Turco-Português",
+        lang_in = "tur",
+        lang_out = "por",
+        entries = 1192,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Tétum-Português",
+        lang_in = "tet",
+        lang_out = "por",
+        entries = 1532,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tet-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Vietnamita-Português",
+        lang_in = "vie",
+        lang_out = "por",
+        entries = 950,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-pt.tar.zst",
+    },
+    {
+        name = "Wikcionário Árabe-Português",
+        lang_in = "ara",
+        lang_out = "por",
+        entries = 1074,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-pt.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Afrikaans-Nederlands",
+        lang_in = "afr",
+        lang_out = "nld",
+        entries = 2828,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/af-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Bulgaars-Nederlands",
+        lang_in = "bul",
+        lang_out = "nld",
+        entries = 635,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bg-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Catalaans-Nederlands",
+        lang_in = "cat",
+        lang_out = "nld",
+        entries = 1667,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Deens-Nederlands",
+        lang_in = "dan",
+        lang_out = "nld",
+        entries = 5747,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Duits-Nederlands",
+        lang_in = "deu",
+        lang_out = "nld",
+        entries = 8251,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Engels-Nederlands",
+        lang_in = "eng",
+        lang_out = "nld",
+        entries = 14511,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Esperanto-Nederlands",
+        lang_in = "epo",
+        lang_out = "nld",
+        entries = 1420,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Fins-Nederlands",
+        lang_in = "fin",
+        lang_out = "nld",
+        entries = 995,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Frans-Nederlands",
+        lang_in = "fra",
+        lang_out = "nld",
+        entries = 20293,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Grieks-Nederlands",
+        lang_in = "ell",
+        lang_out = "nld",
+        entries = 1103,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Hongaars-Nederlands",
+        lang_in = "hun",
+        lang_out = "nld",
+        entries = 1262,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek IJslands-Nederlands",
+        lang_in = "isl",
+        lang_out = "nld",
+        entries = 1483,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Indonesisch-Nederlands",
+        lang_in = "ind",
+        lang_out = "nld",
+        entries = 2838,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Italiaans-Nederlands",
+        lang_in = "ita",
+        lang_out = "nld",
+        entries = 4159,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Japans-Nederlands",
+        lang_in = "jpn",
+        lang_out = "nld",
+        entries = 1558,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Latijn-Nederlands",
+        lang_in = "lat",
+        lang_out = "nld",
+        entries = 2310,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Lets-Nederlands",
+        lang_in = "lav",
+        lang_out = "nld",
+        entries = 1496,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Limburgs-Nederlands",
+        lang_in = "lim",
+        lang_out = "nld",
+        entries = 1728,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/li-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Nederlands-Nederlands",
+        lang_in = "nld",
+        lang_out = "nld",
+        entries = 217964,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Nedersaksisch-Nederlands",
+        lang_in = "nds",
+        lang_out = "nld",
+        entries = 2202,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nds-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Noors-Nederlands",
+        lang_in = "nor",
+        lang_out = "nld",
+        entries = 10751,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/no-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Nynorsk-Nederlands",
+        lang_in = "nno",
+        lang_out = "nld",
+        entries = 9846,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nn-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Pennsylvania-Duits-Nederlands",
+        lang_in = "pdc",
+        lang_out = "nld",
+        entries = 2058,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pdc-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Pools-Nederlands",
+        lang_in = "pol",
+        lang_out = "nld",
+        entries = 1772,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Portugees-Nederlands",
+        lang_in = "por",
+        lang_out = "nld",
+        entries = 1499,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Russisch-Nederlands",
+        lang_in = "rus",
+        lang_out = "nld",
+        entries = 3063,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Slowaaks-Nederlands",
+        lang_in = "slk",
+        lang_out = "nld",
+        entries = 2108,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Spaans-Nederlands",
+        lang_in = "spa",
+        lang_out = "nld",
+        entries = 21303,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Tsjechisch-Nederlands",
+        lang_in = "ces",
+        lang_out = "nld",
+        entries = 10743,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Turks-Nederlands",
+        lang_in = "tur",
+        lang_out = "nld",
+        entries = 5283,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Vietnamees-Nederlands",
+        lang_in = "vie",
+        lang_out = "nld",
+        entries = 1670,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Welsh-Nederlands",
+        lang_in = "cym",
+        lang_out = "nld",
+        entries = 946,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cy-nl.tar.zst",
+    },
+    {
+        name = "WikiWoordenboek Zweeds-Nederlands",
+        lang_in = "swe",
+        lang_out = "nld",
+        entries = 3407,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-nl.tar.zst",
     },
     {
         name = "Wikisanakirja Englanti-Suomi",
         lang_in = "eng",
         lang_out = "fin",
-        entries = 61826,
+        entries = 61988,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-fi.tar.zst",
     },
@@ -3087,7 +3906,11 @@ local dictionaries = {
         name = "Wikisanakirja Espanja-Suomi",
         lang_in = "spa",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 28352,
+=======
+        entries = 20797,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-fi.tar.zst",
     },
@@ -3095,7 +3918,11 @@ local dictionaries = {
         name = "Wikisanakirja Hollanti-Suomi",
         lang_in = "nld",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 4529,
+=======
+        entries = 4478,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-fi.tar.zst",
     },
@@ -3103,7 +3930,11 @@ local dictionaries = {
         name = "Wikisanakirja Islanti-Suomi",
         lang_in = "isl",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 1409,
+=======
+        entries = 1257,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-fi.tar.zst",
     },
@@ -3111,7 +3942,11 @@ local dictionaries = {
         name = "Wikisanakirja Italia-Suomi",
         lang_in = "ita",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 10320,
+=======
+        entries = 6888,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-fi.tar.zst",
     },
@@ -3119,7 +3954,11 @@ local dictionaries = {
         name = "Wikisanakirja Japani-Suomi",
         lang_in = "jpn",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 10773,
+=======
+        entries = 11298,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-fi.tar.zst",
     },
@@ -3135,7 +3974,11 @@ local dictionaries = {
         name = "Wikisanakirja Latina-Suomi",
         lang_in = "lat",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 9808,
+=======
+        entries = 4144,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-fi.tar.zst",
     },
@@ -3167,7 +4010,11 @@ local dictionaries = {
         name = "Wikisanakirja Puola-Suomi",
         lang_in = "pol",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 9297,
+=======
+        entries = 8711,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-fi.tar.zst",
     },
@@ -3175,7 +4022,11 @@ local dictionaries = {
         name = "Wikisanakirja Ranska-Suomi",
         lang_in = "fra",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 21753,
+=======
+        entries = 16334,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-fi.tar.zst",
     },
@@ -3183,7 +4034,11 @@ local dictionaries = {
         name = "Wikisanakirja Ruotsi-Suomi",
         lang_in = "swe",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 26215,
+=======
+        entries = 25146,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-fi.tar.zst",
     },
@@ -3191,7 +4046,11 @@ local dictionaries = {
         name = "Wikisanakirja Saksa-Suomi",
         lang_in = "deu",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 30343,
+=======
+        entries = 18429,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-fi.tar.zst",
     },
@@ -3199,7 +4058,11 @@ local dictionaries = {
         name = "Wikisanakirja Suomi-Suomi",
         lang_in = "fin",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 157092,
+=======
+        entries = 131540,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-fi.tar.zst",
     },
@@ -3215,7 +4078,11 @@ local dictionaries = {
         name = "Wikisanakirja Turkki-Suomi",
         lang_in = "tur",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 2809,
+=======
+        entries = 2791,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-fi.tar.zst",
     },
@@ -3223,7 +4090,11 @@ local dictionaries = {
         name = "Wikisanakirja Tšekki-Suomi",
         lang_in = "ces",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 6065,
+=======
+        entries = 6060,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-fi.tar.zst",
     },
@@ -3231,7 +4102,11 @@ local dictionaries = {
         name = "Wikisanakirja Ukraina-Suomi",
         lang_in = "ukr",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 6209,
+=======
+        entries = 6293,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-fi.tar.zst",
     },
@@ -3247,15 +4122,1010 @@ local dictionaries = {
         name = "Wikisanakirja Venäjä-Suomi",
         lang_in = "rus",
         lang_out = "fin",
+<<<<<<< HEAD
         entries = 27448,
+=======
+        entries = 25882,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-fi.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Albanian-English",
+        lang_in = "sqi",
+        lang_out = "eng",
+        entries = 16319,
+=======
+        name = "Wikisłownik esperanto (morfem)-język polski",
+        lang_in = "eom",
+        lang_out = "pol",
+        entries = 3786,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eom-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik esperanto-język polski",
+        lang_in = "epo",
+        lang_out = "pol",
+        entries = 14971,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik hindi-język polski",
+        lang_in = "hin",
+        lang_out = "pol",
+        entries = 3470,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hi-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik ido-język polski",
+        lang_in = "ido",
+        lang_out = "pol",
+        entries = 1981,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/io-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik interlingua-język polski",
+        lang_in = "ina",
+        lang_out = "pol",
+        entries = 20298,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ia-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik jidysz-język polski",
+        lang_in = "yid",
+        lang_out = "pol",
+        entries = 9148,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yi-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język adygejski-język polski",
+        lang_in = "ady",
+        lang_out = "pol",
+        entries = 1024,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ady-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język afrykanerski-język polski",
+        lang_in = "afr",
+        lang_out = "pol",
+        entries = 1739,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/af-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język albański-język polski",
+        lang_in = "sqi",
+        lang_out = "pol",
+        entries = 2744,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sq-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język angielski-język polski",
+        lang_in = "eng",
+        lang_out = "pol",
+        entries = 92386,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język arabski-język polski",
+        lang_in = "ara",
+        lang_out = "pol",
+        entries = 12049,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język asturyjski-język polski",
+        lang_in = "ast",
+        lang_out = "pol",
+        entries = 2532,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ast-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język azerski-język polski",
+        lang_in = "aze",
+        lang_out = "pol",
+        entries = 2100,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/az-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język baskijski-język polski",
+        lang_in = "eus",
+        lang_out = "pol",
+        entries = 22864,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eu-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język baszkirski-język polski",
+        lang_in = "bak",
+        lang_out = "pol",
+        entries = 2580,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ba-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język bengalski-język polski",
+        lang_in = "ben",
+        lang_out = "pol",
+        entries = 1254,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bn-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język białoruski-język polski",
+        lang_in = "bel",
+        lang_out = "pol",
+        entries = 20954,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/be-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język bułgarski-język polski",
+        lang_in = "bul",
+        lang_out = "pol",
+        entries = 29780,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bg-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język chiński standardowy-język polski",
+        lang_in = "zho",
+        lang_out = "pol",
+        entries = 3319,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język chorwacki-język polski",
+        lang_in = "hrv",
+        lang_out = "pol",
+        entries = 5705,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hr-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język czeski-język polski",
+        lang_in = "ces",
+        lang_out = "pol",
+        entries = 24589,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język dolnołużycki-język polski",
+        lang_in = "dsb",
+        lang_out = "pol",
+        entries = 1471,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/dsb-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język duński-język polski",
+        lang_in = "dan",
+        lang_out = "pol",
+        entries = 6949,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język estoński-język polski",
+        lang_in = "est",
+        lang_out = "pol",
+        entries = 5811,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/et-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język farerski-język polski",
+        lang_in = "fao",
+        lang_out = "pol",
+        entries = 4928,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fo-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język fiński-język polski",
+        lang_in = "fin",
+        lang_out = "pol",
+        entries = 9320,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język francuski-język polski",
+        lang_in = "fra",
+        lang_out = "pol",
+        entries = 29057,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język galicyjski-język polski",
+        lang_in = "glg",
+        lang_out = "pol",
+        entries = 3069,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język grenlandzki-język polski",
+        lang_in = "kal",
+        lang_out = "pol",
+        entries = 1084,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język gruziński-język polski",
+        lang_in = "kat",
+        lang_out = "pol",
+        entries = 3618,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ka-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język gudźarati-język polski",
+        lang_in = "guj",
+        lang_out = "pol",
+        entries = 1192,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gu-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język górnołużycki-język polski",
+        lang_in = "hsb",
+        lang_out = "pol",
+        entries = 1281,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hsb-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język hawajski-język polski",
+        lang_in = "haw",
+        lang_out = "pol",
+        entries = 1264,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/haw-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język hebrajski-język polski",
+        lang_in = "heb",
+        lang_out = "pol",
+        entries = 2426,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język hiszpański-język polski",
+        lang_in = "spa",
+        lang_out = "pol",
+        entries = 25749,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język indonezyjski-język polski",
+        lang_in = "ind",
+        lang_out = "pol",
+        entries = 1743,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język irlandzki-język polski",
+        lang_in = "gle",
+        lang_out = "pol",
+        entries = 2164,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ga-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język islandzki-język polski",
+        lang_in = "isl",
+        lang_out = "pol",
+        entries = 5507,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język japoński-język polski",
+        lang_in = "jpn",
+        lang_out = "pol",
+        entries = 6389,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język karpatorusiński-język polski",
+        lang_in = "rue",
+        lang_out = "pol",
+        entries = 1680,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/rue-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język kaszubski-język polski",
+        lang_in = "csb",
+        lang_out = "pol",
+        entries = 4922,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/csb-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język kataloński-język polski",
+        lang_in = "cat",
+        lang_out = "pol",
+        entries = 7838,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język kazachski-język polski",
+        lang_in = "kaz",
+        lang_out = "pol",
+        entries = 3186,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kk-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język koreański-język polski",
+        lang_in = "kor",
+        lang_out = "pol",
+        entries = 4213,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język kurmandżi-język polski",
+        lang_in = "kmr",
+        lang_out = "pol",
+        entries = 1313,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kmr-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język litewski-język polski",
+        lang_in = "lit",
+        lang_out = "pol",
+        entries = 8053,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lt-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język luksemburski-język polski",
+        lang_in = "ltz",
+        lang_out = "pol",
+        entries = 2045,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lb-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język macedoński-język polski",
+        lang_in = "mkd",
+        lang_out = "pol",
+        entries = 3299,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mk-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język malgaski-język polski",
+        lang_in = "mlg",
+        lang_out = "pol",
+        entries = 1114,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mg-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język maltański-język polski",
+        lang_in = "mlt",
+        lang_out = "pol",
+        entries = 1190,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mt-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język mongolski-język polski",
+        lang_in = "mon",
+        lang_out = "pol",
+        entries = 1045,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mn-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język niderlandzki-język polski",
+        lang_in = "nld",
+        lang_out = "pol",
+        entries = 5759,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język niemiecki-język polski",
+        lang_in = "deu",
+        lang_out = "pol",
+        entries = 47151,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język norweski (bokmål)-język polski",
+        lang_in = "nob",
+        lang_out = "pol",
+        entries = 4983,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nb-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język norweski (nynorsk)-język polski",
+        lang_in = "nno",
+        lang_out = "pol",
+        entries = 2563,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nn-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język nowogrecki-język polski",
+        lang_in = "ell",
+        lang_out = "pol",
+        entries = 12892,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język nowopruski-język polski",
+        lang_in = "art-prg",
+        lang_out = "pol",
+        entries = 2355,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/art-prg-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język ormiański-język polski",
+        lang_in = "hye",
+        lang_out = "pol",
+        entries = 3034,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hy-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język perski-język polski",
+        lang_in = "fas",
+        lang_out = "pol",
+        entries = 2127,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fa-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język polski-język polski",
+        lang_in = "pol",
+        lang_out = "pol",
+        entries = 122672,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język portugalski-język polski",
+        lang_in = "por",
+        lang_out = "pol",
+        entries = 11422,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język północnolapoński-język polski",
+        lang_in = "sme",
+        lang_out = "pol",
+        entries = 1086,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sme-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język rosyjski-język polski",
+        lang_in = "rus",
+        lang_out = "pol",
+        entries = 26598,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język rumuński-język polski",
+        lang_in = "ron",
+        lang_out = "pol",
+        entries = 4148,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język serbski-język polski",
+        lang_in = "srp",
+        lang_out = "pol",
+        entries = 1752,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sr-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język staro-cerkiewno-słowiański-język polski",
+        lang_in = "chu",
+        lang_out = "pol",
+        entries = 1008,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cu-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język staroangielski-język polski",
+        lang_in = "ang",
+        lang_out = "pol",
+        entries = 1045,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ang-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język starogrecki-język polski",
+        lang_in = "grc",
+        lang_out = "pol",
+        entries = 1852,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/grc-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język suahili-język polski",
+        lang_in = "swa",
+        lang_out = "pol",
+        entries = 2119,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sw-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język sycylijski-język polski",
+        lang_in = "scn",
+        lang_out = "pol",
+        entries = 1088,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/scn-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język szkocki gaelicki-język polski",
+        lang_in = "gla",
+        lang_out = "pol",
+        entries = 1532,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gla-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język szwedzki-język polski",
+        lang_in = "swe",
+        lang_out = "pol",
+        entries = 21467,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język słowacki-język polski",
+        lang_in = "slk",
+        lang_out = "pol",
+        entries = 40898,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język słoweński-język polski",
+        lang_in = "slv",
+        lang_out = "pol",
+        entries = 7809,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język tagalski-język polski",
+        lang_in = "tgl",
+        lang_out = "pol",
+        entries = 1121,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język tajski-język polski",
+        lang_in = "tha",
+        lang_out = "pol",
+        entries = 3612,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/th-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język tamilski-język polski",
+        lang_in = "tam",
+        lang_out = "pol",
+        entries = 1328,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ta-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język telugu-język polski",
+        lang_in = "tel",
+        lang_out = "pol",
+        entries = 1450,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/te-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język turecki-język polski",
+        lang_in = "tur",
+        lang_out = "pol",
+        entries = 7896,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język turkmeński-język polski",
+        lang_in = "tuk",
+        lang_out = "pol",
+        entries = 1541,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tk-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język tuvalu-język polski",
+        lang_in = "tvl",
+        lang_out = "pol",
+        entries = 1180,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tvl-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język ukraiński-język polski",
+        lang_in = "ukr",
+        lang_out = "pol",
+        entries = 33408,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język uzbecki-język polski",
+        lang_in = "uzb",
+        lang_out = "pol",
+        entries = 1119,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uz-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język walijski-język polski",
+        lang_in = "cym",
+        lang_out = "pol",
+        entries = 1321,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cy-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język wietnamski-język polski",
+        lang_in = "vie",
+        lang_out = "pol",
+        entries = 2732,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język wilamowski-język polski",
+        lang_in = "wym",
+        lang_out = "pol",
+        entries = 13197,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/wym-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język węgierski-język polski",
+        lang_in = "hun",
+        lang_out = "pol",
+        entries = 34387,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język włoski-język polski",
+        lang_in = "ita",
+        lang_out = "pol",
+        entries = 37740,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język łaciński-język polski",
+        lang_in = "lat",
+        lang_out = "pol",
+        entries = 15798,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik język łotewski-język polski",
+        lang_in = "lav",
+        lang_out = "pol",
+        entries = 6785,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik sanskryt-język polski",
+        lang_in = "san",
+        lang_out = "pol",
+        entries = 1610,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sa-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik slovio-język polski",
+        lang_in = "slovio",
+        lang_out = "pol",
+        entries = 3139,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/slovio-pl.tar.zst",
+    },
+    {
+        name = "Wikisłownik volapük-język polski",
+        lang_in = "vol",
+        lang_out = "pol",
+        entries = 1049,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vo-pl.tar.zst",
+    },
+    {
+        name = "Wikizionario Arabo-Italiano",
+        lang_in = "ara",
+        lang_out = "ita",
+        entries = 1055,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Basso sassone-Italiano",
+        lang_in = "nds",
+        lang_out = "ita",
+        entries = 1037,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nds-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Bengalese-Italiano",
+        lang_in = "ben",
+        lang_out = "ita",
+        entries = 2626,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bn-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Ceco-Italiano",
+        lang_in = "ces",
+        lang_out = "ita",
+        entries = 1088,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Cinese-Italiano",
+        lang_in = "zho",
+        lang_out = "ita",
+        entries = 1838,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Coreano-Italiano",
+        lang_in = "kor",
+        lang_out = "ita",
+        entries = 1210,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Esperanto-Italiano",
+        lang_in = "epo",
+        lang_out = "ita",
+        entries = 1202,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Finlandese-Italiano",
+        lang_in = "fin",
+        lang_out = "ita",
+        entries = 1744,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Francese-Italiano",
+        lang_in = "fra",
+        lang_out = "ita",
+        entries = 8322,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Giapponese-Italiano",
+        lang_in = "jpn",
+        lang_out = "ita",
+        entries = 2834,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Greco antico-Italiano",
+        lang_in = "grc",
+        lang_out = "ita",
+        entries = 4665,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/grc-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Greco-Italiano",
+        lang_in = "ell",
+        lang_out = "ita",
+        entries = 944,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Inglese-Italiano",
+        lang_in = "eng",
+        lang_out = "ita",
+        entries = 25620,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Italiano-Italiano",
+        lang_in = "ita",
+        lang_out = "ita",
+        entries = 303732,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Lappone settentrionale-Italiano",
+        lang_in = "sme",
+        lang_out = "ita",
+        entries = 313,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/se-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Latino-Italiano",
+        lang_in = "lat",
+        lang_out = "ita",
+        entries = 82944,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Lettone-Italiano",
+        lang_in = "lav",
+        lang_out = "ita",
+        entries = 573,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Lombardo-Italiano",
+        lang_in = "lmo",
+        lang_out = "ita",
+        entries = 954,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lmo-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Napoletano-Italiano",
+        lang_in = "nap",
+        lang_out = "ita",
+        entries = 2691,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nap-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Olandese-Italiano",
+        lang_in = "nld",
+        lang_out = "ita",
+        entries = 2940,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Polacco-Italiano",
+        lang_in = "pol",
+        lang_out = "ita",
+        entries = 1944,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Portoghese-Italiano",
+        lang_in = "por",
+        lang_out = "ita",
+        entries = 1677,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Russo-Italiano",
+        lang_in = "rus",
+        lang_out = "ita",
+        entries = 2265,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Siciliano-Italiano",
+        lang_in = "scn",
+        lang_out = "ita",
+        entries = 3744,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/scn-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Spagnolo-Italiano",
+        lang_in = "spa",
+        lang_out = "ita",
+        entries = 5309,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Svedese-Italiano",
+        lang_in = "swe",
+        lang_out = "ita",
+        entries = 1468,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Tedesco-Italiano",
+        lang_in = "deu",
+        lang_out = "ita",
+        entries = 11182,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-it.tar.zst",
+    },
+    {
+        name = "Wikizionario Ungherese-Italiano",
+        lang_in = "hun",
+        lang_out = "ita",
+        entries = 1359,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-it.tar.zst",
+    },
+    {
+        name = "Wiktionary Afrikaans-English",
+        lang_in = "afr",
+        lang_out = "eng",
+        entries = 6010,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/af-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Ahtna-English",
+        lang_in = "aht",
+        lang_out = "eng",
+        entries = 3340,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/aht-en.tar.zst",
     },
     {
         name = "Wiktionary Albanian-English",
         lang_in = "sqi",
         lang_out = "eng",
-        entries = 16319,
+        entries = 15380,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sq-en.tar.zst",
     },
@@ -3271,7 +5141,11 @@ local dictionaries = {
         name = "Wiktionary Ancient Greek-English",
         lang_in = "grc",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 33784,
+=======
+        entries = 29915,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/grc-en.tar.zst",
     },
@@ -3279,7 +5153,11 @@ local dictionaries = {
         name = "Wiktionary Arabic-English",
         lang_in = "ara",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 30422,
+=======
+        entries = 26578,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-en.tar.zst",
     },
@@ -3287,31 +5165,101 @@ local dictionaries = {
         name = "Wiktionary Armenian-English",
         lang_in = "hye",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 20923,
+=======
+        entries = 18963,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hy-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Aromanian-English",
+        lang_in = "rup",
+        lang_out = "eng",
+        entries = 3297,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/rup-en.tar.zst",
     },
     {
         name = "Wiktionary Assamese-English",
         lang_in = "asm",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 4352,
+=======
+        entries = 4336,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/as-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Azerbaijani-English",
+        lang_in = "aze",
+        lang_out = "eng",
+        entries = 13499,
+=======
+        name = "Wiktionary Assyrian Neo-Aramaic-English",
+        lang_in = "aii",
+        lang_out = "eng",
+        entries = 6755,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/aii-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Asturian-English",
+        lang_in = "ast",
+        lang_out = "eng",
+        entries = 7952,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ast-en.tar.zst",
     },
     {
         name = "Wiktionary Azerbaijani-English",
         lang_in = "aze",
         lang_out = "eng",
-        entries = 13499,
+        entries = 12227,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/az-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Bengali-English",
+        lang_in = "ben",
+        lang_out = "eng",
+        entries = 10304,
+=======
+        name = "Wiktionary Bashkir-English",
+        lang_in = "bak",
+        lang_out = "eng",
+        entries = 3258,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ba-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Basque-English",
+        lang_in = "eus",
+        lang_out = "eng",
+        entries = 5505,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eu-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Belarusian-English",
+        lang_in = "bel",
+        lang_out = "eng",
+        entries = 5783,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/be-en.tar.zst",
     },
     {
         name = "Wiktionary Bengali-English",
         lang_in = "ben",
         lang_out = "eng",
-        entries = 10304,
+        entries = 10182,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bn-en.tar.zst",
     },
@@ -3319,7 +5267,11 @@ local dictionaries = {
         name = "Wiktionary Bokmål-Svenska",
         lang_in = "nob",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 14076,
+=======
+        entries = 13903,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/no-sv.tar.zst",
     },
@@ -3327,7 +5279,11 @@ local dictionaries = {
         name = "Wiktionary Bulgarian-English",
         lang_in = "bul",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 21741,
+=======
+        entries = 19542,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bg-en.tar.zst",
     },
@@ -3335,7 +5291,11 @@ local dictionaries = {
         name = "Wiktionary Burmese-English",
         lang_in = "mya",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 10034,
+=======
+        entries = 10066,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/my-en.tar.zst",
     },
@@ -3343,7 +5303,11 @@ local dictionaries = {
         name = "Wiktionary Catalan-English",
         lang_in = "cat",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 38145,
+=======
+        entries = 37459,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-en.tar.zst",
     },
@@ -3351,23 +5315,89 @@ local dictionaries = {
         name = "Wiktionary Cebuano-English",
         lang_in = "ceb",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 18253,
+=======
+        entries = 18122,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ceb-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Chinese-English",
+        lang_in = "zho",
+        lang_out = "eng",
+        entries = 189559,
+=======
+        name = "Wiktionary Central Bikol-English",
+        lang_in = "bcl",
+        lang_out = "eng",
+        entries = 7096,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bcl-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Chechen-English",
+        lang_in = "che",
+        lang_out = "eng",
+        entries = 1046,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ce-en.tar.zst",
     },
     {
         name = "Wiktionary Chinese-English",
         lang_in = "zho",
         lang_out = "eng",
-        entries = 189559,
+        entries = 189092,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Czech-English",
+        lang_in = "ces",
+        lang_out = "eng",
+        entries = 51451,
+=======
+        name = "Wiktionary Cimbrian-English",
+        lang_in = "cim",
+        lang_out = "eng",
+        entries = 2590,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cim-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Classical Nahuatl-English",
+        lang_in = "nci",
+        lang_out = "eng",
+        entries = 3058,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nci-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Cornish-English",
+        lang_in = "cor",
+        lang_out = "eng",
+        entries = 6454,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kw-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Crimean Tatar-English",
+        lang_in = "crh",
+        lang_out = "eng",
+        entries = 4611,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/crh-en.tar.zst",
     },
     {
         name = "Wiktionary Czech-English",
         lang_in = "ces",
         lang_out = "eng",
-        entries = 51451,
+        entries = 48064,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-en.tar.zst",
     },
@@ -3375,7 +5405,11 @@ local dictionaries = {
         name = "Wiktionary Danish-English",
         lang_in = "dan",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 26658,
+=======
+        entries = 25617,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-en.tar.zst",
     },
@@ -3383,7 +5417,11 @@ local dictionaries = {
         name = "Wiktionary Danska-Svenska",
         lang_in = "dan",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 11936,
+=======
+        entries = 11816,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-sv.tar.zst",
     },
@@ -3391,7 +5429,11 @@ local dictionaries = {
         name = "Wiktionary Deutsch-Deutsch",
         lang_in = "deu",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 177897,
+=======
+        entries = 180505,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-de.tar.zst",
     },
@@ -3399,7 +5441,11 @@ local dictionaries = {
         name = "Wiktionary Dutch-English",
         lang_in = "nld",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 84764,
+=======
+        entries = 66324,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-en.tar.zst",
     },
@@ -3407,7 +5453,11 @@ local dictionaries = {
         name = "Wiktionary Engelska-Svenska",
         lang_in = "eng",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 59155,
+=======
+        entries = 57945,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-sv.tar.zst",
     },
@@ -3415,7 +5465,11 @@ local dictionaries = {
         name = "Wiktionary Englisch-Deutsch",
         lang_in = "eng",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 13397,
+=======
+        entries = 13449,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-de.tar.zst",
     },
@@ -3423,15 +5477,34 @@ local dictionaries = {
         name = "Wiktionary English-English",
         lang_in = "eng",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 921820,
+=======
+        entries = 785221,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Esperanto-English",
+        lang_in = "epo",
+        lang_out = "eng",
+        entries = 131686,
+=======
+        name = "Wiktionary English-Simple English",
+        lang_in = "eng",
+        lang_out = "eng",
+        entries = 29352,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-simple.tar.zst",
     },
     {
         name = "Wiktionary Esperanto-English",
         lang_in = "epo",
         lang_out = "eng",
-        entries = 131686,
+        entries = 130253,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-en.tar.zst",
     },
@@ -3439,7 +5512,11 @@ local dictionaries = {
         name = "Wiktionary Esperanto-Svenska",
         lang_in = "epo",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 2646,
+=======
+        entries = 2641,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-sv.tar.zst",
     },
@@ -3447,15 +5524,42 @@ local dictionaries = {
         name = "Wiktionary Estonian-English",
         lang_in = "est",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 8627,
+=======
+        entries = 8722,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/et-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Finnish-English",
+        lang_in = "fin",
+        lang_out = "eng",
+        entries = 186347,
+=======
+        name = "Wiktionary Faroese-English",
+        lang_in = "fao",
+        lang_out = "eng",
+        entries = 7594,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fo-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Finnisch-Deutsch",
+        lang_in = "fin",
+        lang_out = "deu",
+        entries = 932,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-de.tar.zst",
     },
     {
         name = "Wiktionary Finnish-English",
         lang_in = "fin",
         lang_out = "eng",
-        entries = 186347,
+        entries = 163899,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-en.tar.zst",
     },
@@ -3463,7 +5567,11 @@ local dictionaries = {
         name = "Wiktionary Finska-Svenska",
         lang_in = "fin",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 13387,
+=======
+        entries = 13075,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-sv.tar.zst",
     },
@@ -3471,7 +5579,11 @@ local dictionaries = {
         name = "Wiktionary Franska-Svenska",
         lang_in = "fra",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 19088,
+=======
+        entries = 14689,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-sv.tar.zst",
     },
@@ -3479,7 +5591,11 @@ local dictionaries = {
         name = "Wiktionary Französisch-Deutsch",
         lang_in = "fra",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 11366,
+=======
+        entries = 11376,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-de.tar.zst",
     },
@@ -3487,7 +5603,11 @@ local dictionaries = {
         name = "Wiktionary French-English",
         lang_in = "fra",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 114118,
+=======
+        entries = 97996,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-en.tar.zst",
     },
@@ -3503,7 +5623,11 @@ local dictionaries = {
         name = "Wiktionary Galician-English",
         lang_in = "glg",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 29155,
+=======
+        entries = 20006,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-en.tar.zst",
     },
@@ -3511,7 +5635,11 @@ local dictionaries = {
         name = "Wiktionary Georgian-English",
         lang_in = "kat",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 23665,
+=======
+        entries = 22647,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ka-en.tar.zst",
     },
@@ -3519,7 +5647,11 @@ local dictionaries = {
         name = "Wiktionary German-English",
         lang_in = "deu",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 111294,
+=======
+        entries = 95842,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-en.tar.zst",
     },
@@ -3527,7 +5659,11 @@ local dictionaries = {
         name = "Wiktionary Greek-English",
         lang_in = "ell",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 35201,
+=======
+        entries = 29671,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-en.tar.zst",
     },
@@ -3535,15 +5671,42 @@ local dictionaries = {
         name = "Wiktionary Gujarati-English",
         lang_in = "guj",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 7350,
+=======
+        entries = 7200,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gu-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Hebrew-English",
+        lang_in = "heb",
+        lang_out = "eng",
+        entries = 17029,
+=======
+        name = "Wiktionary Haitian Creole-English",
+        lang_in = "hat",
+        lang_out = "eng",
+        entries = 2182,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ht-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Hawaiian-English",
+        lang_in = "haw",
+        lang_out = "eng",
+        entries = 3964,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/haw-en.tar.zst",
     },
     {
         name = "Wiktionary Hebrew-English",
         lang_in = "heb",
         lang_out = "eng",
-        entries = 17029,
+        entries = 17289,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-en.tar.zst",
     },
@@ -3551,7 +5714,11 @@ local dictionaries = {
         name = "Wiktionary Hindi-English",
         lang_in = "hin",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 24813,
+=======
+        entries = 23648,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hi-en.tar.zst",
     },
@@ -3559,7 +5726,11 @@ local dictionaries = {
         name = "Wiktionary Hungarian-English",
         lang_in = "hun",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 46736,
+=======
+        entries = 34089,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-en.tar.zst",
     },
@@ -3567,7 +5738,11 @@ local dictionaries = {
         name = "Wiktionary Icelandic-English",
         lang_in = "isl",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 19878,
+=======
+        entries = 19519,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-en.tar.zst",
     },
@@ -3575,15 +5750,34 @@ local dictionaries = {
         name = "Wiktionary Indonesian-English",
         lang_in = "ind",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 36967,
+=======
+        entries = 35721,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Irish-English",
+        lang_in = "gle",
+        lang_out = "eng",
+        entries = 27664,
+=======
+        name = "Wiktionary Ingrian-English",
+        lang_in = "izh",
+        lang_out = "eng",
+        entries = 7290,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/izh-en.tar.zst",
     },
     {
         name = "Wiktionary Irish-English",
         lang_in = "gle",
         lang_out = "eng",
-        entries = 27664,
+        entries = 21541,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ga-en.tar.zst",
     },
@@ -3591,7 +5785,11 @@ local dictionaries = {
         name = "Wiktionary Isländska-Svenska",
         lang_in = "isl",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 9455,
+=======
+        entries = 9379,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-sv.tar.zst",
     },
@@ -3599,7 +5797,11 @@ local dictionaries = {
         name = "Wiktionary Italian-English",
         lang_in = "ita",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 498950,
+=======
+        entries = 484818,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-en.tar.zst",
     },
@@ -3607,7 +5809,11 @@ local dictionaries = {
         name = "Wiktionary Italienisch-Deutsch",
         lang_in = "ita",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 12086,
+=======
+        entries = 12084,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-de.tar.zst",
     },
@@ -3615,7 +5821,11 @@ local dictionaries = {
         name = "Wiktionary Italienska-Svenska",
         lang_in = "ita",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 5385,
+=======
+        entries = 5255,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-sv.tar.zst",
     },
@@ -3623,7 +5833,11 @@ local dictionaries = {
         name = "Wiktionary Japanese-English",
         lang_in = "jpn",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 134082,
+=======
+        entries = 118790,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-en.tar.zst",
     },
@@ -3636,10 +5850,22 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-sv.tar.zst",
     },
     {
+        name = "Wiktionary Javanese-English",
+        lang_in = "jav",
+        lang_out = "eng",
+        entries = 3529,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/jv-en.tar.zst",
+    },
+    {
         name = "Wiktionary Jiddisch-Svenska",
         lang_in = "yid",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 3713,
+=======
+        entries = 3622,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yi-sv.tar.zst",
     },
@@ -3647,7 +5873,11 @@ local dictionaries = {
         name = "Wiktionary Kannada-English",
         lang_in = "kan",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 2646,
+=======
+        entries = 2655,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kn-en.tar.zst",
     },
@@ -3655,7 +5885,11 @@ local dictionaries = {
         name = "Wiktionary Kashmiri-English",
         lang_in = "kas",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 2096,
+=======
+        entries = 2164,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ks-en.tar.zst",
     },
@@ -3663,7 +5897,11 @@ local dictionaries = {
         name = "Wiktionary Katalanisch-Deutsch",
         lang_in = "cat",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 5201,
+=======
+        entries = 5248,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-de.tar.zst",
     },
@@ -3671,7 +5909,11 @@ local dictionaries = {
         name = "Wiktionary Katalanska-Svenska",
         lang_in = "cat",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 8483,
+=======
+        entries = 8224,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-sv.tar.zst",
     },
@@ -3679,15 +5921,31 @@ local dictionaries = {
         name = "Wiktionary Kazakh-English",
         lang_in = "kaz",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 12731,
+=======
+        entries = 12996,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kk-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Khiamniungan Naga-English",
+        lang_in = "kix",
+        lang_out = "eng",
+        entries = 5415,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kix-en.tar.zst",
     },
     {
         name = "Wiktionary Khmer-English",
         lang_in = "khm",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 10881,
+=======
+        entries = 10809,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/km-en.tar.zst",
     },
@@ -3703,15 +5961,42 @@ local dictionaries = {
         name = "Wiktionary Korean-English",
         lang_in = "kor",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 44445,
+=======
+        entries = 41720,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Lao-English",
+        lang_in = "lao",
+        lang_out = "eng",
+        entries = 2612,
+=======
+        name = "Wiktionary Kyrgyz-English",
+        lang_in = "kir",
+        lang_out = "eng",
+        entries = 2829,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ky-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Ladin-English",
+        lang_in = "lld",
+        lang_out = "eng",
+        entries = 1696,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lld-en.tar.zst",
     },
     {
         name = "Wiktionary Lao-English",
         lang_in = "lao",
         lang_out = "eng",
-        entries = 2612,
+        entries = 2620,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lo-en.tar.zst",
     },
@@ -3719,7 +6004,11 @@ local dictionaries = {
         name = "Wiktionary Latein-Deutsch",
         lang_in = "lat",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 14829,
+=======
+        entries = 15541,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-de.tar.zst",
     },
@@ -3727,7 +6016,11 @@ local dictionaries = {
         name = "Wiktionary Latin-English",
         lang_in = "lat",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 161904,
+=======
+        entries = 121692,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-en.tar.zst",
     },
@@ -3735,7 +6028,11 @@ local dictionaries = {
         name = "Wiktionary Latvian-English",
         lang_in = "lav",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 24857,
+=======
+        entries = 18225,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-en.tar.zst",
     },
@@ -3743,23 +6040,86 @@ local dictionaries = {
         name = "Wiktionary Lithuanian-English",
         lang_in = "lit",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 27061,
+=======
+        entries = 25970,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lt-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Macedonian-English",
+        lang_in = "mkd",
+        lang_out = "eng",
+        entries = 59756,
+=======
+        name = "Wiktionary Livonian-English",
+        lang_in = "liv",
+        lang_out = "eng",
+        entries = 3614,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/liv-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Lower Sorbian-English",
+        lang_in = "dsb",
+        lang_out = "eng",
+        entries = 1623,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/dsb-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Lower Tanana-English",
+        lang_in = "taa",
+        lang_out = "eng",
+        entries = 2743,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/taa-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Luxembourgish-English",
+        lang_in = "ltz",
+        lang_out = "eng",
+        entries = 6729,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lb-en.tar.zst",
     },
     {
         name = "Wiktionary Macedonian-English",
         lang_in = "mkd",
         lang_out = "eng",
-        entries = 59756,
+        entries = 45343,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mk-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Makasar-English",
+        lang_in = "mak",
+        lang_out = "eng",
+        entries = 4846,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mak-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Malagasy-English",
+        lang_in = "mlg",
+        lang_out = "eng",
+        entries = 3888,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mg-en.tar.zst",
     },
     {
         name = "Wiktionary Malay-English",
         lang_in = "msa",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 14217,
+=======
+        entries = 11129,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ms-en.tar.zst",
     },
@@ -3767,23 +6127,54 @@ local dictionaries = {
         name = "Wiktionary Malayalam-English",
         lang_in = "mal",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 11162,
+=======
+        entries = 10844,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ml-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Manchu-English",
+        lang_in = "mnc",
+        lang_out = "eng",
+        entries = 2458,
+=======
+        name = "Wiktionary Maltese-English",
+        lang_in = "mlt",
+        lang_out = "eng",
+        entries = 10091,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mt-en.tar.zst",
     },
     {
         name = "Wiktionary Manchu-English",
         lang_in = "mnc",
         lang_out = "eng",
-        entries = 2458,
+        entries = 2104,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mnc-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Manx-English",
+        lang_in = "glv",
+        lang_out = "eng",
+        entries = 2725,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gv-en.tar.zst",
     },
     {
         name = "Wiktionary Marathi-English",
         lang_in = "mar",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 5271,
+=======
+        entries = 5398,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mr-en.tar.zst",
     },
@@ -3791,23 +6182,54 @@ local dictionaries = {
         name = "Wiktionary Middle English-English",
         lang_in = "enm",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 12080,
+=======
+        entries = 10380,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/enm-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Middle French-English",
+        lang_in = "frm",
+        lang_out = "eng",
+        entries = 3850,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/frm-en.tar.zst",
     },
     {
         name = "Wiktionary Mongolian-English",
         lang_in = "mon",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 4705,
+=======
+        entries = 4291,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mn-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Nederländska-Svenska",
+        lang_in = "nld",
+        lang_out = "swe",
+        entries = 6697,
+=======
+        name = "Wiktionary Navajo-English",
+        lang_in = "nav",
+        lang_out = "eng",
+        entries = 8265,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nv-en.tar.zst",
     },
     {
         name = "Wiktionary Nederländska-Svenska",
         lang_in = "nld",
         lang_out = "swe",
-        entries = 6697,
+        entries = 6668,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-sv.tar.zst",
     },
@@ -3820,10 +6242,41 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ne-en.tar.zst",
     },
     {
+<<<<<<< HEAD
         name = "Wiktionary Norwegian Bokmål-English",
         lang_in = "nob",
         lang_out = "eng",
         entries = 23782,
+=======
+        name = "Wiktionary Norman-English",
+        lang_in = "nrf",
+        lang_out = "eng",
+        entries = 8141,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nrf-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Northern Kurdish-English",
+        lang_in = "kmr",
+        lang_out = "eng",
+        entries = 3209,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kmr-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Northern Sami-English",
+        lang_in = "sme",
+        lang_out = "eng",
+        entries = 4056,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/se-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Norwegian Bokmål-English",
+        lang_in = "nob",
+        lang_out = "eng",
+        entries = 23619,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nb-en.tar.zst",
     },
@@ -3831,7 +6284,11 @@ local dictionaries = {
         name = "Wiktionary Norwegian Nynorsk-English",
         lang_in = "nno",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 28866,
+=======
+        entries = 22830,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nn-en.tar.zst",
     },
@@ -3839,7 +6296,11 @@ local dictionaries = {
         name = "Wiktionary Norwegian-English",
         lang_in = "nor",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 1626,
+=======
+        entries = 1471,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/no-en.tar.zst",
     },
@@ -3847,47 +6308,176 @@ local dictionaries = {
         name = "Wiktionary Nynorska-Svenska",
         lang_in = "nno",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 4793,
+=======
+        entries = 4721,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nn-sv.tar.zst",
+    },
+    {
+        name = "Wiktionary Occitan-English",
+        lang_in = "oci",
+        lang_out = "eng",
+        entries = 5145,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/oc-en.tar.zst",
     },
     {
         name = "Wiktionary Odia-English",
         lang_in = "ori",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 2069,
+=======
+        entries = 2105,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/or-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Old English-English",
+        lang_in = "ang",
+        lang_out = "eng",
+        entries = 20729,
+=======
+        name = "Wiktionary Okzitanisch-Deutsch",
+        lang_in = "oci",
+        lang_out = "deu",
+        entries = 2572,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/oc-de.tar.zst",
+    },
+    {
+        name = "Wiktionary Old Armenian-English",
+        lang_in = "xcl",
+        lang_out = "eng",
+        entries = 6054,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/xcl-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Old Church Slavonic-English",
+        lang_in = "chu",
+        lang_out = "eng",
+        entries = 3634,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cu-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Old Czech-English",
+        lang_in = "zlw-ocs",
+        lang_out = "eng",
+        entries = 3506,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zlw-ocs-en.tar.zst",
     },
     {
         name = "Wiktionary Old English-English",
         lang_in = "ang",
         lang_out = "eng",
-        entries = 20729,
+        entries = 16774,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ang-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Pali-English",
+        lang_in = "pli",
+        lang_out = "eng",
+        entries = 7074,
+=======
+        name = "Wiktionary Old French-English",
+        lang_in = "fro",
+        lang_out = "eng",
+        entries = 5837,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fro-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Old High German-English",
+        lang_in = "goh",
+        lang_out = "eng",
+        entries = 2206,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/goh-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Old Irish-English",
+        lang_in = "sga",
+        lang_out = "eng",
+        entries = 4111,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sga-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Old Polish-English",
+        lang_in = "zlw-opl",
+        lang_out = "eng",
+        entries = 2770,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zlw-opl-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Ottoman Turkish-English",
+        lang_in = "ota",
+        lang_out = "eng",
+        entries = 8654,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ota-en.tar.zst",
     },
     {
         name = "Wiktionary Pali-English",
         lang_in = "pli",
         lang_out = "eng",
-        entries = 7074,
+        entries = 6806,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pi-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Persian-English",
+        lang_in = "fas",
+        lang_out = "eng",
+        entries = 17261,
+=======
+        name = "Wiktionary Pannonian Rusyn-English",
+        lang_in = "rsk",
+        lang_out = "eng",
+        entries = 6486,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/rsk-en.tar.zst",
     },
     {
         name = "Wiktionary Persian-English",
         lang_in = "fas",
         lang_out = "eng",
-        entries = 17261,
+        entries = 16910,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fa-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Plautdietsch-English",
+        lang_in = "pdt",
+        lang_out = "eng",
+        entries = 4393,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pdt-en.tar.zst",
     },
     {
         name = "Wiktionary Polish-English",
         lang_in = "pol",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 115857,
+=======
+        entries = 101103,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-en.tar.zst",
     },
@@ -3895,7 +6485,11 @@ local dictionaries = {
         name = "Wiktionary Polnisch-Deutsch",
         lang_in = "pol",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 9937,
+=======
+        entries = 9960,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-de.tar.zst",
     },
@@ -3903,7 +6497,11 @@ local dictionaries = {
         name = "Wiktionary Polska-Svenska",
         lang_in = "pol",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 10623,
+=======
+        entries = 7974,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-sv.tar.zst",
     },
@@ -3919,7 +6517,11 @@ local dictionaries = {
         name = "Wiktionary Portugisiska-Svenska",
         lang_in = "por",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 5214,
+=======
+        entries = 4809,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-sv.tar.zst",
     },
@@ -3927,7 +6529,11 @@ local dictionaries = {
         name = "Wiktionary Portuguese-English",
         lang_in = "por",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 80784,
+=======
+        entries = 72819,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-en.tar.zst",
     },
@@ -3935,7 +6541,11 @@ local dictionaries = {
         name = "Wiktionary Punjabi-English",
         lang_in = "pan",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 7480,
+=======
+        entries = 7491,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pa-en.tar.zst",
     },
@@ -3943,7 +6553,11 @@ local dictionaries = {
         name = "Wiktionary Romanian-English",
         lang_in = "ron",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 121872,
+=======
+        entries = 107122,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-en.tar.zst",
     },
@@ -3951,15 +6565,34 @@ local dictionaries = {
         name = "Wiktionary Russian-English",
         lang_in = "rus",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 92742,
+=======
+        entries = 63595,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Ryska-Svenska",
+        lang_in = "rus",
+        lang_out = "swe",
+        entries = 19587,
+=======
+        name = "Wiktionary Russisch-Deutsch",
+        lang_in = "rus",
+        lang_out = "deu",
+        entries = 1421,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-de.tar.zst",
     },
     {
         name = "Wiktionary Ryska-Svenska",
         lang_in = "rus",
         lang_out = "swe",
-        entries = 19587,
+        entries = 19463,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-sv.tar.zst",
     },
@@ -3967,7 +6600,11 @@ local dictionaries = {
         name = "Wiktionary Sanskrit-English",
         lang_in = "san",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 13440,
+=======
+        entries = 12502,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sa-en.tar.zst",
     },
@@ -3975,15 +6612,31 @@ local dictionaries = {
         name = "Wiktionary Schwedisch-Deutsch",
         lang_in = "swe",
         lang_out = "deu",
+<<<<<<< HEAD
         entries = 6542,
+=======
+        entries = 6541,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-de.tar.zst",
+    },
+    {
+        name = "Wiktionary Scots-English",
+        lang_in = "sco",
+        lang_out = "eng",
+        entries = 4310,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sco-en.tar.zst",
     },
     {
         name = "Wiktionary Scottish Gaelic-English",
         lang_in = "gla",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 11284,
+=======
+        entries = 10147,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gd-en.tar.zst",
     },
@@ -3991,15 +6644,31 @@ local dictionaries = {
         name = "Wiktionary Serbo-Croatian-English",
         lang_in = "hbs",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 69204,
+=======
+        entries = 66773,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sh-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Sicilian-English",
+        lang_in = "scn",
+        lang_out = "eng",
+        entries = 2294,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/scn-en.tar.zst",
     },
     {
         name = "Wiktionary Sindhi-English",
         lang_in = "snd",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 1650,
+=======
+        entries = 1747,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sd-en.tar.zst",
     },
@@ -4007,15 +6676,42 @@ local dictionaries = {
         name = "Wiktionary Slovak-English",
         lang_in = "slk",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 12763,
+=======
+        entries = 12080,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Spanisch-Deutsch",
+        lang_in = "spa",
+        lang_out = "deu",
+        entries = 2939,
+=======
+        name = "Wiktionary Slovene-English",
+        lang_in = "slv",
+        lang_out = "eng",
+        entries = 7170,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sl-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Slowakisch-Deutsch",
+        lang_in = "slk",
+        lang_out = "deu",
+        entries = 935,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-de.tar.zst",
     },
     {
         name = "Wiktionary Spanisch-Deutsch",
         lang_in = "spa",
         lang_out = "deu",
-        entries = 2939,
+        entries = 2950,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-de.tar.zst",
     },
@@ -4023,7 +6719,11 @@ local dictionaries = {
         name = "Wiktionary Spanish-English",
         lang_in = "spa",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 135929,
+=======
+        entries = 116667,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-en.tar.zst",
     },
@@ -4031,15 +6731,31 @@ local dictionaries = {
         name = "Wiktionary Spanska-Svenska",
         lang_in = "spa",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 27226,
+=======
+        entries = 19575,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-sv.tar.zst",
+    },
+    {
+        name = "Wiktionary Sundanese-English",
+        lang_in = "sun",
+        lang_out = "eng",
+        entries = 2560,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/su-en.tar.zst",
     },
     {
         name = "Wiktionary Svenska-Svenska",
         lang_in = "swe",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 115076,
+=======
+        entries = 112060,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-sv.tar.zst",
     },
@@ -4047,7 +6763,11 @@ local dictionaries = {
         name = "Wiktionary Swahili-English",
         lang_in = "swa",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 13382,
+=======
+        entries = 12382,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sw-en.tar.zst",
     },
@@ -4055,7 +6775,11 @@ local dictionaries = {
         name = "Wiktionary Swedish-English",
         lang_in = "swe",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 69262,
+=======
+        entries = 62685,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-en.tar.zst",
     },
@@ -4063,23 +6787,65 @@ local dictionaries = {
         name = "Wiktionary Tagalog-English",
         lang_in = "tgl",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 35984,
+=======
+        entries = 34982,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tl-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Tamil-English",
+        lang_in = "tam",
+        lang_out = "eng",
+        entries = 12722,
+=======
+        name = "Wiktionary Tajik-English",
+        lang_in = "tgk",
+        lang_out = "eng",
+        entries = 3421,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tg-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Talysh-English",
+        lang_in = "tly",
+        lang_out = "eng",
+        entries = 1287,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tly-en.tar.zst",
     },
     {
         name = "Wiktionary Tamil-English",
         lang_in = "tam",
         lang_out = "eng",
-        entries = 12722,
+        entries = 12030,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ta-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Telugu-English",
+        lang_in = "tel",
+        lang_out = "eng",
+        entries = 20084,
+=======
+        name = "Wiktionary Tatar-English",
+        lang_in = "tat",
+        lang_out = "eng",
+        entries = 1856,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tt-en.tar.zst",
     },
     {
         name = "Wiktionary Telugu-English",
         lang_in = "tel",
         lang_out = "eng",
-        entries = 20084,
+        entries = 16990,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/te-en.tar.zst",
     },
@@ -4087,7 +6853,11 @@ local dictionaries = {
         name = "Wiktionary Thai-English",
         lang_in = "tha",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 19299,
+=======
+        entries = 18957,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/th-en.tar.zst",
     },
@@ -4095,15 +6865,131 @@ local dictionaries = {
         name = "Wiktionary Tibetan-English",
         lang_in = "bod",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 3607,
+=======
+        entries = 3578,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bo-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Anh-Tiếng Việt",
+        lang_in = "eng",
+        lang_out = "vie",
+        entries = 115274,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Bồ Đào Nha-Tiếng Việt",
+        lang_in = "por",
+        lang_out = "vie",
+        entries = 865,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Hungary-Tiếng Việt",
+        lang_in = "hun",
+        lang_out = "vie",
+        entries = 254,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Hà Lan-Tiếng Việt",
+        lang_in = "nld",
+        lang_out = "vie",
+        entries = 2153,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Na Uy-Tiếng Việt",
+        lang_in = "nor",
+        lang_out = "vie",
+        entries = 10329,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/no-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Nga-Tiếng Việt",
+        lang_in = "rus",
+        lang_out = "vie",
+        entries = 36111,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Nhật-Tiếng Việt",
+        lang_in = "jpn",
+        lang_out = "vie",
+        entries = 6856,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Pháp-Tiếng Việt",
+        lang_in = "fra",
+        lang_out = "vie",
+        entries = 50428,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Trung Quốc-Tiếng Việt",
+        lang_in = "zho",
+        lang_out = "vie",
+        entries = 5297,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Tày-Tiếng Việt",
+        lang_in = "tyz",
+        lang_out = "vie",
+        entries = 2397,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tyz-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Tây Ban Nha-Tiếng Việt",
+        lang_in = "spa",
+        lang_out = "vie",
+        entries = 2594,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Uzbek-Tiếng Việt",
+        lang_in = "uzb",
+        lang_out = "vie",
+        entries = 1382,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uz-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Việt-Tiếng Việt",
+        lang_in = "vie",
+        lang_out = "vie",
+        entries = 44127,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-vi.tar.zst",
+    },
+    {
+        name = "Wiktionary Tiếng Đức-Tiếng Việt",
+        lang_in = "deu",
+        lang_out = "vie",
+        entries = 865,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-vi.tar.zst",
     },
     {
         name = "Wiktionary Tschechisch-Deutsch",
         lang_in = "ces",
         lang_out = "deu",
-        entries = 7909,
+        entries = 7912,
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-de.tar.zst",
     },
@@ -4111,11 +6997,26 @@ local dictionaries = {
         name = "Wiktionary Turkish-English",
         lang_in = "tur",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 28907,
+=======
+        entries = 26684,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-en.tar.zst",
     },
     {
+<<<<<<< HEAD
+=======
+        name = "Wiktionary Turkmen-English",
+        lang_in = "tuk",
+        lang_out = "eng",
+        entries = 1866,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tk-en.tar.zst",
+    },
+    {
+>>>>>>> upstream/master
         name = "Wiktionary Tyska-Svenska",
         lang_in = "deu",
         lang_out = "swe",
@@ -4124,10 +7025,22 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-sv.tar.zst",
     },
     {
+        name = "Wiktionary Tày-English",
+        lang_in = "tyz",
+        lang_out = "eng",
+        entries = 1465,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tyz-en.tar.zst",
+    },
+    {
         name = "Wiktionary Ukrainian-English",
         lang_in = "ukr",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 34937,
+=======
+        entries = 30067,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-en.tar.zst",
     },
@@ -4143,15 +7056,42 @@ local dictionaries = {
         name = "Wiktionary Ukrainska-Svenska",
         lang_in = "ukr",
         lang_out = "swe",
+<<<<<<< HEAD
         entries = 12835,
+=======
+        entries = 12852,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-sv.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Urdu-English",
+        lang_in = "urd",
+        lang_out = "eng",
+        entries = 9950,
+=======
+        name = "Wiktionary Ungarisch-Deutsch",
+        lang_in = "hun",
+        lang_out = "deu",
+        entries = 865,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-de.tar.zst",
+    },
+    {
+        name = "Wiktionary Urdu-Deutsch",
+        lang_in = "urd",
+        lang_out = "deu",
+        entries = 1732,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ur-de.tar.zst",
     },
     {
         name = "Wiktionary Urdu-English",
         lang_in = "urd",
         lang_out = "eng",
-        entries = 9950,
+        entries = 9005,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ur-en.tar.zst",
     },
@@ -4159,47 +7099,181 @@ local dictionaries = {
         name = "Wiktionary Uyghur-English",
         lang_in = "uig",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 3991,
+=======
+        entries = 3915,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ug-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Uzbek-English",
+        lang_in = "uzb",
+        lang_out = "eng",
+        entries = 3500,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uz-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Venetan-English",
+        lang_in = "vec",
+        lang_out = "eng",
+        entries = 2668,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vec-en.tar.zst",
     },
     {
         name = "Wiktionary Vietnamese-English",
         lang_in = "vie",
         lang_out = "eng",
+<<<<<<< HEAD
         entries = 39976,
+=======
+        entries = 39796,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Welsh-English",
+        lang_in = "cym",
+        lang_out = "eng",
+        entries = 24246,
+=======
+        name = "Wiktionary Votic-English",
+        lang_in = "vot",
+        lang_out = "eng",
+        entries = 3038,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vot-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Weißrussisch-Deutsch",
+        lang_in = "bel",
+        lang_out = "deu",
+        entries = 890,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/be-de.tar.zst",
     },
     {
         name = "Wiktionary Welsh-English",
         lang_in = "cym",
         lang_out = "eng",
-        entries = 24246,
+        entries = 18047,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cy-en.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionary Zhuang-English",
+        lang_in = "zha",
+        lang_out = "eng",
+        entries = 2453,
+=======
+        name = "Wiktionary West Circassian-English",
+        lang_in = "ady",
+        lang_out = "eng",
+        entries = 5423,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ady-en.tar.zst",
+    },
+    {
+        name = "Wiktionary West Frisian-English",
+        lang_in = "fry",
+        lang_out = "eng",
+        entries = 2167,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fy-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Xhosa-English",
+        lang_in = "xho",
+        lang_out = "eng",
+        entries = 3400,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/xh-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Yakut-English",
+        lang_in = "sah",
+        lang_out = "eng",
+        entries = 3449,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sah-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Yiddish-English",
+        lang_in = "yid",
+        lang_out = "eng",
+        entries = 9871,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yi-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Yola-English",
+        lang_in = "yol",
+        lang_out = "eng",
+        entries = 2067,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yol-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Yoruba-English",
+        lang_in = "yor",
+        lang_out = "eng",
+        entries = 5781,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yo-en.tar.zst",
     },
     {
         name = "Wiktionary Zhuang-English",
         lang_in = "zha",
         lang_out = "eng",
-        entries = 2453,
+        entries = 2401,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/za-en.tar.zst",
+    },
+    {
+        name = "Wiktionary Zulu-English",
+        lang_in = "zul",
+        lang_out = "eng",
+        entries = 3210,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zu-en.tar.zst",
     },
     {
         name = "Wiktionnaire Afrikaans-Français",
         lang_in = "afr",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 4648,
+=======
+        entries = 4640,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/af-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Albanais-Français",
+        lang_in = "sqi",
+        lang_out = "fra",
+        entries = 1905,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sq-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Allemand-Français",
         lang_in = "deu",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 62094,
+=======
+        entries = 61811,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-fr.tar.zst",
     },
@@ -4207,7 +7281,11 @@ local dictionaries = {
         name = "Wiktionnaire Ancien français-Français",
         lang_in = "fro",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 19154,
+=======
+        entries = 13261,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fro-fr.tar.zst",
     },
@@ -4215,7 +7293,11 @@ local dictionaries = {
         name = "Wiktionnaire Ancien occitan-Français",
         lang_in = "pro",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 11651,
+=======
+        entries = 8987,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pro-fr.tar.zst",
     },
@@ -4223,7 +7305,11 @@ local dictionaries = {
         name = "Wiktionnaire Anglais-Français",
         lang_in = "eng",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 99423,
+=======
+        entries = 97226,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-fr.tar.zst",
     },
@@ -4236,6 +7322,41 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-fr.tar.zst",
     },
     {
+<<<<<<< HEAD
+=======
+        name = "Wiktionnaire Arménien-Français",
+        lang_in = "hye",
+        lang_out = "fra",
+        entries = 1640,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hy-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Azéri-Français",
+        lang_in = "aze",
+        lang_out = "fra",
+        entries = 2023,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/az-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Bachkir-Français",
+        lang_in = "bak",
+        lang_out = "fra",
+        entries = 1323,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ba-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Bambara-Français",
+        lang_in = "bam",
+        lang_out = "fra",
+        entries = 3344,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bm-fr.tar.zst",
+    },
+    {
+>>>>>>> upstream/master
         name = "Wiktionnaire Basque-Français",
         lang_in = "eus",
         lang_out = "fra",
@@ -4244,10 +7365,22 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eu-fr.tar.zst",
     },
     {
+        name = "Wiktionnaire Biélorusse-Français",
+        lang_in = "bel",
+        lang_out = "fra",
+        entries = 1480,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/be-fr.tar.zst",
+    },
+    {
         name = "Wiktionnaire Breton-Français",
         lang_in = "bre",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 11209,
+=======
+        entries = 11042,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/br-fr.tar.zst",
     },
@@ -4255,7 +7388,7 @@ local dictionaries = {
         name = "Wiktionnaire Bulgare-Français",
         lang_in = "bul",
         lang_out = "fra",
-        entries = 16658,
+        entries = 16624,
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bg-fr.tar.zst",
     },
@@ -4263,7 +7396,11 @@ local dictionaries = {
         name = "Wiktionnaire Catalan-Français",
         lang_in = "cat",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 18022,
+=======
+        entries = 17797,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-fr.tar.zst",
     },
@@ -4271,23 +7408,70 @@ local dictionaries = {
         name = "Wiktionnaire Chinois-Français",
         lang_in = "zho",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 13772,
+=======
+        entries = 13933,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Chleuh-Français",
+        lang_in = "shi",
+        lang_out = "fra",
+        entries = 1626,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/shi-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Corse-Français",
+        lang_in = "cos",
+        lang_out = "fra",
+        entries = 1628,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/co-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Coréen-Français",
         lang_in = "kor",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 5571,
+=======
+        entries = 5376,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Danois-Français",
+        lang_in = "dan",
+        lang_out = "fra",
+        entries = 6033,
+=======
+        name = "Wiktionnaire Croate-Français",
+        lang_in = "hrv",
+        lang_out = "fra",
+        entries = 1936,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hr-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Créole haïtien-Français",
+        lang_in = "hat",
+        lang_out = "fra",
+        entries = 2512,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ht-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Danois-Français",
         lang_in = "dan",
         lang_out = "fra",
-        entries = 6033,
+        entries = 6024,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-fr.tar.zst",
     },
@@ -4295,7 +7479,11 @@ local dictionaries = {
         name = "Wiktionnaire Espagnol-Français",
         lang_in = "spa",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 35488,
+=======
+        entries = 35209,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-fr.tar.zst",
     },
@@ -4311,7 +7499,11 @@ local dictionaries = {
         name = "Wiktionnaire Finnois-Français",
         lang_in = "fin",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 11562,
+=======
+        entries = 12129,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-fr.tar.zst",
     },
@@ -4319,7 +7511,11 @@ local dictionaries = {
         name = "Wiktionnaire Francoprovençal-Français",
         lang_in = "frp",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 3504,
+=======
+        entries = 3501,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/frp-fr.tar.zst",
     },
@@ -4327,31 +7523,104 @@ local dictionaries = {
         name = "Wiktionnaire Français-Français",
         lang_in = "fra",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 557689,
+=======
+        entries = 543104,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Gallo-Français",
+        lang_in = "gallo",
+        lang_out = "fra",
+        entries = 7701,
+=======
+        name = "Wiktionnaire Frison-Français",
+        lang_in = "fry",
+        lang_out = "fra",
+        entries = 3188,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fy-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Féroïen-Français",
+        lang_in = "fao",
+        lang_out = "fra",
+        entries = 1207,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fo-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Galicien-Français",
+        lang_in = "glg",
+        lang_out = "fra",
+        entries = 2241,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Gallo-Français",
         lang_in = "gallo",
         lang_out = "fra",
-        entries = 7701,
+        entries = 7584,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gallo-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Gallois-Français",
+        lang_in = "cym",
+        lang_out = "fra",
+        entries = 3900,
+=======
+        name = "Wiktionnaire Gallo-italique de Sicile-Français",
+        lang_in = "gallo-italique de sicile",
+        lang_out = "fra",
+        entries = 2106,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gallo-italique.de.sicile-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Gallois-Français",
         lang_in = "cym",
         lang_out = "fra",
-        entries = 3900,
+        entries = 3892,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cy-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Grec ancien-Français",
+        lang_in = "grc",
+        lang_out = "fra",
+        entries = 12977,
+=======
+        name = "Wiktionnaire Gaulois-Français",
+        lang_in = "xtg",
+        lang_out = "fra",
+        entries = 2162,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/xtg-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Gaélique irlandais-Français",
+        lang_in = "gle",
+        lang_out = "fra",
+        entries = 2346,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ga-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Grec ancien-Français",
         lang_in = "grc",
         lang_out = "fra",
-        entries = 12977,
+        entries = 12639,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/grc-fr.tar.zst",
     },
@@ -4359,31 +7628,101 @@ local dictionaries = {
         name = "Wiktionnaire Grec-Français",
         lang_in = "ell",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 8980,
+=======
+        entries = 8875,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Hongrois-Français",
+        lang_in = "hun",
+        lang_out = "fra",
+        entries = 4191,
+=======
+        name = "Wiktionnaire Géorgien-Français",
+        lang_in = "kat",
+        lang_out = "fra",
+        entries = 1683,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ka-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Haoussa-Français",
+        lang_in = "hau",
+        lang_out = "fra",
+        entries = 2530,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ha-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Hindi-Français",
+        lang_in = "hin",
+        lang_out = "fra",
+        entries = 1170,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hi-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Hongrois-Français",
         lang_in = "hun",
         lang_out = "fra",
-        entries = 4191,
+        entries = 4192,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Hébreu ancien-Français",
+        lang_in = "hbo",
+        lang_out = "fra",
+        entries = 1405,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hbo-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Hébreu-Français",
+        lang_in = "heb",
+        lang_out = "fra",
+        entries = 1549,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Indonésien-Français",
         lang_in = "ind",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 14078,
+=======
+        entries = 13675,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Islandais-Français",
+        lang_in = "isl",
+        lang_out = "fra",
+        entries = 6201,
+=======
+        name = "Wiktionnaire Inuktitut-Français",
+        lang_in = "iku",
+        lang_out = "fra",
+        entries = 2123,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/iu-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Islandais-Français",
         lang_in = "isl",
         lang_out = "fra",
-        entries = 6201,
+        entries = 6183,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-fr.tar.zst",
     },
@@ -4391,7 +7730,11 @@ local dictionaries = {
         name = "Wiktionnaire Italien-Français",
         lang_in = "ita",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 239322,
+=======
+        entries = 232125,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-fr.tar.zst",
     },
@@ -4399,7 +7742,11 @@ local dictionaries = {
         name = "Wiktionnaire Japonais-Français",
         lang_in = "jpn",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 12925,
+=======
+        entries = 11851,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-fr.tar.zst",
     },
@@ -4412,28 +7759,91 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kk-fr.tar.zst",
     },
     {
+        name = "Wiktionnaire Kirghiz-Français",
+        lang_in = "kir",
+        lang_out = "fra",
+        entries = 1330,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ky-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Kurde-Français",
+        lang_in = "kur",
+        lang_out = "fra",
+        entries = 1363,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ku-fr.tar.zst",
+    },
+    {
         name = "Wiktionnaire Latin-Français",
         lang_in = "lat",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 39419,
+=======
+        entries = 37819,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Lepcha-Français",
+        lang_in = "lep",
+        lang_out = "fra",
+        entries = 1234,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lep-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Letton-Français",
         lang_in = "lav",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 1955,
+=======
+        entries = 2068,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Luxembourgeois-Français",
+        lang_in = "ltz",
+        lang_out = "fra",
+        entries = 6405,
+=======
+        name = "Wiktionnaire Lingala-Français",
+        lang_in = "lin",
+        lang_out = "fra",
+        entries = 3046,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ln-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Lituanien-Français",
+        lang_in = "lit",
+        lang_out = "fra",
+        entries = 1967,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lt-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Luxembourgeois-Français",
         lang_in = "ltz",
         lang_out = "fra",
-        entries = 6405,
+        entries = 6184,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lb-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Malais-Français",
+        lang_in = "msa",
+        lang_out = "fra",
+        entries = 1622,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ms-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Malgache-Français",
@@ -4444,6 +7854,33 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mg-fr.tar.zst",
     },
     {
+<<<<<<< HEAD
+=======
+        name = "Wiktionnaire Mongol-Français",
+        lang_in = "mon",
+        lang_out = "fra",
+        entries = 1824,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mn-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Moyen français-Français",
+        lang_in = "frm",
+        lang_out = "fra",
+        entries = 2135,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/frm-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Nahuatl classique-Français",
+        lang_in = "nci",
+        lang_out = "fra",
+        entries = 1195,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nci-fr.tar.zst",
+    },
+    {
+>>>>>>> upstream/master
         name = "Wiktionnaire Norvégien (bokmål)-Français",
         lang_in = "nob",
         lang_out = "fra",
@@ -4471,15 +7908,31 @@ local dictionaries = {
         name = "Wiktionnaire Néerlandais-Français",
         lang_in = "nld",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 31685,
+=======
+        entries = 31784,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Népalais-Français",
+        lang_in = "nep",
+        lang_out = "fra",
+        entries = 1298,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ne-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Occitan-Français",
         lang_in = "oci",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 35834,
+=======
+        entries = 34234,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/oc-fr.tar.zst",
     },
@@ -4487,7 +7940,11 @@ local dictionaries = {
         name = "Wiktionnaire Papiamento-Français",
         lang_in = "pap",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 3533,
+=======
+        entries = 3525,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pap-fr.tar.zst",
     },
@@ -4500,10 +7957,22 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fa-fr.tar.zst",
     },
     {
+        name = "Wiktionnaire Picard-Français",
+        lang_in = "pcd",
+        lang_out = "fra",
+        entries = 1679,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pcd-fr.tar.zst",
+    },
+    {
         name = "Wiktionnaire Polonais-Français",
         lang_in = "pol",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 14477,
+=======
+        entries = 14231,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-fr.tar.zst",
     },
@@ -4511,7 +7980,11 @@ local dictionaries = {
         name = "Wiktionnaire Portugais-Français",
         lang_in = "por",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 22622,
+=======
+        entries = 22816,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-fr.tar.zst",
     },
@@ -4519,7 +7992,11 @@ local dictionaries = {
         name = "Wiktionnaire Roumain-Français",
         lang_in = "ron",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 4941,
+=======
+        entries = 4925,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-fr.tar.zst",
     },
@@ -4527,7 +8004,11 @@ local dictionaries = {
         name = "Wiktionnaire Russe-Français",
         lang_in = "rus",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 47303,
+=======
+        entries = 46990,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-fr.tar.zst",
     },
@@ -4540,10 +8021,22 @@ local dictionaries = {
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/se-fr.tar.zst",
     },
     {
+        name = "Wiktionnaire Serbe-Français",
+        lang_in = "srp",
+        lang_out = "fra",
+        entries = 1397,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sr-fr.tar.zst",
+    },
+    {
         name = "Wiktionnaire Sicilien-Français",
         lang_in = "scn",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 4905,
+=======
+        entries = 5785,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/scn-fr.tar.zst",
     },
@@ -4551,7 +8044,11 @@ local dictionaries = {
         name = "Wiktionnaire Slovaque-Français",
         lang_in = "slk",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 3796,
+=======
+        entries = 3800,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-fr.tar.zst",
     },
@@ -4559,7 +8056,11 @@ local dictionaries = {
         name = "Wiktionnaire Slovène-Français",
         lang_in = "slv",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 11748,
+=======
+        entries = 11692,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sl-fr.tar.zst",
     },
@@ -4567,15 +8068,66 @@ local dictionaries = {
         name = "Wiktionnaire Suédois-Français",
         lang_in = "swe",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 20972,
+=======
+        entries = 20897,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Wiktionnaire Tchèque-Français",
+        lang_in = "ces",
+        lang_out = "fra",
+        entries = 26589,
+=======
+        name = "Wiktionnaire Swahili-Français",
+        lang_in = "swa",
+        lang_out = "fra",
+        entries = 1497,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sw-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Tagalog-Français",
+        lang_in = "tgl",
+        lang_out = "fra",
+        entries = 1936,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tl-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Tamoul-Français",
+        lang_in = "tam",
+        lang_out = "fra",
+        entries = 1636,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ta-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Tatare-Français",
+        lang_in = "tat",
+        lang_out = "fra",
+        entries = 1233,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tt-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Tchouvache-Français",
+        lang_in = "chv",
+        lang_out = "fra",
+        entries = 1151,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cv-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Tchèque-Français",
         lang_in = "ces",
         lang_out = "fra",
-        entries = 26589,
+        entries = 26201,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-fr.tar.zst",
     },
@@ -4583,7 +8135,11 @@ local dictionaries = {
         name = "Wiktionnaire Turc-Français",
         lang_in = "tur",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 4438,
+=======
+        entries = 4404,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-fr.tar.zst",
     },
@@ -4591,23 +8147,246 @@ local dictionaries = {
         name = "Wiktionnaire Ukrainien-Français",
         lang_in = "ukr",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 12020,
+=======
+        entries = 12789,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-fr.tar.zst",
+    },
+    {
+        name = "Wiktionnaire Vieil anglais-Français",
+        lang_in = "ang",
+        lang_out = "fra",
+        entries = 1201,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ang-fr.tar.zst",
     },
     {
         name = "Wiktionnaire Vietnamien-Français",
         lang_in = "vie",
         lang_out = "fra",
+<<<<<<< HEAD
         entries = 16666,
+=======
+        entries = 16627,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-fr.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Английский-Русский",
+        lang_in = "eng",
+        lang_out = "rus",
+        entries = 67578,
+=======
+        name = "Wiktionnaire Vieux slave-Français",
+        lang_in = "chu",
+        lang_out = "fra",
+        entries = 2612,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cu-fr.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Αγγλικά-Ελληνικά",
+        lang_in = "eng",
+        lang_out = "ell",
+        entries = 52897,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Αρχαία ελληνικά-Ελληνικά",
+        lang_in = "grc",
+        lang_out = "ell",
+        entries = 81022,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/grc-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Γαλλικά-Ελληνικά",
+        lang_in = "fra",
+        lang_out = "ell",
+        entries = 65451,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Γερμανικά-Ελληνικά",
+        lang_in = "deu",
+        lang_out = "ell",
+        entries = 112432,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Εβραϊκά-Ελληνικά",
+        lang_in = "heb",
+        lang_out = "ell",
+        entries = 946,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Εσπεράντο-Ελληνικά",
+        lang_in = "epo",
+        lang_out = "ell",
+        entries = 41313,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Ιαπωνικά-Ελληνικά",
+        lang_in = "jpn",
+        lang_out = "ell",
+        entries = 1525,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Ισπανικά-Ελληνικά",
+        lang_in = "spa",
+        lang_out = "ell",
+        entries = 3671,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Ιταλικά-Ελληνικά",
+        lang_in = "ita",
+        lang_out = "ell",
+        entries = 173617,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Λατινικά-Ελληνικά",
+        lang_in = "lat",
+        lang_out = "ell",
+        entries = 3057,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Μεσαιωνικά ελληνικά-Ελληνικά",
+        lang_in = "gkm",
+        lang_out = "ell",
+        entries = 2662,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gkm-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Νέα ελληνικά-Ελληνικά",
+        lang_in = "ell",
+        lang_out = "ell",
+        entries = 405587,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Ολλανδικά-Ελληνικά",
+        lang_in = "nld",
+        lang_out = "ell",
+        entries = 8483,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Πολωνικά-Ελληνικά",
+        lang_in = "pol",
+        lang_out = "ell",
+        entries = 8699,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Πορτογαλικά-Ελληνικά",
+        lang_in = "por",
+        lang_out = "ell",
+        entries = 2835,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Ρουμανικά-Ελληνικά",
+        lang_in = "ron",
+        lang_out = "ell",
+        entries = 2779,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Ρωσικά-Ελληνικά",
+        lang_in = "rus",
+        lang_out = "ell",
+        entries = 2061,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Σερβικά-Ελληνικά",
+        lang_in = "srp",
+        lang_out = "ell",
+        entries = 5276,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sr-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Σουηδικά-Ελληνικά",
+        lang_in = "swe",
+        lang_out = "ell",
+        entries = 111664,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Τουρκικά-Ελληνικά",
+        lang_in = "tur",
+        lang_out = "ell",
+        entries = 26549,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Τσεχικά-Ελληνικά",
+        lang_in = "ces",
+        lang_out = "ell",
+        entries = 1338,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-el.tar.zst",
+    },
+    {
+        name = "Βικιλεξικό Φινλανδικά-Ελληνικά",
+        lang_in = "fin",
+        lang_out = "ell",
+        entries = 45598,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-el.tar.zst",
+    },
+    {
+        name = "Викисловарь Азербайджанский-Русский",
+        lang_in = "aze",
+        lang_out = "rus",
+        entries = 8874,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/az-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Албанский-Русский",
+        lang_in = "sqi",
+        lang_out = "rus",
+        entries = 3908,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sq-ru.tar.zst",
     },
     {
         name = "Викисловарь Английский-Русский",
         lang_in = "eng",
         lang_out = "rus",
-        entries = 67578,
+        entries = 70028,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-ru.tar.zst",
     },
@@ -4615,23 +8394,81 @@ local dictionaries = {
         name = "Викисловарь Арабский-Русский",
         lang_in = "ara",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 14545,
+=======
+        entries = 14612,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Белорусский-Русский",
+        lang_in = "bel",
+        lang_out = "rus",
+        entries = 22786,
+=======
+        name = "Викисловарь Армянский-Русский",
+        lang_in = "hye",
+        lang_out = "rus",
+        entries = 9246,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hy-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Африкаанс-Русский",
+        lang_in = "afr",
+        lang_out = "rus",
+        entries = 3828,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/af-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Баскский-Русский",
+        lang_in = "eus",
+        lang_out = "rus",
+        entries = 3900,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eu-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Башкирский-Русский",
+        lang_in = "bak",
+        lang_out = "rus",
+        entries = 4264,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ba-ru.tar.zst",
     },
     {
         name = "Викисловарь Белорусский-Русский",
         lang_in = "bel",
         lang_out = "rus",
-        entries = 22786,
+        entries = 22991,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/be-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Болгарский-Русский",
+        lang_in = "bul",
+        lang_out = "rus",
+        entries = 10316,
+=======
+        name = "Викисловарь Бирманский-Русский",
+        lang_in = "mya",
+        lang_out = "rus",
+        entries = 3544,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/my-ru.tar.zst",
     },
     {
         name = "Викисловарь Болгарский-Русский",
         lang_in = "bul",
         lang_out = "rus",
-        entries = 10316,
+        entries = 10536,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/bg-ru.tar.zst",
     },
@@ -4639,23 +8476,89 @@ local dictionaries = {
         name = "Викисловарь Венгерский-Русский",
         lang_in = "hun",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 12119,
+=======
+        entries = 12223,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Греческий-Русский",
+        lang_in = "ell",
+        lang_out = "rus",
+        entries = 10773,
+=======
+        name = "Викисловарь Верхнелужицкий-Русский",
+        lang_in = "hsb",
+        lang_out = "rus",
+        entries = 10985,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hsb-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Галисийский-Русский",
+        lang_in = "glg",
+        lang_out = "rus",
+        entries = 5699,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Готский-Русский",
+        lang_in = "got",
+        lang_out = "rus",
+        entries = 3796,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/got-ru.tar.zst",
     },
     {
         name = "Викисловарь Греческий-Русский",
         lang_in = "ell",
         lang_out = "rus",
-        entries = 10773,
+        entries = 10877,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/el-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Древнегреческий-Русский",
+        lang_in = "grc",
+        lang_out = "rus",
+        entries = 14044,
+=======
+        name = "Викисловарь Грузинский-Русский",
+        lang_in = "kat",
+        lang_out = "rus",
+        entries = 6908,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ka-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Датский-Русский",
+        lang_in = "dan",
+        lang_out = "rus",
+        entries = 7837,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Древнеанглийский-Русский",
+        lang_in = "ang",
+        lang_out = "rus",
+        entries = 4447,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ang-ru.tar.zst",
     },
     {
         name = "Викисловарь Древнегреческий-Русский",
         lang_in = "grc",
         lang_out = "rus",
-        entries = 14044,
+        entries = 14071,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/grc-ru.tar.zst",
     },
@@ -4663,7 +8566,7 @@ local dictionaries = {
         name = "Викисловарь Древнерусский-Русский",
         lang_in = "orv",
         lang_out = "rus",
-        entries = 11277,
+        entries = 11279,
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/orv-ru.tar.zst",
     },
@@ -4671,15 +8574,58 @@ local dictionaries = {
         name = "Викисловарь Иврит-Русский",
         lang_in = "heb",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 9369,
+=======
+        entries = 9460,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Испанский-Русский",
+        lang_in = "spa",
+        lang_out = "rus",
+        entries = 15990,
+=======
+        name = "Викисловарь Идиш-Русский",
+        lang_in = "yid",
+        lang_out = "rus",
+        entries = 4156,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/yi-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Индонезийский-Русский",
+        lang_in = "ind",
+        lang_out = "rus",
+        entries = 4232,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Ирландский-Русский",
+        lang_in = "gle",
+        lang_out = "rus",
+        entries = 3780,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ga-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Исландский-Русский",
+        lang_in = "isl",
+        lang_out = "rus",
+        entries = 5538,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-ru.tar.zst",
     },
     {
         name = "Викисловарь Испанский-Русский",
         lang_in = "spa",
         lang_out = "rus",
-        entries = 15990,
+        entries = 16174,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-ru.tar.zst",
     },
@@ -4687,7 +8633,11 @@ local dictionaries = {
         name = "Викисловарь Итальянский-Русский",
         lang_in = "ita",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 16563,
+=======
+        entries = 16742,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-ru.tar.zst",
     },
@@ -4695,23 +8645,97 @@ local dictionaries = {
         name = "Викисловарь Казахский-Русский",
         lang_in = "kaz",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 17823,
+=======
+        entries = 17896,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kk-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Китайский-Русский",
+        lang_in = "zho",
+        lang_out = "rus",
+        entries = 10178,
+=======
+        name = "Викисловарь Караимский-Русский",
+        lang_in = "kdr",
+        lang_out = "rus",
+        entries = 7105,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/kdr-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Каталанский-Русский",
+        lang_in = "cat",
+        lang_out = "rus",
+        entries = 8187,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Киргизский-Русский",
+        lang_in = "kir",
+        lang_out = "rus",
+        entries = 3412,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ky-ru.tar.zst",
     },
     {
         name = "Викисловарь Китайский-Русский",
         lang_in = "zho",
         lang_out = "rus",
-        entries = 10178,
+        entries = 10423,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Латинский-Русский",
+        lang_in = "lat",
+        lang_out = "rus",
+        entries = 26646,
+=======
+        name = "Викисловарь Корейский-Русский",
+        lang_in = "kor",
+        lang_out = "rus",
+        entries = 5132,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Крымскотатарский-Русский",
+        lang_in = "crh",
+        lang_out = "rus",
+        entries = 3304,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/crh-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Курдский-Русский",
+        lang_in = "kur",
+        lang_out = "rus",
+        entries = 4063,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ku-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Кхмерский-Русский",
+        lang_in = "khm",
+        lang_out = "rus",
+        entries = 5914,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/km-ru.tar.zst",
     },
     {
         name = "Викисловарь Латинский-Русский",
         lang_in = "lat",
         lang_out = "rus",
-        entries = 26646,
+        entries = 26777,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-ru.tar.zst",
     },
@@ -4719,7 +8743,11 @@ local dictionaries = {
         name = "Викисловарь Латышский-Русский",
         lang_in = "lav",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 8799,
+=======
+        entries = 8928,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-ru.tar.zst",
     },
@@ -4727,15 +8755,42 @@ local dictionaries = {
         name = "Викисловарь Литовский-Русский",
         lang_in = "lit",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 11197,
+=======
+        entries = 11282,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lt-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Немецкий-Русский",
+        lang_in = "deu",
+        lang_out = "rus",
+        entries = 87167,
+=======
+        name = "Викисловарь Македонский-Русский",
+        lang_in = "mkd",
+        lang_out = "rus",
+        entries = 6415,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mk-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Монгольский-Русский",
+        lang_in = "mon",
+        lang_out = "rus",
+        entries = 3093,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mn-ru.tar.zst",
     },
     {
         name = "Викисловарь Немецкий-Русский",
         lang_in = "deu",
         lang_out = "rus",
-        entries = 87167,
+        entries = 87355,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-ru.tar.zst",
     },
@@ -4743,15 +8798,58 @@ local dictionaries = {
         name = "Викисловарь Нидерландский-Русский",
         lang_in = "nld",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 11321,
+=======
+        entries = 11465,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Польский-Русский",
+        lang_in = "pol",
+        lang_out = "rus",
+        entries = 18232,
+=======
+        name = "Викисловарь Норвежский-Русский",
+        lang_in = "nor",
+        lang_out = "rus",
+        entries = 8227,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/no-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Осетинский-Русский",
+        lang_in = "oss",
+        lang_out = "rus",
+        entries = 4387,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/os-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Пали-Русский",
+        lang_in = "pli",
+        lang_out = "rus",
+        entries = 35445,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pi-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Персидский-Русский",
+        lang_in = "fas",
+        lang_out = "rus",
+        entries = 9365,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fa-ru.tar.zst",
     },
     {
         name = "Викисловарь Польский-Русский",
         lang_in = "pol",
         lang_out = "rus",
-        entries = 18232,
+        entries = 18428,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-ru.tar.zst",
     },
@@ -4759,7 +8857,11 @@ local dictionaries = {
         name = "Викисловарь Португальский-Русский",
         lang_in = "por",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 12538,
+=======
+        entries = 12721,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-ru.tar.zst",
     },
@@ -4767,31 +8869,136 @@ local dictionaries = {
         name = "Викисловарь Русский-Русский",
         lang_in = "rus",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 474290,
+=======
+        entries = 479331,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Сербский-Русский",
+        lang_in = "srp",
+        lang_out = "rus",
+        entries = 14191,
+=======
+        name = "Викисловарь Санскрит-Русский",
+        lang_in = "san",
+        lang_out = "rus",
+        entries = 13167,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sa-ru.tar.zst",
     },
     {
         name = "Викисловарь Сербский-Русский",
         lang_in = "srp",
         lang_out = "rus",
-        entries = 14191,
+        entries = 14293,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sr-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Турецкий-Русский",
+        lang_in = "tur",
+        lang_out = "rus",
+        entries = 24718,
+=======
+        name = "Викисловарь Словацкий-Русский",
+        lang_in = "slk",
+        lang_out = "rus",
+        entries = 7330,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sk-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Словенский-Русский",
+        lang_in = "slv",
+        lang_out = "rus",
+        entries = 5536,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sl-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Старофранцузский-Русский",
+        lang_in = "fro",
+        lang_out = "rus",
+        entries = 4708,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fro-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Суахили-Русский",
+        lang_in = "swa",
+        lang_out = "rus",
+        entries = 8096,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sw-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Таджикский-Русский",
+        lang_in = "tgk",
+        lang_out = "rus",
+        entries = 11671,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tg-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Талышский-Русский",
+        lang_in = "tly",
+        lang_out = "rus",
+        entries = 3790,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tly-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Татарский-Русский",
+        lang_in = "tat",
+        lang_out = "rus",
+        entries = 11737,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tt-ru.tar.zst",
     },
     {
         name = "Викисловарь Турецкий-Русский",
         lang_in = "tur",
         lang_out = "rus",
-        entries = 24718,
+        entries = 24793,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Украинский-Русский",
+        lang_in = "ukr",
+        lang_out = "rus",
+        entries = 99647,
+=======
+        name = "Викисловарь Туркменский-Русский",
+        lang_in = "tuk",
+        lang_out = "rus",
+        entries = 3259,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tk-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Узбекский-Русский",
+        lang_in = "uzb",
+        lang_out = "rus",
+        entries = 5341,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uz-ru.tar.zst",
     },
     {
         name = "Викисловарь Украинский-Русский",
         lang_in = "ukr",
         lang_out = "rus",
-        entries = 99647,
+        entries = 99778,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-ru.tar.zst",
     },
@@ -4799,7 +9006,11 @@ local dictionaries = {
         name = "Викисловарь Финский-Русский",
         lang_in = "fin",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 22124,
+=======
+        entries = 22237,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-ru.tar.zst",
     },
@@ -4807,15 +9018,58 @@ local dictionaries = {
         name = "Викисловарь Французский-Русский",
         lang_in = "fra",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 32084,
+=======
+        entries = 32205,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Чешский-Русский",
+        lang_in = "ces",
+        lang_out = "rus",
+        entries = 14757,
+=======
+        name = "Викисловарь Хинди-Русский",
+        lang_in = "hin",
+        lang_out = "rus",
+        entries = 6699,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hi-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Хорватский-Русский",
+        lang_in = "hrv",
+        lang_out = "rus",
+        entries = 7150,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hr-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Церковнославянский-Русский",
+        lang_in = "chu",
+        lang_out = "rus",
+        entries = 13288,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cu-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Чеченский-Русский",
+        lang_in = "che",
+        lang_out = "rus",
+        entries = 3769,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ce-ru.tar.zst",
     },
     {
         name = "Викисловарь Чешский-Русский",
         lang_in = "ces",
         lang_out = "rus",
-        entries = 14757,
+        entries = 14926,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-ru.tar.zst",
     },
@@ -4823,23 +9077,214 @@ local dictionaries = {
         name = "Викисловарь Шведский-Русский",
         lang_in = "swe",
         lang_out = "rus",
+<<<<<<< HEAD
         entries = 11051,
+=======
+        entries = 11199,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-ru.tar.zst",
+    },
+    {
+<<<<<<< HEAD
+        name = "Викисловарь Японский-Русский",
+        lang_in = "jpn",
+        lang_out = "rus",
+        entries = 8542,
+=======
+        name = "Викисловарь Эстонский-Русский",
+        lang_in = "est",
+        lang_out = "rus",
+        entries = 7364,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/et-ru.tar.zst",
+    },
+    {
+        name = "Викисловарь Якутский-Русский",
+        lang_in = "sah",
+        lang_out = "rus",
+        entries = 4085,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sah-ru.tar.zst",
     },
     {
         name = "Викисловарь Японский-Русский",
         lang_in = "jpn",
         lang_out = "rus",
-        entries = 8542,
+        entries = 8677,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-ru.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาคำเมือง-ภาษาไทย",
+        lang_in = "nod",
+        lang_out = "tha",
+        entries = 3768,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nod-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาจีน-ภาษาไทย",
+        lang_in = "zho",
+        lang_out = "tha",
+        entries = 2790,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาญี่ปุ่น-ภาษาไทย",
+        lang_in = "jpn",
+        lang_out = "tha",
+        entries = 28645,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาบาลี-ภาษาไทย",
+        lang_in = "pli",
+        lang_out = "tha",
+        entries = 2564,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pi-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาฝรั่งเศส-ภาษาไทย",
+        lang_in = "fra",
+        lang_out = "tha",
+        entries = 204809,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาพม่า-ภาษาไทย",
+        lang_in = "mya",
+        lang_out = "tha",
+        entries = 1346,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/my-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาฟินแลนด์-ภาษาไทย",
+        lang_in = "fin",
+        lang_out = "tha",
+        entries = 32623,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาลาว-ภาษาไทย",
+        lang_in = "lao",
+        lang_out = "tha",
+        entries = 12516,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lo-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาสเปน-ภาษาไทย",
+        lang_in = "spa",
+        lang_out = "tha",
+        entries = 470548,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาอังกฤษ-ภาษาไทย",
+        lang_in = "eng",
+        lang_out = "tha",
+        entries = 465850,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาอิตาลี-ภาษาไทย",
+        lang_in = "ita",
+        lang_out = "tha",
+        entries = 27435,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาเขมร-ภาษาไทย",
+        lang_in = "khm",
+        lang_out = "tha",
+        entries = 1869,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/km-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาเยอรมัน-ภาษาไทย",
+        lang_in = "deu",
+        lang_out = "tha",
+        entries = 54017,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาเวียดนาม-ภาษาไทย",
+        lang_in = "vie",
+        lang_out = "tha",
+        entries = 1334,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาเอสเปรันโต-ภาษาไทย",
+        lang_in = "epo",
+        lang_out = "tha",
+        entries = 13515,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาโปรตุเกส-ภาษาไทย",
+        lang_in = "por",
+        lang_out = "tha",
+        entries = 226739,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาไทดำ-ภาษาไทย",
+        lang_in = "blt",
+        lang_out = "tha",
+        entries = 1333,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/blt-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาไทย-ภาษาไทย",
+        lang_in = "tha",
+        lang_out = "tha",
+        entries = 27114,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/th-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาไทลื้อ-ภาษาไทย",
+        lang_in = "khb",
+        lang_out = "tha",
+        entries = 2525,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/khb-th.tar.zst",
+    },
+    {
+        name = "วิกิพจนานุกรม ภาษาไทใหญ่-ภาษาไทย",
+        lang_in = "shn",
+        lang_out = "tha",
+        entries = 3795,
+        license = "GPLv3+ and CC BY-SA 4.0",
+        url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/shn-th.tar.zst",
     },
     {
         name = "ウィクショナリー アイヌ語-日本語",
         lang_in = "ain",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 1529,
+=======
+        entries = 1507,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ain-ja.tar.zst",
     },
@@ -4847,7 +9292,11 @@ local dictionaries = {
         name = "ウィクショナリー イタリア語-日本語",
         lang_in = "ita",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 17171,
+=======
+        entries = 16783,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-ja.tar.zst",
     },
@@ -4855,7 +9304,11 @@ local dictionaries = {
         name = "ウィクショナリー エスペラント-日本語",
         lang_in = "epo",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 12511,
+=======
+        entries = 12540,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/eo-ja.tar.zst",
     },
@@ -4863,7 +9316,11 @@ local dictionaries = {
         name = "ウィクショナリー オランダ語-日本語",
         lang_in = "nld",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 6144,
+=======
+        entries = 5941,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-ja.tar.zst",
     },
@@ -4871,7 +9328,11 @@ local dictionaries = {
         name = "ウィクショナリー カタルーニャ語-日本語",
         lang_in = "cat",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 5353,
+=======
+        entries = 5424,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ca-ja.tar.zst",
     },
@@ -4879,7 +9340,11 @@ local dictionaries = {
         name = "ウィクショナリー ガリシア語-日本語",
         lang_in = "glg",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 2714,
+=======
+        entries = 2760,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/gl-ja.tar.zst",
     },
@@ -4887,7 +9352,11 @@ local dictionaries = {
         name = "ウィクショナリー スウェーデン語-日本語",
         lang_in = "swe",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 7583,
+=======
+        entries = 7606,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-ja.tar.zst",
     },
@@ -4895,7 +9364,11 @@ local dictionaries = {
         name = "ウィクショナリー セルビア・クロアチア語-日本語",
         lang_in = "hbs",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 3385,
+=======
+        entries = 2405,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sh-ja.tar.zst",
     },
@@ -4903,7 +9376,11 @@ local dictionaries = {
         name = "ウィクショナリー タイ語-日本語",
         lang_in = "tha",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 2188,
+=======
+        entries = 2204,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/th-ja.tar.zst",
     },
@@ -4911,7 +9388,11 @@ local dictionaries = {
         name = "ウィクショナリー チェコ語-日本語",
         lang_in = "ces",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 2630,
+=======
+        entries = 2605,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/cs-ja.tar.zst",
     },
@@ -4919,7 +9400,11 @@ local dictionaries = {
         name = "ウィクショナリー デンマーク語-日本語",
         lang_in = "dan",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 3818,
+=======
+        entries = 3849,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-ja.tar.zst",
     },
@@ -4927,7 +9412,11 @@ local dictionaries = {
         name = "ウィクショナリー ドイツ語-日本語",
         lang_in = "deu",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 12407,
+=======
+        entries = 12707,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-ja.tar.zst",
     },
@@ -4935,7 +9424,11 @@ local dictionaries = {
         name = "ウィクショナリー ノルウェー語（ニーノシュク）-日本語",
         lang_in = "nno",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 3640,
+=======
+        entries = 3663,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nn-ja.tar.zst",
     },
@@ -4943,7 +9436,11 @@ local dictionaries = {
         name = "ウィクショナリー ノルウェー語（ブークモール）-日本語",
         lang_in = "nob",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 5948,
+=======
+        entries = 5933,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nb-ja.tar.zst",
     },
@@ -4951,7 +9448,11 @@ local dictionaries = {
         name = "ウィクショナリー ハンガリー語-日本語",
         lang_in = "hun",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 16470,
+=======
+        entries = 16494,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-ja.tar.zst",
     },
@@ -4959,7 +9460,11 @@ local dictionaries = {
         name = "ウィクショナリー フィンランド語-日本語",
         lang_in = "fin",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 2156,
+=======
+        entries = 2258,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-ja.tar.zst",
     },
@@ -4967,7 +9472,11 @@ local dictionaries = {
         name = "ウィクショナリー フランス語-日本語",
         lang_in = "fra",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 16671,
+=======
+        entries = 16663,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-ja.tar.zst",
     },
@@ -4975,7 +9484,7 @@ local dictionaries = {
         name = "ウィクショナリー ヘブライ語-日本語",
         lang_in = "heb",
         lang_out = "jpn",
-        entries = 1666,
+        entries = 1667,
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-ja.tar.zst",
     },
@@ -4983,7 +9492,11 @@ local dictionaries = {
         name = "ウィクショナリー ベトナム語-日本語",
         lang_in = "vie",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 9637,
+=======
+        entries = 9777,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-ja.tar.zst",
     },
@@ -4991,7 +9504,11 @@ local dictionaries = {
         name = "ウィクショナリー ポルトガル語-日本語",
         lang_in = "por",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 8726,
+=======
+        entries = 8841,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-ja.tar.zst",
     },
@@ -4999,7 +9516,11 @@ local dictionaries = {
         name = "ウィクショナリー ポーランド語-日本語",
         lang_in = "pol",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 3352,
+=======
+        entries = 3366,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-ja.tar.zst",
     },
@@ -5007,7 +9528,11 @@ local dictionaries = {
         name = "ウィクショナリー ラテン語-日本語",
         lang_in = "lat",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 23196,
+=======
+        entries = 19614,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-ja.tar.zst",
     },
@@ -5015,7 +9540,11 @@ local dictionaries = {
         name = "ウィクショナリー ルーマニア語-日本語",
         lang_in = "ron",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 2804,
+=======
+        entries = 2833,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-ja.tar.zst",
     },
@@ -5023,7 +9552,11 @@ local dictionaries = {
         name = "ウィクショナリー ロシア語-日本語",
         lang_in = "rus",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 9734,
+=======
+        entries = 9518,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-ja.tar.zst",
     },
@@ -5031,7 +9564,11 @@ local dictionaries = {
         name = "ウィクショナリー 中国語-日本語",
         lang_in = "zho",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 42707,
+=======
+        entries = 42969,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-ja.tar.zst",
     },
@@ -5039,7 +9576,11 @@ local dictionaries = {
         name = "ウィクショナリー 古典日本語-日本語",
         lang_in = "ojp",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 4680,
+=======
+        entries = 4534,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ojp-ja.tar.zst",
     },
@@ -5047,7 +9588,11 @@ local dictionaries = {
         name = "ウィクショナリー 日本語-日本語",
         lang_in = "jpn",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 115759,
+=======
+        entries = 113470,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-ja.tar.zst",
     },
@@ -5055,7 +9600,11 @@ local dictionaries = {
         name = "ウィクショナリー 朝鮮語-日本語",
         lang_in = "kor",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 28897,
+=======
+        entries = 28497,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-ja.tar.zst",
     },
@@ -5063,7 +9612,11 @@ local dictionaries = {
         name = "ウィクショナリー 英語-日本語",
         lang_in = "eng",
         lang_out = "jpn",
+<<<<<<< HEAD
         entries = 67732,
+=======
+        entries = 68022,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-ja.tar.zst",
     },
@@ -5071,7 +9624,11 @@ local dictionaries = {
         name = "維基詞典 丹麥語-漢語",
         lang_in = "dan",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 2775,
+=======
+        entries = 2833,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/da-zh.tar.zst",
     },
@@ -5079,7 +9636,11 @@ local dictionaries = {
         name = "維基詞典 俄語-漢語",
         lang_in = "rus",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 83624,
+=======
+        entries = 63865,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ru-zh.tar.zst",
     },
@@ -5087,7 +9648,11 @@ local dictionaries = {
         name = "維基詞典 冰島語-漢語",
         lang_in = "isl",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 4306,
+=======
+        entries = 4301,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/is-zh.tar.zst",
     },
@@ -5095,7 +9660,11 @@ local dictionaries = {
         name = "維基詞典 匈牙利語-漢語",
         lang_in = "hun",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 5946,
+=======
+        entries = 5951,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hu-zh.tar.zst",
     },
@@ -5103,7 +9672,11 @@ local dictionaries = {
         name = "維基詞典 印地語-漢語",
         lang_in = "hin",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 3509,
+=======
+        entries = 3465,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/hi-zh.tar.zst",
     },
@@ -5111,7 +9684,7 @@ local dictionaries = {
         name = "維基詞典 印尼語-漢語",
         lang_in = "ind",
         lang_out = "zho",
-        entries = 2905,
+        entries = 2933,
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/id-zh.tar.zst",
     },
@@ -5119,7 +9692,11 @@ local dictionaries = {
         name = "維基詞典 土耳其語-漢語",
         lang_in = "tur",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 6902,
+=======
+        entries = 6893,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/tr-zh.tar.zst",
     },
@@ -5127,7 +9704,11 @@ local dictionaries = {
         name = "維基詞典 壯語-漢語",
         lang_in = "zha",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 3463,
+=======
+        entries = 3438,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/za-zh.tar.zst",
     },
@@ -5143,7 +9724,11 @@ local dictionaries = {
         name = "維基詞典 希伯來語-漢語",
         lang_in = "heb",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 2470,
+=======
+        entries = 2458,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/he-zh.tar.zst",
     },
@@ -5159,7 +9744,11 @@ local dictionaries = {
         name = "維基詞典 德語-漢語",
         lang_in = "deu",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 35519,
+=======
+        entries = 32142,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/de-zh.tar.zst",
     },
@@ -5167,7 +9756,11 @@ local dictionaries = {
         name = "維基詞典 意大利語-漢語",
         lang_in = "ita",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 141017,
+=======
+        entries = 148855,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/it-zh.tar.zst",
     },
@@ -5175,7 +9768,11 @@ local dictionaries = {
         name = "維基詞典 拉丁語-漢語",
         lang_in = "lat",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 143503,
+=======
+        entries = 107580,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/la-zh.tar.zst",
     },
@@ -5183,7 +9780,11 @@ local dictionaries = {
         name = "維基詞典 拉脫維亞語-漢語",
         lang_in = "lav",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 4621,
+=======
+        entries = 4514,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lv-zh.tar.zst",
     },
@@ -5191,7 +9792,11 @@ local dictionaries = {
         name = "維基詞典 新挪威語-漢語",
         lang_in = "nno",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 3893,
+=======
+        entries = 3905,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nn-zh.tar.zst",
     },
@@ -5199,7 +9804,11 @@ local dictionaries = {
         name = "維基詞典 日語-漢語",
         lang_in = "jpn",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 41985,
+=======
+        entries = 41866,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ja-zh.tar.zst",
     },
@@ -5207,7 +9816,11 @@ local dictionaries = {
         name = "維基詞典 書面挪威語-漢語",
         lang_in = "nob",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 4256,
+=======
+        entries = 4280,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nb-zh.tar.zst",
     },
@@ -5215,7 +9828,11 @@ local dictionaries = {
         name = "維基詞典 朝鮮語-漢語",
         lang_in = "kor",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 18202,
+=======
+        entries = 18550,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ko-zh.tar.zst",
     },
@@ -5223,7 +9840,11 @@ local dictionaries = {
         name = "維基詞典 法語-漢語",
         lang_in = "fra",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 123965,
+=======
+        entries = 122684,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fr-zh.tar.zst",
     },
@@ -5239,7 +9860,11 @@ local dictionaries = {
         name = "維基詞典 波蘭語-漢語",
         lang_in = "pol",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 32608,
+=======
+        entries = 32477,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pl-zh.tar.zst",
     },
@@ -5247,7 +9872,11 @@ local dictionaries = {
         name = "維基詞典 泰盧固語-漢語",
         lang_in = "tel",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 4137,
+=======
+        entries = 4139,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/te-zh.tar.zst",
     },
@@ -5255,7 +9884,11 @@ local dictionaries = {
         name = "維基詞典 泰語-漢語",
         lang_in = "tha",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 2668,
+=======
+        entries = 2777,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/th-zh.tar.zst",
     },
@@ -5263,7 +9896,11 @@ local dictionaries = {
         name = "維基詞典 滿語-漢語",
         lang_in = "mnc",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 2320,
+=======
+        entries = 2291,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mnc-zh.tar.zst",
     },
@@ -5271,7 +9908,11 @@ local dictionaries = {
         name = "維基詞典 漢語-漢語",
         lang_in = "zho",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 63525,
+=======
+        entries = 64343,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/zh-zh.tar.zst",
     },
@@ -5279,7 +9920,11 @@ local dictionaries = {
         name = "維基詞典 烏克蘭語-漢語",
         lang_in = "ukr",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 6522,
+=======
+        entries = 5951,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/uk-zh.tar.zst",
     },
@@ -5287,7 +9932,11 @@ local dictionaries = {
         name = "維基詞典 瑞典語-漢語",
         lang_in = "swe",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 93826,
+=======
+        entries = 91182,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/sv-zh.tar.zst",
     },
@@ -5295,7 +9944,11 @@ local dictionaries = {
         name = "維基詞典 立陶宛語-漢語",
         lang_in = "lit",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 4748,
+=======
+        entries = 4607,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/lt-zh.tar.zst",
     },
@@ -5311,7 +9964,11 @@ local dictionaries = {
         name = "維基詞典 羅馬尼亞語-漢語",
         lang_in = "ron",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 8154,
+=======
+        entries = 8261,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ro-zh.tar.zst",
     },
@@ -5319,7 +9976,11 @@ local dictionaries = {
         name = "維基詞典 芬蘭語-漢語",
         lang_in = "fin",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 10565,
+=======
+        entries = 10581,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/fi-zh.tar.zst",
     },
@@ -5327,7 +9988,11 @@ local dictionaries = {
         name = "維基詞典 英語-漢語",
         lang_in = "eng",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 43266,
+=======
+        entries = 43240,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/en-zh.tar.zst",
     },
@@ -5335,7 +10000,11 @@ local dictionaries = {
         name = "維基詞典 荷蘭語-漢語",
         lang_in = "nld",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 14847,
+=======
+        entries = 14575,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/nl-zh.tar.zst",
     },
@@ -5343,7 +10012,11 @@ local dictionaries = {
         name = "維基詞典 葡萄牙語-漢語",
         lang_in = "por",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 80369,
+=======
+        entries = 79220,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/pt-zh.tar.zst",
     },
@@ -5367,7 +10040,11 @@ local dictionaries = {
         name = "維基詞典 西班牙語-漢語",
         lang_in = "spa",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 221344,
+=======
+        entries = 219462,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/es-zh.tar.zst",
     },
@@ -5375,7 +10052,11 @@ local dictionaries = {
         name = "維基詞典 越南語-漢語",
         lang_in = "vie",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 8082,
+=======
+        entries = 8330,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/vi-zh.tar.zst",
     },
@@ -5383,7 +10064,11 @@ local dictionaries = {
         name = "維基詞典 阿塞拜疆語-漢語",
         lang_in = "aze",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 4118,
+=======
+        entries = 4082,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/az-zh.tar.zst",
     },
@@ -5391,7 +10076,11 @@ local dictionaries = {
         name = "維基詞典 阿拉伯語-漢語",
         lang_in = "ara",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 2623,
+=======
+        entries = 2490,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/ar-zh.tar.zst",
     },
@@ -5399,7 +10088,11 @@ local dictionaries = {
         name = "維基詞典 馬其頓語-漢語",
         lang_in = "mkd",
         lang_out = "zho",
+<<<<<<< HEAD
         entries = 6716,
+=======
+        entries = 6665,
+>>>>>>> upstream/master
         license = "GPLv3+ and CC BY-SA 4.0",
         url = "https://github.com/xxyzz/wiktionary_stardict/releases/latest/download/mk-zh.tar.zst",
     },
